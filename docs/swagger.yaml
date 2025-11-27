@@ -1,0 +1,942 @@
+definitions:
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  auth.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  auth.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      user: {}
+    type: object
+  chat.CreateSessionRequest:
+    properties:
+      daily_set_id:
+        type: integer
+    type: object
+  chat.EndSessionRequest:
+    properties:
+      duration_seconds:
+        type: integer
+    type: object
+  feedback.CategoryProgress:
+    properties:
+      category:
+        type: string
+      count:
+        type: integer
+      progress:
+        type: number
+    type: object
+  feedback.StatsResponse:
+    properties:
+      average_score:
+        type: number
+      current_streak:
+        type: integer
+      total_learning_minutes:
+        type: integer
+      total_sentences_used:
+        type: integer
+      total_sessions:
+        type: integer
+    type: object
+  feedback.WeeklyStats:
+    properties:
+      date:
+        type: string
+      minutes_spent:
+        type: integer
+      sentences_learned:
+        type: integer
+      session_count:
+        type: integer
+    type: object
+  learning.UpdateProgressRequest:
+    properties:
+      confirm:
+        type: boolean
+      daily_set_id:
+        type: integer
+      memorized:
+        type: boolean
+      sentence_id:
+        type: integer
+      speak:
+        type: boolean
+      understand:
+        type: boolean
+    required:
+    - sentence_id
+    type: object
+  model.ChatMessage:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      jp_text:
+        type: string
+      kr_text:
+        type: string
+      session_id:
+        type: integer
+      speaker:
+        description: '"ai" or "user"'
+        type: string
+      used_sentence:
+        allOf:
+        - $ref: '#/definitions/model.Sentence'
+        description: Relations
+      used_today_sentence_id:
+        description: 오늘 5문장 중 사용한 경우
+        type: integer
+    type: object
+  model.ChatSession:
+    properties:
+      created_at:
+        type: string
+      daily_set_id:
+        type: integer
+      duration_seconds:
+        type: integer
+      ended_at:
+        type: string
+      id:
+        type: integer
+      messages:
+        items:
+          $ref: '#/definitions/model.ChatMessage'
+        type: array
+      started_at:
+        type: string
+      today_sentence_used_count:
+        description: 오늘 5문장 중 사용한 수
+        type: integer
+      total_messages:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.Feedback:
+    properties:
+      created_at:
+        type: string
+      grammar_score:
+        description: 문법 점수
+        type: number
+      highlights:
+        description: 하이라이트
+        items:
+          $ref: '#/definitions/model.FeedbackHighlight'
+        type: array
+      id:
+        type: integer
+      naturalness_score:
+        description: 자연스러움 점수
+        type: number
+      pronunciation_score:
+        description: 발음 점수
+        type: number
+      session:
+        allOf:
+        - $ref: '#/definitions/model.ChatSession'
+        description: Relations
+      session_id:
+        type: integer
+      summary:
+        description: 요약 문장
+        type: string
+      total_score:
+        description: 총점
+        type: number
+      updated_at:
+        type: string
+    type: object
+  model.FeedbackHighlight:
+    properties:
+      comment:
+        type: string
+      jp:
+        type: string
+      kr:
+        type: string
+      title:
+        type: string
+    type: object
+  model.LearningProgress:
+    properties:
+      completed_at:
+        type: string
+      confirm:
+        description: 확인하기 완료
+        type: boolean
+      created_at:
+        type: string
+      daily_set_id:
+        type: integer
+      id:
+        type: integer
+      memorized:
+        description: 암기 완료
+        type: boolean
+      sentence:
+        $ref: '#/definitions/model.Sentence'
+      sentence_id:
+        type: integer
+      speak:
+        description: 말하기 완료
+        type: boolean
+      understand:
+        description: 이해하기 완료
+        type: boolean
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.Sentence:
+    properties:
+      audio_url:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      jp:
+        description: 일본어 문장
+        type: string
+      kr:
+        description: 한국어 번역
+        type: string
+      level:
+        description: 난이도 1~5
+        type: integer
+      romaji:
+        description: 로마지
+        type: string
+      tags:
+        description: 애니, 게임, 성지순례, 이벤트 등
+        items:
+          type: string
+        type: array
+      updated_at:
+        type: string
+    type: object
+  model.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      onboarding:
+        $ref: '#/definitions/model.UserOnboarding'
+      provider:
+        description: local, google, kakao, etc.
+        type: string
+      settings:
+        allOf:
+        - $ref: '#/definitions/model.UserSettings'
+        description: Relations
+      updated_at:
+        type: string
+    type: object
+  model.UserOnboarding:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      interests:
+        description: 애니, 게임, 성지순례, 이벤트 등
+        items:
+          type: string
+        type: array
+      level:
+        description: 0 ~ 5
+        type: integer
+      purposes:
+        description: 학습 목적
+        items:
+          type: string
+        type: array
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.UserSettings:
+    properties:
+      created_at:
+        type: string
+      daily_reminder_time:
+        type: string
+      id:
+        type: integer
+      notification_enabled:
+        type: boolean
+      preferred_voice_speed:
+        type: number
+      show_romaji:
+        type: boolean
+      show_translation:
+        type: boolean
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  pkg.Meta:
+    properties:
+      page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  pkg.PaginatedResponse:
+    properties:
+      data: {}
+      meta:
+        $ref: '#/definitions/pkg.Meta'
+      success:
+        type: boolean
+    type: object
+  pkg.Response:
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  sentences.DailySentencesResponse:
+    properties:
+      daily_set_id:
+        type: integer
+      date:
+        type: string
+      sentences:
+        items:
+          $ref: '#/definitions/sentences.SentenceResponse'
+        type: array
+    type: object
+  sentences.SentenceDetailResponse:
+    properties:
+      examples:
+        items:
+          type: string
+        type: array
+      grammar:
+        items:
+          type: string
+        type: array
+      sentence:
+        $ref: '#/definitions/sentences.SentenceResponse'
+      words:
+        items:
+          $ref: '#/definitions/sentences.WordResponse'
+        type: array
+    type: object
+  sentences.SentenceResponse:
+    properties:
+      audio_url:
+        type: string
+      id:
+        type: integer
+      jp:
+        type: string
+      kr:
+        type: string
+      level:
+        type: integer
+      romaji:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+    type: object
+  sentences.WordResponse:
+    properties:
+      japanese:
+        type: string
+      meaning:
+        type: string
+      part_of:
+        type: string
+      reading:
+        type: string
+    type: object
+  service.TodayProgressResponse:
+    properties:
+      completed:
+        type: integer
+      daily_set_id:
+        type: integer
+      progress:
+        items:
+          $ref: '#/definitions/model.LearningProgress'
+        type: array
+      total_sentences:
+        type: integer
+    type: object
+  user.OnboardingRequest:
+    properties:
+      interests:
+        items:
+          type: string
+        type: array
+      level:
+        maximum: 5
+        minimum: 0
+        type: integer
+      purposes:
+        items:
+          type: string
+        type: array
+    type: object
+  user.UpdateProfileRequest:
+    properties:
+      name:
+        type: string
+    type: object
+  user.UpdateSettingsRequest:
+    properties:
+      daily_reminder_time:
+        type: string
+      notification_enabled:
+        type: boolean
+      preferred_voice_speed:
+        type: number
+      show_romaji:
+        type: boolean
+      show_translation:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: 이메일과 비밀번호로 로그인
+      parameters:
+      - description: 로그인 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenResponse'
+      summary: 로그인
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      description: 로그아웃 (클라이언트에서 토큰 삭제)
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg.Response'
+      summary: 로그아웃
+      tags:
+      - Auth
+  /api/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh Token으로 Access Token 갱신
+      parameters:
+      - description: Refresh Token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.TokenResponse'
+      summary: 토큰 갱신
+      tags:
+      - Auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: 이메일과 비밀번호로 회원가입
+      parameters:
+      - description: 회원가입 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auth.TokenResponse'
+      summary: 회원가입
+      tags:
+      - Auth
+  /api/chat/session:
+    post:
+      consumes:
+      - application/json
+      description: 새로운 대화 세션 생성 (오늘의 5문장 세트와 연결)
+      parameters:
+      - description: 세션 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/chat.CreateSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.ChatSession'
+      security:
+      - BearerAuth: []
+      summary: 대화 세션 생성
+      tags:
+      - Chat
+  /api/chat/session/{id}:
+    get:
+      description: 대화 세션 상세 정보 조회 (메시지 포함)
+      parameters:
+      - description: 세션 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ChatSession'
+      security:
+      - BearerAuth: []
+      summary: 대화 세션 조회
+      tags:
+      - Chat
+  /api/chat/session/{id}/end:
+    post:
+      consumes:
+      - application/json
+      description: 대화 세션을 종료하고 통계 저장
+      parameters:
+      - description: 세션 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 종료 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/chat.EndSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ChatSession'
+      security:
+      - BearerAuth: []
+      summary: 대화 세션 종료
+      tags:
+      - Chat
+  /api/chat/sessions:
+    get:
+      description: 유저의 최근 대화 세션 목록 조회
+      parameters:
+      - default: 1
+        description: 페이지 번호
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 페이지당 개수
+        in: query
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg.PaginatedResponse'
+      security:
+      - BearerAuth: []
+      summary: 대화 세션 목록 조회
+      tags:
+      - Chat
+  /api/feedback/{sessionId}:
+    get:
+      description: 세션 ID로 피드백 조회 (총점, 문법, 발음, 자연스러움 등)
+      parameters:
+      - description: 세션 ID
+        in: path
+        name: sessionId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Feedback'
+      security:
+      - BearerAuth: []
+      summary: 대화 피드백 조회
+      tags:
+      - Feedback
+  /api/learning/history:
+    get:
+      description: 전체 학습 진행 히스토리 조회
+      parameters:
+      - default: 1
+        description: 페이지 번호
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 페이지당 개수
+        in: query
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg.PaginatedResponse'
+      security:
+      - BearerAuth: []
+      summary: 학습 히스토리 조회
+      tags:
+      - Learning
+  /api/learning/progress:
+    post:
+      consumes:
+      - application/json
+      description: 문장별 이해/말하기/확인/암기 완료 상태 업데이트
+      parameters:
+      - description: 진행 상황
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/learning.UpdateProgressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LearningProgress'
+      security:
+      - BearerAuth: []
+      summary: 학습 진행 상황 업데이트
+      tags:
+      - Learning
+  /api/learning/today:
+    get:
+      description: 오늘의 5문장 학습 진행 상황 조회
+      parameters:
+      - description: Daily Set ID
+        in: query
+        name: daily_set_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.TodayProgressResponse'
+      security:
+      - BearerAuth: []
+      summary: 오늘의 학습 진행 상황 조회
+      tags:
+      - Learning
+  /api/sentences/{id}:
+    get:
+      description: 문장 ID로 문장 상세 정보 조회 (단어 풀이, 문법, 예문 포함)
+      parameters:
+      - description: 문장 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sentences.SentenceDetailResponse'
+      security:
+      - BearerAuth: []
+      summary: 문장 상세 조회
+      tags:
+      - Sentences
+  /api/sentences/daily:
+    get:
+      description: 유저의 레벨/관심사 기반 오늘의 5문장 반환 (첫 호출 시 생성)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sentences.DailySentencesResponse'
+      security:
+      - BearerAuth: []
+      summary: 오늘의 5문장 조회
+      tags:
+      - Sentences
+  /api/sentences/history:
+    get:
+      description: 유저가 학습한 문장 히스토리 조회
+      parameters:
+      - default: 1
+        description: 페이지 번호
+        in: query
+        name: page
+        type: integer
+      - default: 20
+        description: 페이지당 개수
+        in: query
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg.PaginatedResponse'
+      security:
+      - BearerAuth: []
+      summary: 문장 학습 히스토리
+      tags:
+      - Sentences
+  /api/stats/categories:
+    get:
+      description: 오타쿠 카테고리별 학습 진행도 (애니, 게임, 성지순례, 이벤트)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/feedback.CategoryProgress'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: 카테고리별 진행도 조회
+      tags:
+      - Stats
+  /api/stats/today:
+    get:
+      description: 오늘의 학습 요약 통계 (사용 문장 수, 학습 시간, streak 등)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/feedback.StatsResponse'
+      security:
+      - BearerAuth: []
+      summary: 오늘의 통계 조회
+      tags:
+      - Stats
+  /api/stats/weekly:
+    get:
+      description: 최근 7일간의 학습 통계
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/feedback.WeeklyStats'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: 주간 통계 조회
+      tags:
+      - Stats
+  /api/user/me:
+    get:
+      description: 현재 로그인한 유저의 정보 조회
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+      security:
+      - BearerAuth: []
+      summary: 내 정보 조회
+      tags:
+      - User
+  /api/user/onboarding:
+    post:
+      consumes:
+      - application/json
+      description: 유저 온보딩 정보 저장 (레벨, 관심사, 목적)
+      parameters:
+      - description: 온보딩 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.OnboardingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserOnboarding'
+      security:
+      - BearerAuth: []
+      summary: 온보딩 정보 저장
+      tags:
+      - User
+  /api/user/profile:
+    put:
+      consumes:
+      - application/json
+      description: 유저 프로필 정보 수정
+      parameters:
+      - description: 프로필 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+      security:
+      - BearerAuth: []
+      summary: 프로필 수정
+      tags:
+      - User
+  /api/user/settings:
+    get:
+      description: 유저 설정 정보 조회
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserSettings'
+      security:
+      - BearerAuth: []
+      summary: 설정 조회
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: 유저 설정 정보 수정
+      parameters:
+      - description: 설정 정보
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateSettingsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserSettings'
+      security:
+      - BearerAuth: []
+      summary: 설정 수정
+      tags:
+      - User
+swagger: "2.0"

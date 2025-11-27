@@ -119,7 +119,7 @@ docker-build:
 ## docker-run: Run Docker container
 docker-run:
 	@echo "Running Docker container..."
-	docker run -p 8080:8080 --env-file .env jptaku-api:latest
+	docker run -p 30001:30001 --env-file .env jptaku-api:latest
 
 ## help: Show this help message
 help:

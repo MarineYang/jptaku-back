@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	_ "github.com/jptaku/server/docs" // Swagger docs
 	"github.com/jptaku/server/internal/api/auth"
 	"github.com/jptaku/server/internal/api/chat"
 	"github.com/jptaku/server/internal/api/feedback"
@@ -23,9 +25,16 @@ import (
 	"github.com/jptaku/server/internal/pkg"
 	"github.com/jptaku/server/internal/repository"
 	"github.com/jptaku/server/internal/service"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
+	// Load .env file
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, using system environment variables")
+	}
+
 	// Load configuration
 	cfg := config.Load()
 
@@ -92,6 +101,9 @@ func main() {
 
 	// Initialize Gin router
 	r := gin.New()
+	// Swagger documentation
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	r.Use(gin.Recovery())
 	r.Use(middleware.Logger())
 	r.Use(middleware.CORS())
