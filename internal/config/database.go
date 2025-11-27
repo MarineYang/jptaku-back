@@ -13,10 +13,11 @@ func NewDatabase(cfg *DatabaseConfig) (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode)
 
-	logLevel := logger.Info
-	if cfg.Host == "localhost" {
-		logLevel = logger.Info
-	}
+	// logger.Silent: 로그 없음
+	// logger.Error: 에러만 출력
+	// logger.Warn: 경고 이상 출력
+	// logger.Info: 모든 쿼리 출력
+	logLevel := logger.Error // 에러만 출력하자.
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logLevel)})
 	if err != nil {
