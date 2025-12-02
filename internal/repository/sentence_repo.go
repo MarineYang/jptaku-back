@@ -42,21 +42,25 @@ func (r *SentenceRepository) FindByLevel(level int, limit int) ([]model.Sentence
 	return sentences, nil
 }
 
-func (r *SentenceRepository) FindByTags(tags []string, limit int) ([]model.Sentence, error) {
+func (r *SentenceRepository) FindByCategories(categories []int, limit int) ([]model.Sentence, error) {
 	var sentences []model.Sentence
-	err := r.db.Where("tags && ?", tags).Limit(limit).Find(&sentences).Error
+	err := r.db.Where("categories && ?", categories).Limit(limit).Find(&sentences).Error
 	if err != nil {
 		return nil, err
 	}
 	return sentences, nil
 }
 
-func (r *SentenceRepository) FindRandom(level int, tags []string, limit int, excludeIDs []uint) ([]model.Sentence, error) {
+func (r *SentenceRepository) FindRandom(level int, categories []int, limit int, excludeIDs []uint) ([]model.Sentence, error) {
 	var sentences []model.Sentence
 	query := r.db.Model(&model.Sentence{})
 
 	if level > 0 {
 		query = query.Where("level <= ?", level)
+	}
+
+	if len(categories) > 0 {
+		query = query.Where("categories && ?", categories)
 	}
 
 	if len(excludeIDs) > 0 {
@@ -88,12 +92,9 @@ func (r *SentenceRepository) GetHistory(userID uint, page, perPage int) ([]model
 	var total int64
 
 	// DailySentenceSet에서 유저가 학습한 모든 문장 조회
-	subQuery := r.db.Model(&model.DailySentenceSet{}).
-		Select("UNNEST(sentence_ids)").
-		Where("user_id = ?", userID)
+	subQuery := r.db.Model(&model.DailySentenceSet{}).Select("UNNEST(sentence_ids)").Where("user_id = ?", userID)
 
-	query := r.db.Model(&model.Sentence{}).
-		Where("id IN (?)", subQuery)
+	query := r.db.Model(&model.Sentence{}).Where("id IN (?)", subQuery)
 
 	query.Count(&total)
 
@@ -122,10 +123,7 @@ func (r *SentenceRepository) CreateDailySet(dailySet *model.DailySentenceSet) er
 
 func (r *SentenceRepository) GetUserLearnedSentenceIDs(userID uint) ([]uint, error) {
 	var ids []uint
-	err := r.db.Model(&model.DailySentenceSet{}).
-		Select("UNNEST(sentence_ids)").
-		Where("user_id = ?", userID).
-		Find(&ids).Error
+	err := r.db.Model(&model.DailySentenceSet{}).Select("UNNEST(sentence_ids)").Where("user_id = ?", userID).Find(&ids).Error
 	if err != nil {
 		return nil, err
 	}

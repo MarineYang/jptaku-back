@@ -30,10 +30,9 @@ import (
 )
 
 func main() {
-	// Load .env file
-	if err := godotenv.Load("../../.env"); err != nil {
-		log.Println("No .env file found, using system environment variables")
-	}
+	// Load .env file (try multiple paths for different environments)
+	_ = godotenv.Load(".env")        // Docker / production
+	_ = godotenv.Load("../../.env")  // Local development (cmd/api)
 
 	// Load configuration
 	cfg := config.Load()
@@ -82,8 +81,16 @@ func main() {
 
 	// Initialize services
 	authService := service.NewAuthService(dbManager, userRepo, jwtManager)
-	userService := service.NewUserService(userRepo)
-	sentenceService := service.NewSentenceService(dbManager, sentenceRepo, userRepo)
+	sentenceService := service.NewSentenceService(sentenceRepo, userRepo)
+
+	// OpenAI 클라이언트 설정 (문장 생성용)
+	if cfg.OpenAI.APIKey != "" {
+		sentenceService.SetOpenAIClient(cfg.OpenAI.APIKey, cfg.OpenAI.Model)
+	} else {
+		log.Println("Warning: OPEN_AI_API_KEY not set, sentence generation disabled")
+	}
+
+	userService := service.NewUserService(userRepo, sentenceService)
 	learningService := service.NewLearningService(learningRepo, sentenceRepo)
 	chatService := service.NewChatService(chatRepo, sentenceRepo)
 	feedbackService := service.NewFeedbackService(feedbackRepo, chatRepo)

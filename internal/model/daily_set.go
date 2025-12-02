@@ -7,8 +7,8 @@ import (
 type DailySentenceSet struct {
 	ID          uint      `gorm:"primaryKey" json:"id"`
 	UserID      uint      `gorm:"index;not null" json:"user_id"`
-	Date        time.Time `gorm:"type:date;index;not null" json:"date"`               // 날짜
-	SentenceIDs []uint    `gorm:"type:integer[];serializer:json" json:"sentence_ids"` // 5개 문장 ID
+	Date        time.Time `gorm:"type:date;index;not null" json:"date"`          // 날짜
+	SentenceIDs []uint    `gorm:"type:jsonb;serializer:json" json:"sentence_ids"` // 5개 문장 ID
 	CreatedAt   time.Time `json:"created_at"`
 
 	// Relations

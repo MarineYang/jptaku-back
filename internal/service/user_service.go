@@ -6,11 +6,15 @@ import (
 )
 
 type UserService struct {
-	userRepo *repository.UserRepository
+	userRepo        *repository.UserRepository
+	sentenceService *SentenceService
 }
 
-func NewUserService(userRepo *repository.UserRepository) *UserService {
-	return &UserService{userRepo: userRepo}
+func NewUserService(userRepo *repository.UserRepository, sentenceService *SentenceService) *UserService {
+	return &UserService{
+		userRepo:        userRepo,
+		sentenceService: sentenceService,
+	}
 }
 
 type UpdateProfileInput struct {
@@ -18,9 +22,9 @@ type UpdateProfileInput struct {
 }
 
 type OnboardingInput struct {
-	Level     int      `json:"level" binding:"min=0,max=5"`
-	Interests []string `json:"interests"`
-	Purposes  []string `json:"purposes"`
+	Level     int   `json:"level" binding:"min=0,max=5"`
+	Interests []int `json:"interests"` // pkg.SubCategory 값들
+	Purposes  []int `json:"purposes"`  // pkg.Purpose 값들
 }
 
 type UpdateSettingsInput struct {
@@ -55,8 +59,9 @@ func (s *UserService) UpdateProfile(userID uint, input *UpdateProfileInput) (*mo
 func (s *UserService) SaveOnboarding(userID uint, input *OnboardingInput) (*model.UserOnboarding, error) {
 	// 기존 온보딩 정보 확인
 	onboarding, err := s.userRepo.GetOnboarding(userID)
-	if err != nil {
-		// 새로 생성
+	isNewOnboarding := err != nil
+
+	if isNewOnboarding {
 		onboarding = &model.UserOnboarding{
 			UserID:    userID,
 			Level:     input.Level,
@@ -67,7 +72,6 @@ func (s *UserService) SaveOnboarding(userID uint, input *OnboardingInput) (*mode
 			return nil, err
 		}
 	} else {
-		// 업데이트
 		onboarding.Level = input.Level
 		onboarding.Interests = input.Interests
 		onboarding.Purposes = input.Purposes

@@ -5,9 +5,9 @@ type UpdateProfileRequest struct {
 }
 
 type OnboardingRequest struct {
-	Level     int      `json:"level" binding:"min=0,max=5"`
-	Interests []string `json:"interests"`
-	Purposes  []string `json:"purposes"`
+	Level     int   `json:"level" binding:"min=0,max=5"`
+	Interests []int `json:"interests"` // pkg.SubCategory 값들
+	Purposes  []int `json:"purposes"`  // pkg.Purpose 값들
 }
 
 type UpdateSettingsRequest struct {

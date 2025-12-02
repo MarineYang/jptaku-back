@@ -11,6 +11,12 @@ type Config struct {
 	Database DatabaseConfig
 	Redis    RedisConfig
 	JWT      JWTConfig
+	OpenAI   OpenAIConfig
+}
+
+type OpenAIConfig struct {
+	APIKey string
+	Model  string
 }
 
 type ServerConfig struct {
@@ -62,6 +68,10 @@ func Load() *Config {
 		JWT: JWTConfig{
 			Secret:          getEnv("JWT_SECRET", "your-super-secret-key-change-in-production"),
 			ExpirationHours: getEnvAsInt("JWT_EXPIRATION_HOURS", 24),
+		},
+		OpenAI: OpenAIConfig{
+			APIKey: getEnv("OPEN_AI_API_KEY", ""),
+			Model:  getEnv("OPENAI_MODEL", "gpt-4o-mini"),
 		},
 	}
 }

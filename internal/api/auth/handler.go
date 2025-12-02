@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/pkg"
 	"github.com/jptaku/server/internal/service"
@@ -45,6 +47,8 @@ func (h *Handler) Register(c *gin.Context) {
 		Password: req.Password,
 		Name:     req.Name,
 	}
+
+	fmt.Println(input)
 
 	result, err := h.authService.Register(input)
 	if err != nil {
