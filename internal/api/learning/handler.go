@@ -20,6 +20,7 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 	learning.Use(authMiddleware)
 	{
 		learning.POST("/progress", h.UpdateProgress)
+		learning.POST("/quiz", h.SubmitQuiz)
 		learning.GET("/today", h.GetTodayProgress)
 		learning.GET("/history", h.GetProgressHistory)
 	}
@@ -127,4 +128,51 @@ func (h *Handler) GetProgressHistory(c *gin.Context) {
 	}
 
 	pkg.PaginatedSuccessResponse(c, progresses, query.Page, query.PerPage, total)
+}
+
+// SubmitQuiz godoc
+// @Summary 퀴즈 제출
+// @Description 빈칸 채우기/문장 배열 퀴즈 정답 제출 및 검증. 모두 맞으면 해당 문장 암기 완료로 표시
+// @Tags Learning
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param request body SubmitQuizRequest true "퀴즈 답안"
+// @Success 200 {object} SubmitQuizResponse
+// @Router /api/learning/quiz [post]
+func (h *Handler) SubmitQuiz(c *gin.Context) {
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		pkg.UnauthorizedResponse(c, "")
+		return
+	}
+
+	var req SubmitQuizRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		pkg.BadRequestResponse(c, err.Error())
+		return
+	}
+
+	input := &service.SubmitQuizInput{
+		SentenceID:      req.SentenceID,
+		DailySetID:      req.DailySetID,
+		FillBlankAnswer: req.FillBlankAnswer,
+		OrderingAnswer:  req.OrderingAnswer,
+	}
+
+	result, err := h.learningService.SubmitQuiz(userID, input)
+	if err != nil {
+		pkg.InternalServerErrorResponse(c, "퀴즈 제출 실패")
+		return
+	}
+
+	response := SubmitQuizResponse{
+		SentenceID:       result.SentenceID,
+		FillBlankCorrect: result.FillBlankCorrect,
+		OrderingCorrect:  result.OrderingCorrect,
+		AllCorrect:       result.AllCorrect,
+		Memorized:        result.Memorized,
+	}
+
+	pkg.SuccessResponse(c, response)
 }

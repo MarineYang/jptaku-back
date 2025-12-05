@@ -87,6 +87,10 @@ func (r *SentenceRepository) Create(sentence *model.Sentence) error {
 	return r.db.Create(sentence).Error
 }
 
+func (r *SentenceRepository) CreateDetail(detail *model.SentenceDetail) error {
+	return r.db.Create(detail).Error
+}
+
 func (r *SentenceRepository) GetHistory(userID uint, page, perPage int) ([]model.Sentence, int64, error) {
 	var sentences []model.Sentence
 	var total int64
@@ -128,4 +132,24 @@ func (r *SentenceRepository) GetUserLearnedSentenceIDs(userID uint) ([]uint, err
 		return nil, err
 	}
 	return ids, nil
+}
+
+// GetPastDailySets 오늘 제외한 과거 학습 세트 조회 (최신순)
+func (r *SentenceRepository) GetPastDailySets(userID uint, page, perPage int) ([]model.DailySentenceSet, int64, error) {
+	var dailySets []model.DailySentenceSet
+	var total int64
+
+	today := time.Now().Truncate(24 * time.Hour)
+
+	query := r.db.Model(&model.DailySentenceSet{}).Where("user_id = ? AND date < ?", userID, today.Format("2006-01-02"))
+
+	query.Count(&total)
+
+	offset := (page - 1) * perPage
+	err := query.Order("date DESC").Offset(offset).Limit(perPage).Find(&dailySets).Error
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return dailySets, total, nil
 }

@@ -1,6 +1,8 @@
 package sentences
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/middleware"
 	"github.com/jptaku/server/internal/pkg"
@@ -20,7 +22,7 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 	sentences.Use(authMiddleware)
 	{
 		sentences.GET("/today", h.GetTodaySentences)
-		sentences.GET("/yesterday", h.GetYesterdaySentences)
+		sentences.GET("/history", h.GetHistorySentences)
 	}
 }
 
@@ -49,34 +51,76 @@ func (h *Handler) GetTodaySentences(c *gin.Context) {
 	pkg.SuccessResponse(c, response)
 }
 
-// GetYesterdaySentences godoc
-// @Summary 어제의 5문장 조회
-// @Description 어제 학습한 5문장 반환
+// GetHistorySentences godoc
+// @Summary 지난 학습 문장 조회
+// @Description 오늘을 제외한 과거 학습 문장들을 날짜별로 조회 (페이지네이션)
 // @Tags Sentences
 // @Security BearerAuth
 // @Produce json
-// @Success 200 {object} DailySentencesResponse
-// @Router /api/sentences/yesterday [get]
-func (h *Handler) GetYesterdaySentences(c *gin.Context) {
+// @Param page query int false "페이지 번호" default(1)
+// @Param per_page query int false "페이지당 개수" default(10)
+// @Success 200 {object} HistorySentencesResponse
+// @Router /api/sentences/history [get]
+func (h *Handler) GetHistorySentences(c *gin.Context) {
 	userID := middleware.GetUserID(c)
 	if userID == 0 {
 		pkg.UnauthorizedResponse(c, "")
 		return
 	}
 
-	result, err := h.sentenceService.GetYesterdaySentences(userID)
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	perPage, _ := strconv.Atoi(c.DefaultQuery("per_page", "10"))
+
+	if page < 1 {
+		page = 1
+	}
+	if perPage < 1 || perPage > 50 {
+		perPage = 10
+	}
+
+	result, err := h.sentenceService.GetHistorySentences(userID, page, perPage)
 	if err != nil {
-		pkg.NotFoundResponse(c, "어제의 문장이 없습니다")
+		pkg.InternalServerErrorResponse(c, "지난 학습 문장을 불러오는데 실패했습니다")
 		return
 	}
 
-	response := convertToResponse(result)
+	response := convertHistoryToResponse(result)
 	pkg.SuccessResponse(c, response)
 }
 
 func convertToResponse(result *service.DailySentencesResponse) *DailySentencesResponse {
 	sentences := make([]SentenceResponse, len(result.Sentences))
 	for i, s := range result.Sentences {
+		// Words 변환
+		words := make([]WordResponse, len(s.Words))
+		for j, w := range s.Words {
+			words[j] = WordResponse{
+				Japanese: w.Japanese,
+				Reading:  w.Reading,
+				Meaning:  w.Meaning,
+				PartOf:   w.PartOf,
+			}
+		}
+
+		// Quiz 변환
+		var quiz *QuizResponse
+		if s.Quiz != nil {
+			quiz = &QuizResponse{}
+			if s.Quiz.FillBlank != nil {
+				quiz.FillBlank = &QuizFillBlankResponse{
+					QuestionJP: s.Quiz.FillBlank.QuestionJP,
+					Options:    s.Quiz.FillBlank.Options,
+					Answer:     s.Quiz.FillBlank.Answer,
+				}
+			}
+			if s.Quiz.Ordering != nil {
+				quiz.Ordering = &QuizOrderingResponse{
+					Fragments:    s.Quiz.Ordering.Fragments,
+					CorrectOrder: s.Quiz.Ordering.CorrectOrder,
+				}
+			}
+		}
+
 		sentences[i] = SentenceResponse{
 			ID:         s.ID,
 			JP:         s.JP,
@@ -84,11 +128,82 @@ func convertToResponse(result *service.DailySentencesResponse) *DailySentencesRe
 			Romaji:     s.Romaji,
 			Level:      s.Level,
 			Categories: s.Categories,
+			Words:      words,
+			Grammar:    s.Grammar,
+			Examples:   s.Examples,
+			Quiz:       quiz,
+			Memorized:  s.Memorized,
 		}
 	}
 
 	return &DailySentencesResponse{
 		Date:      result.Date,
 		Sentences: sentences,
+	}
+}
+
+func convertHistoryToResponse(result *service.HistorySentencesResponse) *HistorySentencesResponse {
+	history := make([]HistoryItemResponse, len(result.History))
+
+	for i, item := range result.History {
+		sentences := make([]SentenceResponse, len(item.Sentences))
+		for j, s := range item.Sentences {
+			// Words 변환
+			words := make([]WordResponse, len(s.Words))
+			for k, w := range s.Words {
+				words[k] = WordResponse{
+					Japanese: w.Japanese,
+					Reading:  w.Reading,
+					Meaning:  w.Meaning,
+					PartOf:   w.PartOf,
+				}
+			}
+
+			// Quiz 변환
+			var quiz *QuizResponse
+			if s.Quiz != nil {
+				quiz = &QuizResponse{}
+				if s.Quiz.FillBlank != nil {
+					quiz.FillBlank = &QuizFillBlankResponse{
+						QuestionJP: s.Quiz.FillBlank.QuestionJP,
+						Options:    s.Quiz.FillBlank.Options,
+						Answer:     s.Quiz.FillBlank.Answer,
+					}
+				}
+				if s.Quiz.Ordering != nil {
+					quiz.Ordering = &QuizOrderingResponse{
+						Fragments:    s.Quiz.Ordering.Fragments,
+						CorrectOrder: s.Quiz.Ordering.CorrectOrder,
+					}
+				}
+			}
+
+			sentences[j] = SentenceResponse{
+				ID:         s.ID,
+				JP:         s.JP,
+				KR:         s.KR,
+				Romaji:     s.Romaji,
+				Level:      s.Level,
+				Categories: s.Categories,
+				Words:      words,
+				Grammar:    s.Grammar,
+				Examples:   s.Examples,
+				Quiz:       quiz,
+				Memorized:  s.Memorized,
+			}
+		}
+
+		history[i] = HistoryItemResponse{
+			Date:      item.Date,
+			Sentences: sentences,
+		}
+	}
+
+	return &HistorySentencesResponse{
+		History:    history,
+		Page:       result.Page,
+		PerPage:    result.PerPage,
+		Total:      result.Total,
+		TotalPages: result.TotalPages,
 	}
 }

@@ -31,8 +31,8 @@ import (
 
 func main() {
 	// Load .env file (try multiple paths for different environments)
-	_ = godotenv.Load(".env")        // Docker / production
-	_ = godotenv.Load("../../.env")  // Local development (cmd/api)
+	_ = godotenv.Load(".env")       // Docker / production
+	_ = godotenv.Load("../../.env") // Local development (cmd/api)
 
 	// Load configuration
 	cfg := config.Load()
