@@ -81,6 +81,20 @@ func main() {
 
 	// Initialize services
 	authService := service.NewAuthService(dbManager, userRepo, jwtManager)
+
+	// Initialize Google OAuth if configured
+	if cfg.Google.ClientID != "" && cfg.Google.ClientSecret != "" {
+		googleOAuth := pkg.NewGoogleOAuthManager(
+			cfg.Google.ClientID,
+			cfg.Google.ClientSecret,
+			cfg.Google.RedirectURL,
+		)
+		authService.SetGoogleOAuth(googleOAuth)
+		log.Println("Google OAuth initialized")
+	} else {
+		log.Println("Warning: Google OAuth not configured (GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET not set)")
+	}
+
 	sentenceService := service.NewSentenceService(sentenceRepo, userRepo)
 
 	// OpenAI 클라이언트 설정 (문장 생성용)

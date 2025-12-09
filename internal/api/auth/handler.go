@@ -19,82 +19,13 @@ func NewHandler(authService *service.AuthService) *Handler {
 func (h *Handler) RegisterRoutes(r *gin.RouterGroup) {
 	auth := r.Group("/auth")
 	{
-		auth.POST("/register", h.Register)
-		auth.POST("/login", h.Login)
 		auth.POST("/refresh", h.Refresh)
 		auth.POST("/logout", h.Logout)
+
+		// Google OAuth
+		auth.GET("/google", h.GoogleAuth)
+		auth.GET("/google/callback", h.GoogleCallback)
 	}
-}
-
-// Register godoc
-// @Summary 회원가입
-// @Description 이메일과 비밀번호로 회원가입
-// @Tags Auth
-// @Accept json
-// @Produce json
-// @Param request body RegisterRequest true "회원가입 정보"
-// @Success 201 {object} TokenResponse
-// @Router /api/auth/register [post]
-func (h *Handler) Register(c *gin.Context) {
-	var req RegisterRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		pkg.BadRequestResponse(c, err.Error())
-		return
-	}
-
-	input := &service.RegisterInput{
-		Email:    req.Email,
-		Password: req.Password,
-		Name:     req.Name,
-	}
-
-	fmt.Println(input)
-
-	result, err := h.authService.Register(input)
-	if err != nil {
-		if err == pkg.ErrDuplicateEmail {
-			pkg.BadRequestResponse(c, "이미 등록된 이메일입니다")
-			return
-		}
-		pkg.InternalServerErrorResponse(c, "회원가입 실패")
-		return
-	}
-
-	pkg.CreatedResponse(c, result)
-}
-
-// Login godoc
-// @Summary 로그인
-// @Description 이메일과 비밀번호로 로그인
-// @Tags Auth
-// @Accept json
-// @Produce json
-// @Param request body LoginRequest true "로그인 정보"
-// @Success 200 {object} TokenResponse
-// @Router /api/auth/login [post]
-func (h *Handler) Login(c *gin.Context) {
-	var req LoginRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		pkg.BadRequestResponse(c, err.Error())
-		return
-	}
-
-	input := &service.LoginInput{
-		Email:    req.Email,
-		Password: req.Password,
-	}
-
-	result, err := h.authService.Login(input)
-	if err != nil {
-		if err == pkg.ErrInvalidCredentials {
-			pkg.UnauthorizedResponse(c, "이메일 또는 비밀번호가 올바르지 않습니다")
-			return
-		}
-		pkg.InternalServerErrorResponse(c, "로그인 실패")
-		return
-	}
-
-	pkg.SuccessResponse(c, result)
 }
 
 // Refresh godoc
@@ -129,7 +60,71 @@ func (h *Handler) Refresh(c *gin.Context) {
 // @Success 200 {object} pkg.Response
 // @Router /api/auth/logout [post]
 func (h *Handler) Logout(c *gin.Context) {
-	// 실제 로그아웃 처리는 클라이언트에서 토큰을 삭제하면 됨
-	// 서버에서는 블랙리스트 처리 등을 할 수 있음 (옵션)
 	pkg.SuccessMessageResponse(c, "로그아웃 되었습니다")
+}
+
+// GoogleAuth godoc
+// @Summary Google OAuth 로그인 URL 생성
+// @Description Google 로그인을 위한 인증 URL을 반환합니다
+// @Tags Auth
+// @Produce json
+// @Success 200 {object} GoogleAuthURLResponse
+// @Router /api/auth/google [get]
+func (h *Handler) GoogleAuth(c *gin.Context) {
+	state := c.Query("state")
+	if state == "" {
+		state = "default"
+	}
+
+	url := h.authService.GetGoogleAuthURL(state)
+	if url == "" {
+		pkg.InternalServerErrorResponse(c, "Google OAuth가 설정되지 않았습니다")
+		return
+	}
+
+	pkg.SuccessResponse(c, GoogleAuthURLResponse{URL: url})
+}
+
+// GoogleCallback godoc
+// @Summary Google OAuth 콜백
+// @Description Google 로그인 후 콜백을 처리합니다. 모바일 앱인 경우 딥링크로 리다이렉트합니다.
+// @Tags Auth
+// @Produce json
+// @Param code query string true "Authorization code from Google"
+// @Param state query string false "State parameter (mobile: 모바일 앱으로 리다이렉트)"
+// @Success 200 {object} TokenResponse
+// @Router /api/auth/google/callback [get]
+func (h *Handler) GoogleCallback(c *gin.Context) {
+	code := c.Query("code")
+	if code == "" {
+		pkg.BadRequestResponse(c, "인증 코드가 필요합니다")
+		return
+	}
+
+	state := c.Query("state")
+
+	result, err := h.authService.GoogleCallback(c.Request.Context(), code)
+	if err != nil {
+		fmt.Println("Google callback error:", err)
+		// 모바일 앱인 경우 에러도 딥링크로 전달
+		if state == "mobile" {
+			c.Redirect(302, "jptaku://auth/callback?error=login_failed")
+			return
+		}
+		pkg.UnauthorizedResponse(c, "Google 로그인에 실패했습니다")
+		return
+	}
+
+	// 모바일 앱인 경우 딥링크로 리다이렉트
+	if state == "mobile" {
+		redirectURL := fmt.Sprintf("jptaku://auth/callback?access_token=%s&refresh_token=%s",
+			result.AccessToken,
+			result.RefreshToken,
+		)
+		c.Redirect(302, redirectURL)
+		return
+	}
+
+	// 웹인 경우 JSON 응답
+	pkg.SuccessResponse(c, result)
 }

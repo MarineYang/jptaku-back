@@ -35,6 +35,15 @@ func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 	return &user, nil
 }
 
+func (r *UserRepository) FindByProviderID(provider, providerID string) (*model.User, error) {
+	var user model.User
+	err := r.db.Where("provider = ? AND provider_id = ?", provider, providerID).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (r *UserRepository) Update(user *model.User) error {
 	return r.db.Save(user).Error
 }

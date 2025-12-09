@@ -12,6 +12,13 @@ type Config struct {
 	Redis    RedisConfig
 	JWT      JWTConfig
 	OpenAI   OpenAIConfig
+	Google   GoogleOAuthConfig
+}
+
+type GoogleOAuthConfig struct {
+	ClientID     string
+	ClientSecret string
+	RedirectURL  string
 }
 
 type OpenAIConfig struct {
@@ -72,6 +79,11 @@ func Load() *Config {
 		OpenAI: OpenAIConfig{
 			APIKey: getEnv("OPEN_AI_API_KEY", ""),
 			Model:  getEnv("OPENAI_MODEL", "gpt-4o-mini"),
+		},
+		Google: GoogleOAuthConfig{
+			ClientID:     getEnv("GOOGLE_CLIENT_ID", ""),
+			ClientSecret: getEnv("GOOGLE_CLIENT_SECRET", ""),
+			RedirectURL:  getEnv("GOOGLE_REDIRECT_URL", "http://localhost:30001/api/auth/google/callback"),
 		},
 	}
 }

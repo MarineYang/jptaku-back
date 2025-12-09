@@ -1,17 +1,19 @@
 package service
 
 import (
+	"context"
+
 	"github.com/jptaku/server/internal/model"
 	"github.com/jptaku/server/internal/pkg"
 	"github.com/jptaku/server/internal/repository"
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type AuthService struct {
-	db         *repository.DBManager
-	userRepo   *repository.UserRepository
-	jwtManager *pkg.JWTManager
+	db          *repository.DBManager
+	userRepo    *repository.UserRepository
+	jwtManager  *pkg.JWTManager
+	googleOAuth *pkg.GoogleOAuthManager
 }
 
 func NewAuthService(db *repository.DBManager, userRepo *repository.UserRepository, jwtManager *pkg.JWTManager) *AuthService {
@@ -22,79 +24,14 @@ func NewAuthService(db *repository.DBManager, userRepo *repository.UserRepositor
 	}
 }
 
-type LoginInput struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
-}
-
-type RegisterInput struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
-	Name     string `json:"name" binding:"required"`
+func (s *AuthService) SetGoogleOAuth(googleOAuth *pkg.GoogleOAuthManager) {
+	s.googleOAuth = googleOAuth
 }
 
 type TokenResponse struct {
 	AccessToken  string      `json:"access_token"`
 	RefreshToken string      `json:"refresh_token"`
 	User         *model.User `json:"user"`
-}
-
-func (s *AuthService) Register(input *RegisterInput) (*TokenResponse, error) {
-	// 이메일 중복 확인
-	existingUser, _ := s.userRepo.FindByEmail(input.Email)
-	if existingUser != nil {
-		return nil, pkg.ErrDuplicateEmail
-	}
-
-	// 비밀번호 해시
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, err
-	}
-
-	var user *model.User
-
-	// 트랜잭션으로 유저와 설정을 함께 생성
-	err = s.db.Transaction(func(tx *gorm.DB) error {
-		user = &model.User{
-			Email:    input.Email,
-			Password: string(hashedPassword),
-			Name:     input.Name,
-			Provider: "local",
-		}
-
-		if err := tx.Create(user).Error; err != nil {
-			return err
-		}
-
-		// 기본 설정 생성
-		settings := &model.UserSettings{
-			UserID: user.ID,
-		}
-		return tx.Create(settings).Error
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return s.generateTokens(user)
-}
-
-func (s *AuthService) Login(input *LoginInput) (*TokenResponse, error) {
-	user, err := s.userRepo.FindByEmail(input.Email)
-	if err != nil {
-		if repository.IsNotFound(err) {
-			return nil, pkg.ErrInvalidCredentials
-		}
-		return nil, err
-	}
-
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
-		return nil, pkg.ErrInvalidCredentials
-	}
-
-	return s.generateTokens(user)
 }
 
 func (s *AuthService) RefreshToken(refreshToken string) (*TokenResponse, error) {
@@ -127,4 +64,65 @@ func (s *AuthService) generateTokens(user *model.User) (*TokenResponse, error) {
 		RefreshToken: refreshToken,
 		User:         user,
 	}, nil
+}
+
+func (s *AuthService) GetGoogleAuthURL(state string) string {
+	if s.googleOAuth == nil {
+		return ""
+	}
+	return s.googleOAuth.GetAuthURL(state)
+}
+
+func (s *AuthService) GoogleCallback(ctx context.Context, code string) (*TokenResponse, error) {
+	if s.googleOAuth == nil {
+		return nil, pkg.ErrInvalidCredentials
+	}
+
+	token, err := s.googleOAuth.Exchange(ctx, code)
+	if err != nil {
+		return nil, pkg.ErrInvalidCredentials
+	}
+
+	userInfo, err := s.googleOAuth.GetUserInfo(ctx, token)
+	if err != nil {
+		return nil, pkg.ErrInvalidCredentials
+	}
+
+	user, err := s.userRepo.FindByProviderID("google", userInfo.ID)
+	if err != nil {
+		if repository.IsNotFound(err) {
+			return s.createGoogleUser(userInfo)
+		}
+		return nil, err
+	}
+
+	return s.generateTokens(user)
+}
+
+func (s *AuthService) createGoogleUser(userInfo *pkg.GoogleUserInfo) (*TokenResponse, error) {
+	var user *model.User
+
+	err := s.db.Transaction(func(tx *gorm.DB) error {
+		user = &model.User{
+			Email:      userInfo.Email,
+			Name:       userInfo.Name,
+			Provider:   "google",
+			ProviderID: userInfo.ID,
+		}
+
+		if err := tx.Create(user).Error; err != nil {
+			return err
+		}
+
+		settings := &model.UserSettings{
+			UserID: user.ID,
+		}
+		return tx.Create(settings).Error
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return s.generateTokens(user)
 }

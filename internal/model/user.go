@@ -7,14 +7,14 @@ import (
 )
 
 type User struct {
-	ID        uint           `gorm:"primaryKey" json:"id"`
-	Email     string         `gorm:"uniqueIndex;size:255;not null" json:"email"`
-	Password  string         `gorm:"size:255" json:"-"`
-	Name      string         `gorm:"size:100" json:"name"`
-	Provider  string         `gorm:"size:50" json:"provider"` // local, google, kakao, etc.
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
+	ID         uint           `gorm:"primaryKey" json:"id"`
+	Email      string         `gorm:"uniqueIndex;size:255;not null" json:"email"`
+	Name       string         `gorm:"size:100" json:"name"`
+	Provider   string         `gorm:"size:50;not null" json:"provider"`     // google
+	ProviderID string         `gorm:"size:255;not null" json:"provider_id"` // OAuth provider's user ID
+	CreatedAt  time.Time      `json:"created_at"`
+	UpdatedAt  time.Time      `json:"updated_at"`
+	DeletedAt  gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relations
 	Settings   *UserSettings   `gorm:"foreignKey:UserID" json:"settings,omitempty"`
