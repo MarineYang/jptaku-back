@@ -46,32 +46,35 @@
 
 ### 2-1. Auth / User
 
-- [ ] `POST /api/auth/login` (소셜/이메일 토큰 받는 구조만 정의)
-- [ ] `POST /api/auth/refresh`
-- [ ] `POST /api/auth/logout`
-- [ ] `GET  /api/user/me`
-- [ ] `PUT  /api/user/profile`
-- [ ] `POST /api/user/onboarding` (관심사/레벨/목적 저장)
-- [ ] `GET  /api/user/settings`
-- [ ] `PUT  /api/user/settings`
+- [x] `GET /api/auth/google` (Google OAuth URL 반환)
+- [x] `GET /api/auth/google/callback` (Google OAuth 콜백, 모바일 딥링크 지원)
+- [x] `POST /api/auth/refresh`
+- [x] `POST /api/auth/logout`
+- [x] `GET  /api/user/me`
+- [x] `PUT  /api/user/profile`
+- [x] `POST /api/user/onboarding` (관심사/레벨/목적 저장)
+- [x] `GET  /api/user/settings`
+- [x] `PUT  /api/user/settings`
 
 ### 2-2. Daily Learning (5문장)
 
-- [ ] `GET  /api/sentences/daily`
+- [x] `GET  /api/sentences/today`
   - 유저 관심사/레벨 기반 오늘 5문장 + `daily_set_id` 반환 (처음 호출 시 생성, 이후 동일 세트 유지)
-- [ ] `GET  /api/sentences/:id`
-- [ ] `GET  /api/sentences/history`
-- [ ] `POST /api/learning/progress`
+- [x] `GET  /api/sentences/history` - 페이지네이션 지원
+- [x] `POST /api/learning/progress`
   - 문장별: 이해/말하기/확인/암기 완료 상태 업데이트
+- [x] `POST /api/learning/quiz` - 퀴즈 정답 제출 및 검증
+- [x] `GET  /api/learning/today` - 오늘의 학습 진행 상황
+- [x] `GET  /api/learning/history` - 학습 히스토리 (페이지네이션)
 - [ ] (옵션) `GET/POST /api/sentences/bookmarks` 즐겨찾기
 - [ ] (옵션) `GET /api/meta/interests`, `GET /api/meta/levels`
 
 ### 2-3. Real-time Conversation
 
-- [ ] `POST /api/chat/session`  (세션 생성, today_set_id 연결)
-- [ ] `POST /api/chat/session/:id/end` (세션 종료)
-- [ ] `GET  /api/chat/session/:id` (대화 로그, 메타 정보)
-- [ ] `GET  /api/chat/sessions` (최근 세션 목록)
+- [x] `POST /api/chat/session`  (세션 생성, today_set_id 연결)
+- [x] `POST /api/chat/session/:id/end` (세션 종료, duration 저장)
+- [x] `GET  /api/chat/session/:id` (대화 로그, 메타 정보)
+- [x] `GET  /api/chat/sessions` (최근 세션 목록, 페이지네이션)
 - [ ] `POST /api/rtc/signaling` (WebRTC SDP/ICE 교환 – 이후 단계에서 구현)
 
 #### WebSocket 이벤트 설계 (문자열 타입만 정의)
@@ -84,28 +87,35 @@
 
 ### 2-4. Feedback & Stats
 
-- [ ] `GET /api/feedback/:sessionId`
-- [ ] `GET /api/stats/categories` (오타쿠 카테고리별 진행도)
-- [ ] `GET /api/stats/weekly`
-- [ ] `GET /api/stats/today` (오늘의 요약: 사용 문장 수, 학습 시간, streak 등)
+- [x] `GET /api/feedback/:sessionId` - 피드백 조회
+- [x] `GET /api/stats/categories` (오타쿠 카테고리별 진행도) - ⚠️ Mock 데이터
+- [x] `GET /api/stats/weekly` - ⚠️ Mock 데이터
+- [x] `GET /api/stats/today` (오늘의 요약: 사용 문장 수, 학습 시간, streak 등) - ⚠️ Mock 데이터
 
 ---
 
 ## 3. DB 모델링
 
-- [ ] User / UserSettings / UserOnboarding
-- [ ] Sentence
-  - id, jp, kr, level, tags(애니/게임/성지순례/이벤트 등)
-- [ ] DailySentenceSet
-  - id, user_id, date, 5문장 리스트
-- [ ] LearningProgress
-  - user_id, sentence_id, daily_set_id, 단계(이해/말하기/확인/암기)
-- [ ] ChatSession
-  - id, user_id, daily_set_id, 시작/종료 시각, today_sentence_used_count, 점수 요약
-- [ ] ChatMessage
+- [x] User / UserSettings / UserOnboarding
+  - User: email, provider, provider_id, name
+  - UserSettings: notifications, reminder_time, voice_speed, ui_preferences
+  - UserOnboarding: level(0-5), interests, purposes (JSONB)
+- [x] Sentence / SentenceDetail
+  - Sentence: jp, kr, romaji, level, categories/interests, audio_url
+  - SentenceDetail: words(readings/meanings), grammar_points, examples, quizzes
+- [x] Quiz
+  - FillBlank(빈칸 채우기), Ordering(문장 배열) 두 가지 타입
+- [x] DailySentenceSet
+  - id, user_id, date, 5문장 ID 리스트
+- [x] LearningProgress
+  - user_id, sentence_id, daily_set_id, understand/speak/confirm/memorized 플래그, completed_at
+- [x] ChatSession
+  - id, user_id, daily_set_id, 시작/종료 시각, message_count, duration
+- [x] ChatMessage
   - session_id, speaker(ai/user), jp_text, kr_text, used_today_sentence_id(옵션)
-- [ ] Feedback
-  - session_id, 총점, 문법/발음/자연스러움, 요약 문장들(JSON)
+- [x] Feedback / FeedbackHighlight
+  - Feedback: session_id, 총점, 문법/발음/자연스러움, summary
+  - FeedbackHighlight: jp, kr, comment
 - [ ] (옵션) StatsAggregate (주간/월간 캐시)
 
 ---
@@ -229,30 +239,33 @@
 ## 8. 초기 작업 우선순위 (이번 주 시작용)
 
 1. [x] Go 프로젝트 구조 & DB 연결 세팅 (Gin + GORM)
-2. [ ] RN 쪽 네비게이션 + 기본 탭 + 간단 홈 화면 표시  
-3. [x] `GET /api/sentences/daily` 구현 + RN에서 호출해 "오늘의 5문장" 리스트 보여주기  
-4. [ ] 문장 상세 화면(이해하기/말하기/확인하기) UI 목업 완성  
-5. [ ] 실전 대화 화면 채팅 UI + 추천 칩 / 상단 0/5 표시까지 구현 (서버 연동 없이 mock 상태)  
+2. [ ] RN 쪽 네비게이션 + 기본 탭 + 간단 홈 화면 표시
+3. [x] `GET /api/sentences/today` 구현 + RN에서 호출해 "오늘의 5문장" 리스트 보여주기
+4. [ ] 문장 상세 화면(이해하기/말하기/확인하기) UI 목업 완성
+5. [ ] 실전 대화 화면 채팅 UI + 추천 칩 / 상단 0/5 표시까지 구현 (서버 연동 없이 mock 상태)
 
-이 5개만 끝내면,  
-"하루 5문장 받고 → 문장 상세 들어가서 공부 → 실전 대화 화면에서 대화하는 듯한 UX" 까지는  
+이 5개만 끝내면,
+"하루 5문장 받고 → 문장 상세 들어가서 공부 → 실전 대화 화면에서 대화하는 듯한 UX" 까지는
 로컬 목업 기준으로 한 바퀴 돌아갈 수 있음.
 
 ---
 
-## 9. Go 서버 구현 현황 (완료)
+## 9. Go 서버 구현 현황
 
 ### 9-1. 프레임워크 & 라이브러리
 - **Gin**: 웹 프레임워크 (빠르고 간편함)
 - **GORM**: ORM (PostgreSQL 연결)
-- **go-redis**: Redis 클라이언트
+- **go-redis**: Redis 클라이언트 (초기화됨, 미사용)
 - **golang-jwt/jwt**: JWT 인증
+- **Google OAuth**: 소셜 로그인
+- **OpenAI API**: 문장 생성 (인프라 준비됨)
+- **Swagger**: API 문서화
 
 ### 9-2. 구현된 API 엔드포인트
 
-#### Auth
-- [x] `POST /api/auth/register` - 회원가입
-- [x] `POST /api/auth/login` - 로그인
+#### Auth (Google OAuth)
+- [x] `GET /api/auth/google` - Google OAuth URL 반환
+- [x] `GET /api/auth/google/callback` - OAuth 콜백 (모바일 딥링크 지원)
 - [x] `POST /api/auth/refresh` - 토큰 갱신
 - [x] `POST /api/auth/logout` - 로그아웃
 
@@ -264,26 +277,30 @@
 - [x] `PUT /api/user/settings` - 설정 수정
 
 #### Sentences
-- [x] `GET /api/sentences/daily` - 오늘의 5문장
-- [x] `GET /api/sentences/:id` - 문장 상세 조회
-- [x] `GET /api/sentences/history` - 학습 히스토리
+- [x] `GET /api/sentences/today` - 오늘의 5문장 (레벨/관심사 기반 생성)
+- [x] `GET /api/sentences/history` - 학습 히스토리 (페이지네이션)
 
 #### Learning
-- [x] `POST /api/learning/progress` - 학습 진행 상황 업데이트
+- [x] `POST /api/learning/progress` - 학습 진행 상황 업데이트 (understand/speak/confirm/memorized)
+- [x] `POST /api/learning/quiz` - 퀴즈 정답 제출 및 검증
 - [x] `GET /api/learning/today` - 오늘의 학습 진행 상황
 - [x] `GET /api/learning/history` - 학습 히스토리
 
 #### Chat
 - [x] `POST /api/chat/session` - 세션 생성
-- [x] `GET /api/chat/session/:id` - 세션 조회
-- [x] `POST /api/chat/session/:id/end` - 세션 종료
-- [x] `GET /api/chat/sessions` - 세션 목록
+- [x] `GET /api/chat/session/:id` - 세션 조회 (메시지 포함)
+- [x] `POST /api/chat/session/:id/end` - 세션 종료 (duration 저장)
+- [x] `GET /api/chat/sessions` - 세션 목록 (페이지네이션)
 
 #### Feedback & Stats
 - [x] `GET /api/feedback/:sessionId` - 피드백 조회
-- [x] `GET /api/stats/today` - 오늘의 통계
-- [x] `GET /api/stats/categories` - 카테고리별 진행도
-- [x] `GET /api/stats/weekly` - 주간 통계
+- [x] `GET /api/stats/today` - 오늘의 통계 (⚠️ Mock 데이터)
+- [x] `GET /api/stats/categories` - 카테고리별 진행도 (⚠️ Mock 데이터)
+- [x] `GET /api/stats/weekly` - 주간 통계 (⚠️ Mock 데이터)
+
+#### Other
+- [x] `GET /health` - 서버 상태 확인
+- [x] `GET /swagger/*` - API 문서
 
 ### 9-3. 서버 실행 방법
 
@@ -314,39 +331,77 @@ make seed
 ## 10. 프로젝트 구조
 
 ```
-/server
- ├── cmd
- │   ├── api
- │   │    └── main.go        // REST API 실행 파일
- │   ├── ws
- │   │    └── main.go        // WebSocket 서버 (미구현)
- │   └── migrate
- │        └── main.go        // DB 마이그레이션/시드 도구
- │
- ├── internal
- │   ├── api                 // REST 핸들러 (Gin)
- │   │    ├── auth/          // 인증 (handler.go, dto.go)
- │   │    ├── user/          // 유저 (handler.go, dto.go)
- │   │    ├── sentences/     // 문장 (handler.go, dto.go)
- │   │    ├── learning/      // 학습 (handler.go, dto.go)
- │   │    ├── chat/          // 채팅 (handler.go, dto.go)
- │   │    └── feedback/      // 피드백 (handler.go, dto.go)
- │   │
- │   ├── service             // 비즈니스 로직
- │   ├── repository          // DB 접근 (GORM)
- │   ├── model               // 데이터 모델
- │   ├── cache               // Redis 클라이언트
- │   ├── config              // 설정
- │   ├── middleware          // 미들웨어 (Auth, Logger, CORS)
- │   └── pkg                 // 유틸리티 (JWT, Response, Error)
- │
- ├── Makefile
- ├── go.mod
- └── go.sum
+jptaku-back/
+├── cmd/
+│   ├── api/main.go           # REST API 서버 진입점
+│   ├── migrate/main.go       # DB 마이그레이션 도구
+│   └── test/main.go          # 테스트 유틸리티
+│
+├── internal/
+│   ├── api/                  # HTTP 핸들러 (6개 도메인)
+│   │   ├── auth/             # 인증 (handler.go, dto.go)
+│   │   ├── user/             # 유저 (handler.go, dto.go)
+│   │   ├── sentences/        # 문장 (handler.go, dto.go)
+│   │   ├── learning/         # 학습 (handler.go, dto.go)
+│   │   ├── chat/             # 채팅 (handler.go, dto.go)
+│   │   └── feedback/         # 피드백/통계 (handler.go, dto.go)
+│   │
+│   ├── service/              # 비즈니스 로직
+│   │   ├── auth_service.go
+│   │   ├── user_service.go
+│   │   ├── sentence_service.go
+│   │   ├── learning_service.go
+│   │   ├── chat_service.go
+│   │   ├── feedback_service.go
+│   │   └── async_service.go  # 비동기 작업 큐 (4 workers)
+│   │
+│   ├── repository/           # DB 접근 (GORM)
+│   ├── model/                # 데이터 모델
+│   ├── cache/                # Redis 클라이언트
+│   ├── config/               # 설정
+│   ├── middleware/           # 미들웨어 (Auth, Logger, CORS)
+│   └── pkg/                  # 유틸리티
+│       ├── jwt.go            # JWT 관리
+│       ├── oauth.go          # Google OAuth 관리
+│       ├── categories.go     # 오타쿠 카테고리 (5개 메인, 30+ 서브)
+│       ├── response.go       # 응답 헬퍼
+│       ├── error.go          # 에러 타입
+│       ├── validator.go      # 입력 검증
+│       └── worker.go         # 비동기 워커 풀
+│
+├── db/
+│   └── migrations/           # SQL 마이그레이션
+│
+├── docs/                     # Swagger 문서
+├── go.mod, go.sum
+├── env.example
+├── docker-compose.yml
+└── README.md, todo.md
 ```
 
 ### 기술 스택
 - **Framework**: Gin (빠르고 경량화된 웹 프레임워크)
 - **ORM**: GORM (PostgreSQL)
-- **Cache**: go-redis
-- **Auth**: golang-jwt/jwt   
+- **Cache**: go-redis (초기화됨, 미사용)
+- **Auth**: golang-jwt/jwt + Google OAuth
+- **AI**: OpenAI API (문장 생성 준비됨)
+- **Docs**: Swagger
+
+---
+
+## 11. 미구현/향후 작업
+
+### 실제 구현 필요
+- [ ] Stats 엔드포인트 실제 데이터 계산 (현재 Mock)
+- [ ] Redis 세션 관리 활용
+- [ ] OpenAI를 통한 문장 생성 로직 연결
+- [ ] AI 피드백 평가 로직
+- [ ] WebSocket 실시간 대화
+
+### 카테고리 시스템 (구현됨)
+5개 메인 카테고리, 30+ 서브카테고리:
+- **Anime**: Isekai, Love Comedy, Action, Fantasy, Daily Life 등
+- **Games**: JRPG, Mobile/Gacha, Rhythm, Visual Novel 등
+- **Music**: Vocaloid, Anisong, Idol 등
+- **Lifestyle**: Figures, Cosplay, Pilgrimage, Events 등
+- **Real-life Situations**: Restaurant, Transportation, Shopping 등   
