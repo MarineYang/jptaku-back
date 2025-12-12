@@ -11,7 +11,7 @@
 | **Database** | PostgreSQL |
 | **ORM** | GORM |
 | **Cache** | Redis |
-| **Auth** | JWT |
+| **Auth** | JWT + Google OAuth 2.0 |
 
 ## 📁 프로젝트 구조
 
@@ -132,8 +132,8 @@ jptaku-back/
 ### Auth (인증) - `/api/auth`
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/register` | 회원가입 | ❌ |
-| POST | `/login` | 로그인 | ❌ |
+| GET | `/google` | Google OAuth URL 반환 | ❌ |
+| GET | `/google/callback` | Google OAuth 콜백 (모바일 딥링크 지원) | ❌ |
 | POST | `/refresh` | 토큰 갱신 | ❌ |
 | POST | `/logout` | 로그아웃 | ❌ |
 
@@ -148,16 +148,16 @@ jptaku-back/
 ### Sentences (문장) - `/api/sentences`
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| GET | `/daily` | 오늘의 5문장 조회 | ✅ |
-| GET | `/:id` | 문장 상세 조회 | ✅ |
-| GET | `/history` | 학습 히스토리 조회 | ✅ |
+| GET | `/today` | 오늘의 5문장 조회 (레벨/관심사 기반 OpenAI 생성) | ✅ |
+| GET | `/history` | 학습 히스토리 조회 (페이지네이션) | ✅ |
 
 ### Learning (학습) - `/api/learning`
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/progress` | 학습 진행 상황 업데이트 | ✅ |
+| POST | `/progress` | 학습 진행 상황 업데이트 (understand/speak/confirm/memorized) | ✅ |
+| POST | `/quiz` | 퀴즈 정답 제출 및 검증 | ✅ |
 | GET | `/today` | 오늘의 학습 진행 상황 | ✅ |
-| GET | `/history` | 학습 히스토리 조회 | ✅ |
+| GET | `/history` | 학습 히스토리 조회 (페이지네이션) | ✅ |
 
 ### Chat (대화) - `/api/chat`
 | Method | Endpoint | Description | Auth |
@@ -167,23 +167,26 @@ jptaku-back/
 | POST | `/session/:id/end` | 세션 종료 | ✅ |
 | GET | `/sessions` | 세션 목록 조회 | ✅ |
 
-### Feedback (피드백) - `/api/feedback`
+### Feedback & Stats - `/api/feedback`, `/api/stats`
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
-| POST | `/` | 피드백 제출 | ✅ |
-| GET | `/` | 피드백 목록 조회 | ✅ |
+| GET | `/feedback/:sessionId` | 세션별 피드백 조회 | ✅ |
+| GET | `/stats/today` | 오늘의 통계 | ✅ |
+| GET | `/stats/categories` | 카테고리별 진행도 | ✅ |
+| GET | `/stats/weekly` | 주간 통계 | ✅ |
 
 ## 📦 데이터 모델
 
 ### User 관련
-- **User**: 사용자 정보 (이메일, 비밀번호, 이름, OAuth 제공자)
+- **User**: 사용자 정보 (이메일, 이름, Google OAuth provider/provider_id)
 - **UserSettings**: 사용자 설정 (알림, 음성 속도, 로마지 표시 등)
 - **UserOnboarding**: 온보딩 정보 (레벨, 관심사, 학습 목적)
 
 ### Sentence 관련
-- **Sentence**: 일본어 문장 (일본어, 한국어 번역, 로마지, 레벨, 태그)
+- **Sentence**: 일본어 문장 (일본어, 한국어 번역, 로마지, 레벨, 카테고리)
 - **SentenceDetail**: 문장 상세 정보 (단어 풀이, 문법, 예문)
-- **DailySentenceSet**: 일일 문장 세트 (유저별 오늘의 5문장)
+- **Quiz**: 퀴즈 (FillBlank 빈칸 채우기, Ordering 문장 배열)
+- **DailySentenceSet**: 일일 문장 세트 (유저별 오늘의 5문장, OpenAI 생성)
 
 ### Learning 관련
 - **LearningProgress**: 학습 진행 상황 (이해, 말하기, 확인, 암기 완료)
@@ -236,6 +239,14 @@ REDIS_DB=0
 # JWT
 JWT_SECRET=your-super-secret-key
 JWT_EXPIRATION_HOURS=24
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URL=http://localhost:30001/api/auth/google/callback
+
+# OpenAI
+OPENAI_API_KEY=your-openai-api-key
 ```
 
 ### 실행
@@ -278,8 +289,16 @@ make test
 
 ## 🔐 인증 방식
 
-JWT (JSON Web Token) 기반 인증을 사용합니다.
+Google OAuth 2.0 + JWT 기반 인증을 사용합니다.
 
+### 로그인 플로우
+1. 클라이언트에서 `GET /api/auth/google?state=mobile` 호출
+2. 반환된 URL로 Google 로그인 페이지 이동
+3. 로그인 완료 후 콜백 처리
+   - **웹**: JSON으로 토큰 반환
+   - **모바일**: `jptaku://auth/callback?access_token=xxx&refresh_token=xxx` 딥링크 리다이렉트
+
+### API 인증
 ```
 Authorization: Bearer <access_token>
 ```
