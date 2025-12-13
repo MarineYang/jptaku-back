@@ -6,14 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/middleware"
 	"github.com/jptaku/server/internal/pkg"
-	"github.com/jptaku/server/internal/service"
+	feedbackSvc "github.com/jptaku/server/internal/service/feedback"
 )
 
 type Handler struct {
-	feedbackService *service.FeedbackService
+	feedbackService feedbackSvc.Provider
 }
 
-func NewHandler(feedbackService *service.FeedbackService) *Handler {
+func NewHandler(feedbackService feedbackSvc.Provider) *Handler {
 	return &Handler{feedbackService: feedbackService}
 }
 

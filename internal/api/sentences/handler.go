@@ -6,14 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/middleware"
 	"github.com/jptaku/server/internal/pkg"
-	"github.com/jptaku/server/internal/service"
+	"github.com/jptaku/server/internal/service/sentence"
 )
 
 type Handler struct {
-	sentenceService *service.SentenceService
+	sentenceService sentence.Provider
 }
 
-func NewHandler(sentenceService *service.SentenceService) *Handler {
+func NewHandler(sentenceService sentence.Provider) *Handler {
 	return &Handler{sentenceService: sentenceService}
 }
 
@@ -88,7 +88,7 @@ func (h *Handler) GetHistorySentences(c *gin.Context) {
 	pkg.SuccessResponse(c, response)
 }
 
-func convertToResponse(result *service.DailySentencesResponse) *DailySentencesResponse {
+func convertToResponse(result *sentence.DailySentencesResponse) *DailySentencesResponse {
 	sentences := make([]SentenceResponse, len(result.Sentences))
 	for i, s := range result.Sentences {
 		// Words 변환
@@ -143,7 +143,7 @@ func convertToResponse(result *service.DailySentencesResponse) *DailySentencesRe
 	}
 }
 
-func convertHistoryToResponse(result *service.HistorySentencesResponse) *HistorySentencesResponse {
+func convertHistoryToResponse(result *sentence.HistorySentencesResponse) *HistorySentencesResponse {
 	history := make([]HistoryItemResponse, len(result.History))
 
 	for i, item := range result.History {

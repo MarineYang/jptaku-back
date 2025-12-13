@@ -4,14 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/middleware"
 	"github.com/jptaku/server/internal/pkg"
-	"github.com/jptaku/server/internal/service"
+	learningSvc "github.com/jptaku/server/internal/service/learning"
 )
 
 type Handler struct {
-	learningService *service.LearningService
+	learningService learningSvc.Provider
 }
 
-func NewHandler(learningService *service.LearningService) *Handler {
+func NewHandler(learningService learningSvc.Provider) *Handler {
 	return &Handler{learningService: learningService}
 }
 
@@ -49,7 +49,7 @@ func (h *Handler) UpdateProgress(c *gin.Context) {
 		return
 	}
 
-	input := &service.UpdateProgressInput{
+	input := &learningSvc.UpdateProgressInput{
 		SentenceID: req.SentenceID,
 		DailySetID: req.DailySetID,
 		Understand: req.Understand,
@@ -153,7 +153,7 @@ func (h *Handler) SubmitQuiz(c *gin.Context) {
 		return
 	}
 
-	input := &service.SubmitQuizInput{
+	input := &learningSvc.SubmitQuizInput{
 		SentenceID:      req.SentenceID,
 		DailySetID:      req.DailySetID,
 		FillBlankAnswer: req.FillBlankAnswer,

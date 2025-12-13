@@ -6,14 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/middleware"
 	"github.com/jptaku/server/internal/pkg"
-	"github.com/jptaku/server/internal/service"
+	chatSvc "github.com/jptaku/server/internal/service/chat"
 )
 
 type Handler struct {
-	chatService *service.ChatService
+	chatService chatSvc.Provider
 }
 
-func NewHandler(chatService *service.ChatService) *Handler {
+func NewHandler(chatService chatSvc.Provider) *Handler {
 	return &Handler{chatService: chatService}
 }
 
@@ -51,7 +51,7 @@ func (h *Handler) CreateSession(c *gin.Context) {
 		return
 	}
 
-	input := &service.CreateSessionInput{
+	input := &chatSvc.CreateSessionInput{
 		DailySetID: req.DailySetID,
 	}
 
@@ -144,7 +144,7 @@ func (h *Handler) EndSession(c *gin.Context) {
 		return
 	}
 
-	input := &service.EndSessionInput{
+	input := &chatSvc.EndSessionInput{
 		DurationSeconds: req.DurationSeconds,
 	}
 

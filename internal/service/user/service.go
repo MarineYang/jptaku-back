@@ -1,45 +1,31 @@
-package service
+package user
 
-import (
-	"github.com/jptaku/server/internal/model"
-	"github.com/jptaku/server/internal/repository"
-)
+import "github.com/jptaku/server/internal/model"
 
-type UserService struct {
-	userRepo        *repository.UserRepository
-	sentenceService *SentenceService
+// Service 사용자 서비스
+type Service struct {
+	userRepo        UserRepository
+	sentenceService SentenceProvider
 }
 
-func NewUserService(userRepo *repository.UserRepository, sentenceService *SentenceService) *UserService {
-	return &UserService{
+// 컴파일 타임 인터페이스 검증
+var _ Provider = (*Service)(nil)
+
+// NewService 서비스 생성자
+func NewService(userRepo UserRepository, sentenceService SentenceProvider) *Service {
+	return &Service{
 		userRepo:        userRepo,
 		sentenceService: sentenceService,
 	}
 }
 
-type UpdateProfileInput struct {
-	Name string `json:"name"`
-}
-
-type OnboardingInput struct {
-	Level     int   `json:"level" binding:"min=0,max=5"`
-	Interests []int `json:"interests"` // pkg.SubCategory 값들
-	Purposes  []int `json:"purposes"`  // pkg.Purpose 값들
-}
-
-type UpdateSettingsInput struct {
-	NotificationEnabled *bool    `json:"notification_enabled,omitempty"`
-	DailyReminderTime   *string  `json:"daily_reminder_time,omitempty"`
-	PreferredVoiceSpeed *float64 `json:"preferred_voice_speed,omitempty"`
-	ShowRomaji          *bool    `json:"show_romaji,omitempty"`
-	ShowTranslation     *bool    `json:"show_translation,omitempty"`
-}
-
-func (s *UserService) GetMe(userID uint) (*model.User, error) {
+// GetMe 사용자 정보 조회
+func (s *Service) GetMe(userID uint) (*model.User, error) {
 	return s.userRepo.FindByID(userID)
 }
 
-func (s *UserService) UpdateProfile(userID uint, input *UpdateProfileInput) (*model.User, error) {
+// UpdateProfile 프로필 업데이트
+func (s *Service) UpdateProfile(userID uint, input *UpdateProfileInput) (*model.User, error) {
 	user, err := s.userRepo.FindByID(userID)
 	if err != nil {
 		return nil, err
@@ -56,8 +42,8 @@ func (s *UserService) UpdateProfile(userID uint, input *UpdateProfileInput) (*mo
 	return user, nil
 }
 
-func (s *UserService) SaveOnboarding(userID uint, input *OnboardingInput) (*model.UserOnboarding, error) {
-	// 기존 온보딩 정보 확인
+// SaveOnboarding 온보딩 저장
+func (s *Service) SaveOnboarding(userID uint, input *OnboardingInput) (*model.UserOnboarding, error) {
 	onboarding, err := s.userRepo.GetOnboarding(userID)
 	isNewOnboarding := err != nil
 
@@ -83,14 +69,15 @@ func (s *UserService) SaveOnboarding(userID uint, input *OnboardingInput) (*mode
 	return onboarding, nil
 }
 
-func (s *UserService) GetSettings(userID uint) (*model.UserSettings, error) {
+// GetSettings 설정 조회
+func (s *Service) GetSettings(userID uint) (*model.UserSettings, error) {
 	return s.userRepo.GetSettings(userID)
 }
 
-func (s *UserService) UpdateSettings(userID uint, input *UpdateSettingsInput) (*model.UserSettings, error) {
+// UpdateSettings 설정 업데이트
+func (s *Service) UpdateSettings(userID uint, input *UpdateSettingsInput) (*model.UserSettings, error) {
 	settings, err := s.userRepo.GetSettings(userID)
 	if err != nil {
-		// 설정이 없으면 생성
 		settings = &model.UserSettings{UserID: userID}
 		if err := s.userRepo.CreateSettings(settings); err != nil {
 			return nil, err

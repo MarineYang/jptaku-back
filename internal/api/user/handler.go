@@ -4,15 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/middleware"
 	"github.com/jptaku/server/internal/pkg"
-	"github.com/jptaku/server/internal/service"
+	userSvc "github.com/jptaku/server/internal/service/user"
 )
 
 type Handler struct {
-	userService *service.UserService
+	userService userSvc.Provider
 	jwtManager  *pkg.JWTManager
 }
 
-func NewHandler(userService *service.UserService, jwtManager *pkg.JWTManager) *Handler {
+func NewHandler(userService userSvc.Provider, jwtManager *pkg.JWTManager) *Handler {
 	return &Handler{
 		userService: userService,
 		jwtManager:  jwtManager,
@@ -78,7 +78,7 @@ func (h *Handler) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	input := &service.UpdateProfileInput{
+	input := &userSvc.UpdateProfileInput{
 		Name: req.Name,
 	}
 
@@ -114,7 +114,7 @@ func (h *Handler) SaveOnboarding(c *gin.Context) {
 		return
 	}
 
-	input := &service.OnboardingInput{
+	input := &userSvc.OnboardingInput{
 		Level:     req.Level,
 		Interests: req.Interests,
 		Purposes:  req.Purposes,
@@ -176,7 +176,7 @@ func (h *Handler) UpdateSettings(c *gin.Context) {
 		return
 	}
 
-	input := &service.UpdateSettingsInput{
+	input := &userSvc.UpdateSettingsInput{
 		NotificationEnabled: req.NotificationEnabled,
 		DailyReminderTime:   req.DailyReminderTime,
 		PreferredVoiceSpeed: req.PreferredVoiceSpeed,

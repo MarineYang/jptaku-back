@@ -5,14 +5,14 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jptaku/server/internal/pkg"
-	"github.com/jptaku/server/internal/service"
+	authSvc "github.com/jptaku/server/internal/service/auth"
 )
 
 type Handler struct {
-	authService *service.AuthService
+	authService authSvc.Provider
 }
 
-func NewHandler(authService *service.AuthService) *Handler {
+func NewHandler(authService authSvc.Provider) *Handler {
 	return &Handler{authService: authService}
 }
 

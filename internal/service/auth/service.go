@@ -1,4 +1,4 @@
-package service
+package auth
 
 import (
 	"context"
@@ -9,32 +9,33 @@ import (
 	"gorm.io/gorm"
 )
 
-type AuthService struct {
+// Service 인증 서비스
+type Service struct {
 	db          *repository.DBManager
-	userRepo    *repository.UserRepository
+	userRepo    UserRepository
 	jwtManager  *pkg.JWTManager
 	googleOAuth *pkg.GoogleOAuthManager
 }
 
-func NewAuthService(db *repository.DBManager, userRepo *repository.UserRepository, jwtManager *pkg.JWTManager) *AuthService {
-	return &AuthService{
+// 컴파일 타임 인터페이스 검증
+var _ Provider = (*Service)(nil)
+
+// NewService 서비스 생성자
+func NewService(db *repository.DBManager, userRepo UserRepository, jwtManager *pkg.JWTManager) *Service {
+	return &Service{
 		db:         db,
 		userRepo:   userRepo,
 		jwtManager: jwtManager,
 	}
 }
 
-func (s *AuthService) SetGoogleOAuth(googleOAuth *pkg.GoogleOAuthManager) {
+// SetGoogleOAuth Google OAuth 설정
+func (s *Service) SetGoogleOAuth(googleOAuth *pkg.GoogleOAuthManager) {
 	s.googleOAuth = googleOAuth
 }
 
-type TokenResponse struct {
-	AccessToken  string      `json:"access_token"`
-	RefreshToken string      `json:"refresh_token"`
-	User         *model.User `json:"user"`
-}
-
-func (s *AuthService) RefreshToken(refreshToken string) (*TokenResponse, error) {
+// RefreshToken 토큰 갱신
+func (s *Service) RefreshToken(refreshToken string) (*TokenResponse, error) {
 	claims, err := s.jwtManager.ValidateToken(refreshToken)
 	if err != nil {
 		return nil, pkg.ErrInvalidToken
@@ -48,7 +49,8 @@ func (s *AuthService) RefreshToken(refreshToken string) (*TokenResponse, error) 
 	return s.generateTokens(user)
 }
 
-func (s *AuthService) generateTokens(user *model.User) (*TokenResponse, error) {
+// generateTokens 토큰 생성
+func (s *Service) generateTokens(user *model.User) (*TokenResponse, error) {
 	accessToken, err := s.jwtManager.GenerateToken(user.ID, user.Email)
 	if err != nil {
 		return nil, err
@@ -66,14 +68,16 @@ func (s *AuthService) generateTokens(user *model.User) (*TokenResponse, error) {
 	}, nil
 }
 
-func (s *AuthService) GetGoogleAuthURL(state string) string {
+// GetGoogleAuthURL Google 로그인 URL 조회
+func (s *Service) GetGoogleAuthURL(state string) string {
 	if s.googleOAuth == nil {
 		return ""
 	}
 	return s.googleOAuth.GetAuthURL(state)
 }
 
-func (s *AuthService) GoogleCallback(ctx context.Context, code string) (*TokenResponse, error) {
+// GoogleCallback Google 로그인 콜백 처리
+func (s *Service) GoogleCallback(ctx context.Context, code string) (*TokenResponse, error) {
 	if s.googleOAuth == nil {
 		return nil, pkg.ErrInvalidCredentials
 	}
@@ -99,7 +103,8 @@ func (s *AuthService) GoogleCallback(ctx context.Context, code string) (*TokenRe
 	return s.generateTokens(user)
 }
 
-func (s *AuthService) createGoogleUser(userInfo *pkg.GoogleUserInfo) (*TokenResponse, error) {
+// createGoogleUser Google 사용자 생성
+func (s *Service) createGoogleUser(userInfo *pkg.GoogleUserInfo) (*TokenResponse, error) {
 	var user *model.User
 
 	err := s.db.Transaction(func(tx *gorm.DB) error {

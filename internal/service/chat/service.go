@@ -1,33 +1,30 @@
-package service
+package chat
 
 import (
 	"time"
 
 	"github.com/jptaku/server/internal/model"
-	"github.com/jptaku/server/internal/repository"
 )
 
-type ChatService struct {
-	chatRepo     *repository.ChatRepository
-	sentenceRepo *repository.SentenceRepository
+// Service 채팅 서비스
+type Service struct {
+	chatRepo     ChatRepository
+	sentenceRepo SentenceRepository
 }
 
-func NewChatService(chatRepo *repository.ChatRepository, sentenceRepo *repository.SentenceRepository) *ChatService {
-	return &ChatService{
+// 컴파일 타임 인터페이스 검증
+var _ Provider = (*Service)(nil)
+
+// NewService 서비스 생성자
+func NewService(chatRepo ChatRepository, sentenceRepo SentenceRepository) *Service {
+	return &Service{
 		chatRepo:     chatRepo,
 		sentenceRepo: sentenceRepo,
 	}
 }
 
-type CreateSessionInput struct {
-	DailySetID uint `json:"daily_set_id"`
-}
-
-type EndSessionInput struct {
-	DurationSeconds int `json:"duration_seconds"`
-}
-
-func (s *ChatService) CreateSession(userID uint, input *CreateSessionInput) (*model.ChatSession, error) {
+// CreateSession 세션 생성
+func (s *Service) CreateSession(userID uint, input *CreateSessionInput) (*model.ChatSession, error) {
 	session := &model.ChatSession{
 		UserID:     userID,
 		DailySetID: input.DailySetID,
@@ -41,11 +38,13 @@ func (s *ChatService) CreateSession(userID uint, input *CreateSessionInput) (*mo
 	return session, nil
 }
 
-func (s *ChatService) GetSession(sessionID uint) (*model.ChatSession, error) {
+// GetSession 세션 조회
+func (s *Service) GetSession(sessionID uint) (*model.ChatSession, error) {
 	return s.chatRepo.FindSessionByID(sessionID)
 }
 
-func (s *ChatService) EndSession(sessionID uint, input *EndSessionInput) (*model.ChatSession, error) {
+// EndSession 세션 종료
+func (s *Service) EndSession(sessionID uint, input *EndSessionInput) (*model.ChatSession, error) {
 	session, err := s.chatRepo.FindSessionByID(sessionID)
 	if err != nil {
 		return nil, err
@@ -62,7 +61,8 @@ func (s *ChatService) EndSession(sessionID uint, input *EndSessionInput) (*model
 	return session, nil
 }
 
-func (s *ChatService) GetSessions(userID uint, page, perPage int) ([]model.ChatSession, int64, error) {
+// GetSessions 세션 목록 조회
+func (s *Service) GetSessions(userID uint, page, perPage int) ([]model.ChatSession, int64, error) {
 	if page < 1 {
 		page = 1
 	}
@@ -73,14 +73,16 @@ func (s *ChatService) GetSessions(userID uint, page, perPage int) ([]model.ChatS
 	return s.chatRepo.GetUserSessions(userID, page, perPage)
 }
 
-func (s *ChatService) GetRecentSessions(userID uint, limit int) ([]model.ChatSession, error) {
+// GetRecentSessions 최근 세션 조회
+func (s *Service) GetRecentSessions(userID uint, limit int) ([]model.ChatSession, error) {
 	if limit < 1 || limit > 10 {
 		limit = 5
 	}
 	return s.chatRepo.GetRecentSessions(userID, limit)
 }
 
-func (s *ChatService) AddMessage(sessionID uint, speaker, jpText, krText string, usedSentenceID *uint) (*model.ChatMessage, error) {
+// AddMessage 메시지 추가
+func (s *Service) AddMessage(sessionID uint, speaker, jpText, krText string, usedSentenceID *uint) (*model.ChatMessage, error) {
 	message := &model.ChatMessage{
 		SessionID:           sessionID,
 		Speaker:             speaker,
@@ -93,7 +95,6 @@ func (s *ChatService) AddMessage(sessionID uint, speaker, jpText, krText string,
 		return nil, err
 	}
 
-	// 오늘 문장 사용 카운트 업데이트
 	if usedSentenceID != nil {
 		session, err := s.chatRepo.FindSessionByID(sessionID)
 		if err == nil {
