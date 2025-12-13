@@ -122,17 +122,18 @@ func convertToResponse(result *service.DailySentencesResponse) *DailySentencesRe
 		}
 
 		sentences[i] = SentenceResponse{
-			ID:         s.ID,
-			JP:         s.JP,
-			KR:         s.KR,
-			Romaji:     s.Romaji,
-			Level:      s.Level,
-			Categories: s.Categories,
-			Words:      words,
-			Grammar:    s.Grammar,
-			Examples:   s.Examples,
-			Quiz:       quiz,
-			Memorized:  s.Memorized,
+			ID:          s.ID,
+			SentenceKey: s.SentenceKey,
+			JP:          s.JP,
+			KR:          s.KR,
+			Romaji:      s.Romaji,
+			Level:       s.Level,
+			SubCategory: s.SubCategory,
+			Words:       words,
+			Grammar:     s.Grammar,
+			Examples:    s.Examples,
+			Quiz:        quiz,
+			Memorized:   s.Memorized,
 		}
 	}
 
@@ -179,17 +180,18 @@ func convertHistoryToResponse(result *service.HistorySentencesResponse) *History
 			}
 
 			sentences[j] = SentenceResponse{
-				ID:         s.ID,
-				JP:         s.JP,
-				KR:         s.KR,
-				Romaji:     s.Romaji,
-				Level:      s.Level,
-				Categories: s.Categories,
-				Words:      words,
-				Grammar:    s.Grammar,
-				Examples:   s.Examples,
-				Quiz:       quiz,
-				Memorized:  s.Memorized,
+				ID:          s.ID,
+				SentenceKey: s.SentenceKey,
+				JP:          s.JP,
+				KR:          s.KR,
+				Romaji:      s.Romaji,
+				Level:       s.Level,
+				SubCategory: s.SubCategory,
+				Words:       words,
+				Grammar:     s.Grammar,
+				Examples:    s.Examples,
+				Quiz:        quiz,
+				Memorized:   s.Memorized,
 			}
 		}
 

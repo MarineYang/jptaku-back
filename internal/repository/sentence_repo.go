@@ -42,16 +42,16 @@ func (r *SentenceRepository) FindByLevel(level int, limit int) ([]model.Sentence
 	return sentences, nil
 }
 
-func (r *SentenceRepository) FindByCategories(categories []int, limit int) ([]model.Sentence, error) {
+func (r *SentenceRepository) FindBySubCategories(subCategories []int, limit int) ([]model.Sentence, error) {
 	var sentences []model.Sentence
-	err := r.db.Where("categories && ?", categories).Limit(limit).Find(&sentences).Error
+	err := r.db.Where("sub_category IN ?", subCategories).Limit(limit).Find(&sentences).Error
 	if err != nil {
 		return nil, err
 	}
 	return sentences, nil
 }
 
-func (r *SentenceRepository) FindRandom(level int, categories []int, limit int, excludeIDs []uint) ([]model.Sentence, error) {
+func (r *SentenceRepository) FindRandom(level int, subCategories []int, limit int, excludeIDs []uint) ([]model.Sentence, error) {
 	var sentences []model.Sentence
 	query := r.db.Model(&model.Sentence{})
 
@@ -59,8 +59,8 @@ func (r *SentenceRepository) FindRandom(level int, categories []int, limit int, 
 		query = query.Where("level <= ?", level)
 	}
 
-	if len(categories) > 0 {
-		query = query.Where("categories && ?", categories)
+	if len(subCategories) > 0 {
+		query = query.Where("sub_category IN ?", subCategories)
 	}
 
 	if len(excludeIDs) > 0 {
@@ -68,6 +68,23 @@ func (r *SentenceRepository) FindRandom(level int, categories []int, limit int, 
 	}
 
 	err := query.Order("RANDOM()").Limit(limit).Find(&sentences).Error
+	if err != nil {
+		return nil, err
+	}
+	return sentences, nil
+}
+
+// CountBySentenceKey 특정 SentenceKey의 문장 수 조회
+func (r *SentenceRepository) CountBySentenceKey(sentenceKey string) (int64, error) {
+	var count int64
+	err := r.db.Model(&model.Sentence{}).Where("sentence_key = ?", sentenceKey).Count(&count).Error
+	return count, err
+}
+
+// FindBySentenceKey SentenceKey로 문장 조회
+func (r *SentenceRepository) FindBySentenceKey(sentenceKey string, limit int) ([]model.Sentence, error) {
+	var sentences []model.Sentence
+	err := r.db.Where("sentence_key = ?", sentenceKey).Limit(limit).Find(&sentences).Error
 	if err != nil {
 		return nil, err
 	}

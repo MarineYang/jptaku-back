@@ -23,13 +23,51 @@ services:
       - REDIS_DB=0
       - JWT_SECRET=${JWT_SECRET:-your-super-secret-key-change-in-production}
       - JWT_EXPIRATION_HOURS=24
-      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY:-}
-      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - GOOGLE_REDIRECT_URL=${GOOGLE_REDIRECT_URL:-}
+      - NCP_ENDPOINT=${NCP_ENDPOINT:-https://kr.object.ncloudstorage.com}
+      - NCP_ACCESS_KEY=${NCP_ACCESS_KEY:-}
+      - NCP_SECRET_KEY=${NCP_SECRET_KEY:-}
+      - NCP_BUCKET=${NCP_BUCKET:-jptaku}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+    restart: unless-stopped
+
+  cron:
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
+    container_name: jptaku-cron
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=jptaku
+      - DB_SSLMODE=disable
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - VOICEVOX_URL=http://voicevox:50021
+      - NCP_ENDPOINT=${NCP_ENDPOINT:-https://kr.object.ncloudstorage.com}
+      - NCP_ACCESS_KEY=${NCP_ACCESS_KEY:-}
+      - NCP_SECRET_KEY=${NCP_SECRET_KEY:-}
+      - NCP_BUCKET=${NCP_BUCKET:-jptaku}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      voicevox:
+        condition: service_started
+    restart: unless-stopped
+
+  voicevox:
+    image: voicevox/voicevox_engine:latest
+    container_name: jptaku-voicevox
+    ports:
+      - "50021:50021"
     restart: unless-stopped
 
   postgres:

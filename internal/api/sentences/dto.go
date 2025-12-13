@@ -29,17 +29,18 @@ type QuizResponse struct {
 
 // SentenceResponse 문장 + 상세 정보 응답
 type SentenceResponse struct {
-	ID         uint           `json:"id"`
-	JP         string         `json:"jp"`
-	KR         string         `json:"kr"`
-	Romaji     string         `json:"romaji"`
-	Level      int            `json:"level"`
-	Categories []int          `json:"categories"`
-	Words      []WordResponse `json:"words"`
-	Grammar    []string       `json:"grammar"`
-	Examples   []string       `json:"examples"`
-	Quiz       *QuizResponse  `json:"quiz,omitempty"`
-	Memorized  bool           `json:"memorized"` // 암기 완료 여부
+	ID          uint           `json:"id"`
+	SentenceKey string         `json:"sentence_key"`
+	JP          string         `json:"jp"`
+	KR          string         `json:"kr"`
+	Romaji      string         `json:"romaji"`
+	Level       int            `json:"level"`
+	SubCategory int            `json:"sub_category"`
+	Words       []WordResponse `json:"words"`
+	Grammar     []string       `json:"grammar"`
+	Examples    []string       `json:"examples"`
+	Quiz        *QuizResponse  `json:"quiz,omitempty"`
+	Memorized   bool           `json:"memorized"` // 암기 완료 여부
 }
 
 // DailySentencesResponse 오늘의 5문장 응답

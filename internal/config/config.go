@@ -7,12 +7,25 @@ import (
 )
 
 type Config struct {
-	Server   ServerConfig
-	Database DatabaseConfig
-	Redis    RedisConfig
-	JWT      JWTConfig
-	OpenAI   OpenAIConfig
-	Google   GoogleOAuthConfig
+	Server      ServerConfig
+	Database    DatabaseConfig
+	Redis       RedisConfig
+	JWT         JWTConfig
+	OpenAI      OpenAIConfig
+	Google      GoogleOAuthConfig
+	VoiceVox    VoiceVoxConfig
+	NCP_Storage NCloudStorageConfig
+}
+
+type NCloudStorageConfig struct {
+	AccessKey  string
+	SecretKey  string
+	BucketName string
+	Endpoint   string
+}
+
+type VoiceVoxConfig struct {
+	VoiceVoxURL string
 }
 
 type GoogleOAuthConfig struct {
@@ -84,6 +97,15 @@ func Load() *Config {
 			ClientID:     getEnv("GOOGLE_CLIENT_ID", ""),
 			ClientSecret: getEnv("GOOGLE_CLIENT_SECRET", ""),
 			RedirectURL:  getEnv("GOOGLE_REDIRECT_URL", "http://localhost:30001/api/auth/google/callback"),
+		},
+		VoiceVox: VoiceVoxConfig{
+			VoiceVoxURL: getEnv("VOICEVOX_URL", "http://localhost:50021"),
+		},
+		NCP_Storage: NCloudStorageConfig{
+			AccessKey:  getEnv("NCP_ACCESS_KEY", ""),
+			SecretKey:  getEnv("NCP_SECRET_KEY", ""),
+			BucketName: getEnv("NCP_BUCKET_NAME", ""),
+			Endpoint:   getEnv("NCP_ENDPOINT", ""),
 		},
 	}
 }

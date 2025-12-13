@@ -10,9 +10,13 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	_ "github.com/jptaku/server/docs" // Swagger docs
+	"github.com/jptaku/server/internal/api/audio"
 	"github.com/jptaku/server/internal/api/auth"
 	"github.com/jptaku/server/internal/api/chat"
 	"github.com/jptaku/server/internal/api/feedback"
@@ -96,14 +100,6 @@ func main() {
 	}
 
 	sentenceService := service.NewSentenceService(sentenceRepo, userRepo)
-
-	// OpenAI 클라이언트 설정 (문장 생성용)
-	if cfg.OpenAI.APIKey != "" {
-		sentenceService.SetOpenAIClient(cfg.OpenAI.APIKey, cfg.OpenAI.Model)
-	} else {
-		log.Println("Warning: OPEN_AI_API_KEY not set, sentence generation disabled")
-	}
-
 	userService := service.NewUserService(userRepo, sentenceService)
 	learningService := service.NewLearningService(learningRepo, sentenceRepo)
 	chatService := service.NewChatService(chatRepo, sentenceRepo)
@@ -112,6 +108,13 @@ func main() {
 	// asyncService는 나중에 다른 서비스에서 사용할 수 있도록 보관
 	_ = asyncService
 
+	// Initialize NCP Object Storage client for audio proxy
+	s3Client := s3.New(s3.Options{
+		Region:       "kr-standard",
+		BaseEndpoint: aws.String(cfg.NCP_Storage.Endpoint),
+		Credentials:  credentials.NewStaticCredentialsProvider(cfg.NCP_Storage.AccessKey, cfg.NCP_Storage.SecretKey, ""),
+	})
+
 	// Initialize handlers
 	authHandler := auth.NewHandler(authService)
 	userHandler := user.NewHandler(userService, jwtManager)
@@ -119,6 +122,7 @@ func main() {
 	learningHandler := learning.NewHandler(learningService)
 	chatHandler := chat.NewHandler(chatService)
 	feedbackHandler := feedback.NewHandler(feedbackService)
+	audioHandler := audio.NewHandler(s3Client, cfg.NCP_Storage.BucketName)
 
 	// Initialize Gin router
 	r := gin.New()
@@ -142,6 +146,9 @@ func main() {
 	{
 		// Auth routes (no auth middleware)
 		authHandler.RegisterRoutes(api)
+
+		// Audio proxy (no auth - public access for audio files)
+		audioHandler.RegisterRoutes(api)
 
 		// Auth middleware for protected routes
 		authMiddleware := middleware.AuthMiddleware(jwtManager)
