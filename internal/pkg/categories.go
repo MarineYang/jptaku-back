@@ -2,15 +2,25 @@ package pkg
 
 import "fmt"
 
+// type Category int
+
+// const (
+// 	CategoryAnime     Category = 1 // 애니/만화
+// 	CategoryGame      Category = 2 // 게임
+// 	CategoryMusic     Category = 3 // 음악
+// 	CategoryVtuber    Category = 4 // 버튜버(독립)
+// 	CategoryLifestyle Category = 5 // 오타쿠 라이프스타일
+// 	CategorySituation Category = 6 // 실전 오타쿠 상황
+// )
+
 type Category int
 
 const (
-	CategoryAnime     Category = 1 // 애니/만화
-	CategoryGame      Category = 2 // 게임
-	CategoryMusic     Category = 3 // 음악
-	CategoryVtuber    Category = 4 // 버튜버(독립)
-	CategoryLifestyle Category = 5 // 오타쿠 라이프스타일
-	CategorySituation Category = 6 // 실전 오타쿠 상황
+    CategoryImpression Category = 1 // 감상·평가 (재밌다/별로다/인상적이다)
+    CategoryReaction   Category = 2 // 공감·맞장구 (나도 그래/그건 좀 의외)
+    CategoryQuestion   Category = 3 // 의문·확장 (왜?/어떻게 생각해?)
+    CategoryComparison Category = 4 // 비교·선호 (A보다 B/전작 vs 이번작)
+    CategorySituation  Category = 5 // 상황·행동 (현장/주문/만남/실전)
 )
 
 // SubCategory: 통합된 상세 카테고리 (총 17개)

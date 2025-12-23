@@ -179,3 +179,52 @@ docker compose up -d --build
 - [ ] HTTPS 설정
 - [ ] AI 피드백 평가 로직
 - [ ] 성능 최적화 및 캐싱
+
+
+
+같은 덕후끼리 실제로 나눌 법한 대화를 일본어로 얼마나 깊게 이어가느냐
+
+
+🔹 게임
+
+Steam API / 랭킹 페이지
+	•	Top Sellers
+	•	Most Played
+	•	Recent Reviews 많은 게임  
+자동 수집 → 중복 제거 → 상위 N개
+{ "id": "elden_ring", "title": "Elden Ring", "domain": "game" }
+
+🔹 애니
+
+AniList GraphQL API (정답)
+	•	Popularity 순
+	•	이번 시즌
+	•	All-time 인기
+{ "id": "chainsaw_man", "title": "チェンソーマン", "domain": "anime" }
+
+🔹 음악 (JPOP)
+
+Spotify API
+	•	Artist 단위
+	•	인기 상위만
+{ "id": "yoasobi", "title": "YOASOBI", "domain": "music" }
+
+🔹 이벤트
+
+공식 사이트 / 위키 크롤링
+	•	“행사명”만
+	•	날짜, 장소 ❌
+{ "id": "comiket_104", "title": "コミックマーケット104", "domain": "event" }
+
+## todo
+	•	AniList API로 애니 Top 50 가져오기
+	•	Steam 인기 게임 Top 50 가져오기
+	•	raw_topics.json 생성
+
+  데이터 수집 · 생성 파이프라인 기능 목록 (최종)
+	1.	통합 콘텐츠 수집기 – 애니·게임·음악·영화/드라마 인기 작품 제목을 외부 API에서 자동 수집
+	2.	콘텐츠 정규화 모듈 – 수집된 제목을 id / title / domain 형식으로 통일 변환
+	3.	Macro Topic 생성기 – 작품 제목을 기반으로 LLM이 대화 시작 질문과 훅을 생성
+	4.	Macro Topic 저장기 – 생성된 Topic을 JSON 파일로 저장해 서비스에서 바로 사용
+	5.	Micro Topic 추론기 – 대화 중 유저 발화를 분석해 세부 초점과 대화 유형을 실시간 추론
+	6.	Micro Topic 로그 수집기 – 추론된 Micro Topic을 분석용으로 기록(선택)
