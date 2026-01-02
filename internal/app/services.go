@@ -13,6 +13,7 @@ import (
 	authSvc "github.com/jptaku/server/internal/service/auth"
 	chatSvc "github.com/jptaku/server/internal/service/chat"
 	feedbackSvc "github.com/jptaku/server/internal/service/feedback"
+	flashSvc "github.com/jptaku/server/internal/service/flash"
 	learningSvc "github.com/jptaku/server/internal/service/learning"
 	"github.com/jptaku/server/internal/service/sentence"
 	userSvc "github.com/jptaku/server/internal/service/user"
@@ -35,6 +36,7 @@ type Services struct {
 	User     userSvc.Provider
 	Sentence sentence.Provider
 	Learning learningSvc.Provider
+	Flash    flashSvc.Provider
 	Chat     chatSvc.Provider
 	Feedback feedbackSvc.Provider
 	Async    *service.AsyncService
@@ -103,11 +105,15 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 	chatService := chatSvc.NewService(repos.Chat, repos.Sentence)
 	feedbackService := feedbackSvc.NewService(repos.Feedback, repos.Chat)
 
+	// Flash Service (DB 조회만 수행, OpenAI 호출 없음)
+	flashService := flashSvc.NewService(repos.Sentence, repos.Learning)
+
 	services := &Services{
 		Auth:     authService,
 		User:     userService,
 		Sentence: sentenceService,
 		Learning: learningService,
+		Flash:    flashService,
 		Chat:     chatService,
 		Feedback: feedbackService,
 		Async:    asyncService,

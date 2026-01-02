@@ -16,6 +16,11 @@ type LearningProgress struct {
 	CompletedAt *time.Time `json:"completed_at,omitempty"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
+	// Flash 카드용 필드
+	FlashGrade     *string    `gorm:"size:10" json:"flash_grade,omitempty"`      // bad/mid/good
+	FlashUpdatedAt *time.Time `json:"flash_updated_at,omitempty"`                // Flash 평가 시간
+	FlashCount     int        `gorm:"default:0" json:"flash_count"`              // Flash 평가 횟수
+	NextReviewAt   *time.Time `json:"next_review_at,omitempty"`                  // 다음 복습 시간 (SRS)
 
 	// Relations
 	User     *User     `gorm:"foreignKey:UserID" json:"-"`

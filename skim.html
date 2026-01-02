@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JPTaku · Skim</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#fff; --text:#111827; --muted:#6b7280; --line:#e5e7eb;
+      --bad:#ef4444; --mid:#f59e0b; --good:#22c55e; --primary:#111827;
+      --shadow: 0 14px 40px rgba(0,0,0,.10);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Apple SD Gothic Neo, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(180deg,#fff 0%, var(--bg) 40%, var(--bg) 100%);
+    }
+    .wrap{
+      width:min(420px, 96vw);
+      margin:16px auto 28px;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: 26px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: 0 22px 80px rgba(0,0,0,.14);
+    }
+    header{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:flex-start;
+      gap:12px;
+    }
+    .title{font-weight:900; font-size:18px; letter-spacing:-.3px;}
+    .sub{color:var(--muted); font-size:12px; margin-top:4px; font-weight:700;}
+    .pill{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: conic-gradient(var(--good) 0 0%, #e5e7eb 0 100%);
+    }
+
+    main{padding:14px 16px 16px; background:var(--bg);}
+    .card{
+      background:var(--card);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+    }
+    .metaRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+    .chip{
+      font-size:11px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:4px 8px; border-radius:999px; background:#fff;
+      font-weight:700;
+    }
+    .chip b{color:var(--text)}
+    .audioBtn{
+      width:44px; height:44px; border-radius:999px;
+      border:1px solid var(--line); background:#fff;
+      cursor:pointer; font-weight:900;
+      display:grid; place-items:center;
+    }
+
+    .cardBody{padding:14px;}
+    .ja{font-size:20px; font-weight:900; letter-spacing:-.2px;}
+    .ko{margin-top:8px; font-size:13px; color:var(--muted); line-height:1.5;}
+    .phrase{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:#f9fafb;
+      border:1px dashed #d1d5db;
+    }
+    .phrase .label{font-size:11px; color:var(--muted); font-weight:800;}
+    .phrase .value{margin-top:4px; font-size:14px; font-weight:900;}
+    .phrase .note{margin-top:6px; font-size:12px; color:var(--muted);}
+
+    .choices{display:flex; gap:10px; margin-top:14px;}
+    .choices button{
+      flex:1;
+      border-radius: 14px;
+      padding:12px 10px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+    }
+    .choices .bad{border-color: rgba(239,68,68,.40);}
+    .choices .mid{border-color: rgba(245,158,11,.40);}
+    .choices .good{border-color: rgba(34,197,94,.40);}
+
+    .kpis{display:flex; gap:10px; margin-top:12px;}
+    .kpi{
+      flex:1;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+    .kpi b{display:block; margin-top:4px; font-size:16px; color:var(--text);}
+
+    .footer{
+      margin-top:12px;
+      display:flex; gap:10px;
+    }
+    .footer button{
+      flex:1;
+      border-radius:14px;
+      padding:12px 12px;
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+    }
+    .reset{background:#fff; border:1px solid var(--line); color:var(--text);}
+    .skip{background:var(--primary); color:#fff;}
+    .hint{margin-top:10px; font-size:12px; color:var(--muted); line-height:1.45; font-weight:700;}
+
+    .toast{
+      position:fixed;
+      left:50%; bottom:18px;
+      transform:translateX(-50%);
+      background:#111827;
+      color:#fff;
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size:12px;
+      font-weight:800;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease;
+    }
+    .toast.show{opacity:1;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="title">스키밍</div>
+        <div class="sub">오늘 5문장 · 기준: “입에서 나오나?”</div>
+        <div class="metaRow">
+          <span class="chip">domain <b id="domain">anime</b></span>
+          <span class="chip">level <b id="level">N4</b></span>
+          <span class="chip">category <b id="category">impression</b></span>
+        </div>
+      </div>
+      <div class="pill" title="진행률">
+        <span class="dot" id="dot"></span>
+        <span id="pct">0%</span>
+        <span>·</span>
+        <span><b id="idx">1</b>/5</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="cardHead">
+          <div>
+            <div class="chip"><b id="statusLabel">미분류</b> · 오늘 문장</div>
+            <div class="metaRow">
+              <span class="chip">1~2초 컷</span>
+              <span class="chip">TTS 버튼(목업)</span>
+            </div>
+          </div>
+          <button class="audioBtn" id="audioBtn" title="TTS 재생">▶</button>
+        </div>
+
+        <div class="cardBody">
+          <div class="ja" id="ja"></div>
+          <div class="ko" id="ko"></div>
+
+          <div class="phrase">
+            <div class="label">핵심 표현</div>
+            <div class="value" id="phrase"></div>
+            <div class="note" id="note"></div>
+          </div>
+
+          <div class="choices">
+            <button class="bad" data-grade="unknown">모르겠음</button>
+            <button class="mid" data-grade="weak">뜻은 앎(애매)</button>
+            <button class="good" data-grade="known">그냥 나옴</button>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">모르겠음<b id="kUnknown">0</b></div>
+            <div class="kpi">애매<b id="kWeak">0</b></div>
+            <div class="kpi">그냥 나옴<b id="kKnown">0</b></div>
+          </div>
+
+          <div class="footer">
+            <button class="reset" id="resetBtn">오늘 기록 초기화</button>
+            <button class="skip" id="nextBtn">다음</button>
+          </div>
+
+          <div class="hint" id="hint">
+            분류가 끝나면(5/5) 다음 페이지(플래시)에서 <b>애매/모름</b>만 학습하도록 큐를 만들면 됨.
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">toast</div>
+
+<script>
+  // ===== Mock Data =====
+  const today = {
+    domain: "anime",
+    category: "impression",
+    level: "N4",
+    sentences: [
+      { id:"s1", ja:"すごく面白かった！", ko:"정말 재미있었어!", phrase:"面白かった", note:"감상 한방" },
+      { id:"s2", ja:"キャラクターがとても可愛いね。", ko:"캐릭터가 정말 귀여워.", phrase:"とても〜ね", note:"가볍게 칭찬" },
+      { id:"s3", ja:"ストーリーに引き込まれた！", ko:"스토리에 몰입했어!", phrase:"〜に引き込まれる", note:"몰입 표현" },
+      { id:"s4", ja:"作画が神すぎる。", ko:"작화가 너무 신급이야.", phrase:"神すぎる", note:"덕후 과장" },
+      { id:"s5", ja:"続きが気になって止まらない。", ko:"다음 내용이 궁금해서 멈출 수가 없어.", phrase:"気になって止まらない", note:"다음화 중독" },
+    ]
+  };
+
+  // ===== State (localStorage) =====
+  const LS_KEY = "jptaku_skim_mock_v1";
+  const state = loadState() || { index: 0, result: {} }; // result: {id: unknown|weak|known}
+
+  function loadState(){ try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch { return null; } }
+  function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); updateProgress(); updateKpi(); }
+
+  // ===== UI refs =====
+  const el = (id)=>document.getElementById(id);
+  const ja = el("ja"), ko = el("ko"), phrase = el("phrase"), note = el("note");
+  const idx = el("idx"), pct = el("pct"), dot = el("dot"), statusLabel = el("statusLabel");
+  const kUnknown = el("kUnknown"), kWeak = el("kWeak"), kKnown = el("kKnown");
+  const hint = el("hint");
+
+  // header meta
+  el("domain").textContent = today.domain;
+  el("level").textContent = today.level;
+  el("category").textContent = today.category;
+
+  // ===== Render =====
+  function currentSentence(){
+    return today.sentences[Math.min(state.index, today.sentences.length - 1)];
+  }
+
+  function render(){
+    const s = currentSentence();
+    ja.textContent = s.ja;
+    ko.textContent = s.ko;
+    phrase.textContent = s.phrase;
+    note.textContent = s.note;
+
+    idx.textContent = String(state.index + 1);
+
+    const r = state.result[s.id];
+    statusLabel.textContent = r ? labelFor(r) : "미분류";
+
+    updateProgress();
+    updateKpi();
+
+    const done = Object.keys(state.result).length >= today.sentences.length;
+    hint.innerHTML = done
+      ? "✅ 스키밍 완료. 이제 플래시 페이지에서 <b>애매/모름</b>만 큐로 만들어 학습시키면 됨."
+      : "분류가 끝나면(5/5) 다음 페이지(플래시)에서 <b>애매/모름</b>만 학습하도록 큐를 만들면 됨.";
+  }
+
+  function labelFor(v){
+    if(v==="unknown") return "모르겠음";
+    if(v==="weak") return "뜻은 앎(애매)";
+    if(v==="known") return "그냥 나옴";
+    return "미분류";
+  }
+
+  function updateProgress(){
+    const doneCount = Object.keys(state.result).length;
+    const total = today.sentences.length;
+    const p = Math.round((doneCount / total) * 100);
+    pct.textContent = `${p}%`;
+
+    // dot gradient
+    dot.style.background = `conic-gradient(var(--good) 0 ${p}%, #e5e7eb ${p}% 100%)`;
+  }
+
+  function updateKpi(){
+    const vals = Object.values(state.result);
+    kUnknown.textContent = vals.filter(v=>v==="unknown").length;
+    kWeak.textContent = vals.filter(v=>v==="weak").length;
+    kKnown.textContent = vals.filter(v=>v==="known").length;
+  }
+
+  // ===== Actions =====
+  document.querySelectorAll(".choices button").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const s = currentSentence();
+      const grade = b.dataset.grade;
+      state.result[s.id] = grade;
+
+      toast(`저장됨: ${labelFor(grade)}`);
+      // 자동 다음으로
+      if(state.index < today.sentences.length - 1) state.index++;
+      saveState();
+      render();
+    });
+  });
+
+  el("nextBtn").addEventListener("click", ()=>{
+    if(state.index < today.sentences.length - 1){
+      state.index++;
+      saveState();
+      render();
+    } else {
+      toast("마지막 문장이야.");
+    }
+  });
+
+  el("resetBtn").addEventListener("click", ()=>{
+    localStorage.removeItem(LS_KEY);
+    toast("초기화 완료");
+    location.reload();
+  });
+
+  el("audioBtn").addEventListener("click", ()=>{
+    const s = currentSentence();
+    toast(`🔊 (목업) TTS 재생: ${s.ja}`);
+  });
+
+  // ===== Toast =====
+  function toast(msg){
+    const t = el("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._id);
+    toast._id = setTimeout(()=>t.classList.remove("show"), 900);
+  }
+
+  // init
+  render();
+</script>
+</body>
+</html>

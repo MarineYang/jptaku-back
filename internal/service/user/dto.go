@@ -7,9 +7,8 @@ type UpdateProfileInput struct {
 
 // OnboardingInput 온보딩 입력
 type OnboardingInput struct {
-	Level     int   `json:"level" binding:"min=0,max=5"`
-	Interests []int `json:"interests"` // pkg.SubCategory 값들
-	Purposes  []int `json:"purposes"`  // pkg.Purpose 값들
+	Categories []int `json:"categories"` // pkg.OnboardingCategory 값들 (애니/게임/음악/영화/드라마)
+	Level      int   `json:"level"`      // pkg.Level 값들 (N3=3, N4=4, N5=5)
 }
 
 // UpdateSettingsInput 설정 업데이트 입력

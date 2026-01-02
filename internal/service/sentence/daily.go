@@ -82,11 +82,11 @@ func (s *Service) createDailySet(userID uint, date time.Time) (*DailySentencesRe
 		return nil, err
 	}
 
-	level := 1
-	var interests []int
+	level := 5 // 기본값 N5
+	var categories []int
 	if user.Onboarding != nil {
 		level = user.Onboarding.Level
-		interests = user.Onboarding.Interests
+		categories = user.Onboarding.Categories
 	}
 
 	// 이미 학습한 문장 ID 조회
@@ -96,7 +96,7 @@ func (s *Service) createDailySet(userID uint, date time.Time) (*DailySentencesRe
 	}
 
 	// 미리 생성된 문장 pool에서 조건에 맞는 5개 가져오기
-	sentences, err := s.sentenceRepo.FindRandom(level, interests, 5, learnedIDs)
+	sentences, err := s.sentenceRepo.FindRandom(level, categories, 5, learnedIDs)
 	if err != nil {
 		return nil, fmt.Errorf("문장 조회 실패: %w", err)
 	}

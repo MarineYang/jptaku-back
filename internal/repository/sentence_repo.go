@@ -42,16 +42,16 @@ func (r *SentenceRepository) FindByLevel(level int, limit int) ([]model.Sentence
 	return sentences, nil
 }
 
-func (r *SentenceRepository) FindBySubCategories(subCategories []int, limit int) ([]model.Sentence, error) {
+func (r *SentenceRepository) FindByCategories(categories []int, limit int) ([]model.Sentence, error) {
 	var sentences []model.Sentence
-	err := r.db.Where("sub_category IN ?", subCategories).Limit(limit).Find(&sentences).Error
+	err := r.db.Where("category IN ?", categories).Limit(limit).Find(&sentences).Error
 	if err != nil {
 		return nil, err
 	}
 	return sentences, nil
 }
 
-func (r *SentenceRepository) FindRandom(level int, subCategories []int, limit int, excludeIDs []uint) ([]model.Sentence, error) {
+func (r *SentenceRepository) FindRandom(level int, categories []int, limit int, excludeIDs []uint) ([]model.Sentence, error) {
 	var sentences []model.Sentence
 	query := r.db.Model(&model.Sentence{})
 
@@ -59,8 +59,8 @@ func (r *SentenceRepository) FindRandom(level int, subCategories []int, limit in
 		query = query.Where("level <= ?", level)
 	}
 
-	if len(subCategories) > 0 {
-		query = query.Where("sub_category IN ?", subCategories)
+	if len(categories) > 0 {
+		query = query.Where("category IN ?", categories)
 	}
 
 	if len(excludeIDs) > 0 {

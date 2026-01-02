@@ -8,12 +8,12 @@ import (
 
 type Sentence struct {
 	ID          uint           `gorm:"primaryKey" json:"id"`
-	SentenceKey string         `gorm:"size:20;index;not null" json:"sentence_key"`   // 조합 키 (예: "101_0") - SubCategory_Level
-	JP          string         `gorm:"type:text;not null" json:"jp"`                 // 일본어 문장
-	KR          string         `gorm:"type:text;not null" json:"kr"`                 // 한국어 번역
-	Romaji      string         `gorm:"type:text" json:"romaji,omitempty"`            // 로마지
-	Level       int            `gorm:"default:1;index" json:"level"`                 // 난이도 0~3
-	SubCategory int            `gorm:"default:101;index" json:"sub_category"`        // 단일 SubCategory 값
+	SentenceKey string         `gorm:"size:20;index;not null" json:"sentence_key"` // 조합 키 (예: "1_5") - Category_Level
+	JP          string         `gorm:"type:text;not null" json:"jp"`               // 일본어 문장
+	KR          string         `gorm:"type:text;not null" json:"kr"`               // 한국어 번역
+	Romaji      string         `gorm:"type:text" json:"romaji,omitempty"`          // 로마지
+	Level       int            `gorm:"not null;index" json:"level"`                // 레벨 (3/4/5)
+	Category    int            `gorm:"not null;index" json:"category"`             // OnboardingCategory 값 (1~5)
 	AudioURL    string         `gorm:"size:500" json:"audio_url,omitempty"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
@@ -27,6 +27,10 @@ type SentenceDetail struct {
 	Grammar    []string `gorm:"type:jsonb;serializer:json" json:"grammar"`  // 핵심 문법
 	Examples   []string `gorm:"type:jsonb;serializer:json" json:"examples"` // 예문
 	Quiz       *Quiz    `gorm:"type:jsonb;serializer:json" json:"quiz"`     // 퀴즈
+	// Flash 카드용 필드
+	Phrase string `gorm:"type:text" json:"phrase,omitempty"` // 핵심 표현 1개
+	Tip    string `gorm:"type:text" json:"tip,omitempty"`    // 한 줄 설명
+	Alt    string `gorm:"type:text" json:"alt,omitempty"`    // 같은 구조 예문 1개
 }
 
 type Word struct {

@@ -5,9 +5,8 @@ type UpdateProfileRequest struct {
 }
 
 type OnboardingRequest struct {
-	Level     int   `json:"level" binding:"min=0,max=5"`
-	Interests []int `json:"interests"` // pkg.SubCategory 값들
-	Purposes  []int `json:"purposes"`  // pkg.Purpose 값들
+	Categories []int `json:"categories" binding:"required,min=1"` // pkg.OnboardingCategory 값들 (애니/게임/음악/영화/드라마)
+	Level      int   `json:"level" binding:"required,oneof=3 4 5"` // pkg.Level 값들 (N3=3, N4=4, N5=5)
 }
 
 type UpdateSettingsRequest struct {

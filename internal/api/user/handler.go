@@ -115,9 +115,8 @@ func (h *Handler) SaveOnboarding(c *gin.Context) {
 	}
 
 	input := &userSvc.OnboardingInput{
-		Level:     req.Level,
-		Interests: req.Interests,
-		Purposes:  req.Purposes,
+		Categories: req.Categories,
+		Level:      req.Level,
 	}
 
 	onboarding, err := h.userService.SaveOnboarding(userID, input)

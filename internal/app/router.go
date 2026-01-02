@@ -7,6 +7,7 @@ import (
 	"github.com/jptaku/server/internal/api/auth"
 	"github.com/jptaku/server/internal/api/chat"
 	"github.com/jptaku/server/internal/api/feedback"
+	"github.com/jptaku/server/internal/api/flash"
 	"github.com/jptaku/server/internal/api/learning"
 	"github.com/jptaku/server/internal/api/sentences"
 	"github.com/jptaku/server/internal/api/user"
@@ -40,6 +41,9 @@ func NewRouter(deps *Dependencies, cfg *config.Config) *gin.Engine {
 	feedbackHandler := feedback.NewHandler(deps.Services.Feedback)
 	audioHandler := audio.NewHandler(deps.Infra.S3Client, deps.Infra.BucketName)
 
+	// Flash handler
+	flashHandler := flash.NewHandler(deps.Services.Flash)
+
 	// API routes
 	api := r.Group("/api")
 	{
@@ -54,6 +58,7 @@ func NewRouter(deps *Dependencies, cfg *config.Config) *gin.Engine {
 		learningHandler.RegisterRoutes(api, authMiddleware)
 		chatHandler.RegisterRoutes(api, authMiddleware)
 		feedbackHandler.RegisterRoutes(api, authMiddleware)
+		flashHandler.RegisterRoutes(api, authMiddleware)
 	}
 
 	return r

@@ -49,18 +49,16 @@ func (s *Service) SaveOnboarding(userID uint, input *OnboardingInput) (*model.Us
 
 	if isNewOnboarding {
 		onboarding = &model.UserOnboarding{
-			UserID:    userID,
-			Level:     input.Level,
-			Interests: input.Interests,
-			Purposes:  input.Purposes,
+			UserID:     userID,
+			Categories: input.Categories,
+			Level:      input.Level,
 		}
 		if err := s.userRepo.CreateOnboarding(onboarding); err != nil {
 			return nil, err
 		}
 	} else {
+		onboarding.Categories = input.Categories
 		onboarding.Level = input.Level
-		onboarding.Interests = input.Interests
-		onboarding.Purposes = input.Purposes
 		if err := s.userRepo.UpdateOnboarding(onboarding); err != nil {
 			return nil, err
 		}

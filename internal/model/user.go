@@ -34,13 +34,12 @@ type UserSettings struct {
 }
 
 type UserOnboarding struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	UserID    uint      `gorm:"uniqueIndex;not null" json:"user_id"`
-	Level     int       `gorm:"default:0" json:"level"`                 // 0 ~ 5 (pkg.Level)
-	Interests []int     `gorm:"type:jsonb;serializer:json" json:"interests"` // pkg.SubCategory 값들
-	Purposes  []int     `gorm:"type:jsonb;serializer:json" json:"purposes"`  // pkg.Purpose 값들
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID         uint      `gorm:"primaryKey" json:"id"`
+	UserID     uint      `gorm:"uniqueIndex;not null" json:"user_id"`
+	Categories []int     `gorm:"type:jsonb;serializer:json" json:"categories"` // pkg.OnboardingCategory 값들 (애니/게임/음악/영화/드라마)
+	Level      int       `gorm:"not null" json:"level"`                        // pkg.Level 값들 (N3=3, N4=4, N5=5)
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
 }
 
 func (User) TableName() string {

@@ -35,7 +35,7 @@ type SentenceResponse struct {
 	KR          string         `json:"kr"`
 	Romaji      string         `json:"romaji"`
 	Level       int            `json:"level"`
-	SubCategory int            `json:"sub_category"`
+	Category    int            `json:"category"` // OnboardingCategory (1~5)
 	Words       []WordResponse `json:"words"`
 	Grammar     []string       `json:"grammar"`
 	Examples    []string       `json:"examples"`

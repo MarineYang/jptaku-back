@@ -228,3 +228,7 @@ Spotify API
 	4.	Macro Topic 저장기 – 생성된 Topic을 JSON 파일로 저장해 서비스에서 바로 사용
 	5.	Micro Topic 추론기 – 대화 중 유저 발화를 분석해 세부 초점과 대화 유형을 실시간 추론
 	6.	Micro Topic 로그 수집기 – 추론된 Micro Topic을 분석용으로 기록(선택)
+
+	- [x] Flash 카드 기능 구현 (phrase/tip/alt 필드 + SRS: bad→10분, mid→1시간, good→24시간)
+	- [x] Flash API (`GET /api/flash/today`, `POST /api/flash/progress`) 구현 완료
+	- [x] OpenAI 호출을 cron job으로 이동 (API 요청 시점에서 DB 조회만 수행하도록 리팩토링)

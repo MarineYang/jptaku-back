@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JPTaku · Flash</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#fff; --text:#111827; --muted:#6b7280; --line:#e5e7eb;
+      --bad:#ef4444; --mid:#f59e0b; --good:#22c55e; --primary:#111827;
+      --shadow: 0 14px 40px rgba(0,0,0,.10);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Apple SD Gothic Neo, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(180deg,#fff 0%, var(--bg) 40%, var(--bg) 100%);
+    }
+    .wrap{
+      width:min(420px, 96vw);
+      margin:16px auto 28px;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: 26px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: 0 22px 80px rgba(0,0,0,.14);
+    }
+    header{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:flex-start;
+      gap:12px;
+    }
+    .title{font-weight:900; font-size:18px; letter-spacing:-.3px;}
+    .sub{color:var(--muted); font-size:12px; margin-top:4px; font-weight:700;}
+    .pill{
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex; align-items:center; gap:8px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: conic-gradient(var(--good) 0 0%, #e5e7eb 0 100%);
+    }
+    main{padding:14px 16px 16px; background:var(--bg);}
+
+    .card{
+      background:var(--card);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+    }
+    .metaRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+    .chip{
+      font-size:11px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:4px 8px; border-radius:999px; background:#fff;
+      font-weight:700;
+    }
+    .chip b{color:var(--text)}
+    .audioBtn{
+      width:44px; height:44px; border-radius:999px;
+      border:1px solid var(--line); background:#fff;
+      cursor:pointer; font-weight:900;
+      display:grid; place-items:center;
+    }
+
+    /* 3D flash card */
+    .cardBody{padding:14px;}
+    .flipHint{font-size:12px; color:var(--muted); font-weight:700; margin-top:10px;}
+    .cardWrap{perspective:1200px;}
+    .card3d{
+      width:100%;
+      min-height: 260px;
+      border-radius: 18px;
+      position:relative;
+      transform-style:preserve-3d;
+      transition: transform .45s ease;
+      cursor:pointer;
+    }
+    .card3d.flipped{ transform: rotateY(180deg); }
+    .face{
+      position:absolute; inset:0;
+      backface-visibility:hidden;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding:16px;
+      display:flex; flex-direction:column; justify-content:space-between;
+    }
+    .back{ transform: rotateY(180deg); }
+    .small{font-size:12px; color:var(--muted); font-weight:800;}
+    .ja{font-size:22px; font-weight:900; letter-spacing:-.3px; line-height:1.25; margin-top:8px;}
+    .ko{font-size:14px; color:var(--muted); line-height:1.45; margin-top:10px;}
+    .block{
+      padding:10px 12px;
+      border-radius:14px;
+      background:#f9fafb;
+      border:1px dashed #d1d5db;
+      margin-top:10px;
+    }
+    .block .k{font-weight:900; margin-top:6px;}
+    .block .d{font-size:12px; color:var(--muted); margin-top:6px; line-height:1.45;}
+
+    .sched{display:flex; gap:10px; margin-top:14px;}
+    .sched button{
+      flex:1;
+      border:none;
+      border-radius: 14px;
+      padding:12px 10px;
+      font-weight:900;
+      cursor:pointer;
+      font-size:13px;
+      color:#fff;
+    }
+    .sbad{background:var(--bad);}
+    .smid{background:var(--mid);}
+    .sgood{background:var(--good);}
+
+    .footer{margin-top:12px; display:flex; gap:10px;}
+    .footer button{
+      flex:1;
+      border-radius:14px;
+      padding:12px 12px;
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+    }
+    .secondary{background:#fff; border:1px solid var(--line); color:var(--text);}
+    .primary{background:var(--primary); color:#fff;}
+
+    .empty{
+      padding:14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%; bottom:18px;
+      transform:translateX(-50%);
+      background:#111827;
+      color:#fff;
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size:12px;
+      font-weight:800;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease;
+    }
+    .toast.show{opacity:1;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="title">플래시</div>
+        <div class="sub">스키밍 결과에서 <b>애매/모름</b>만 학습</div>
+        <div class="metaRow">
+          <span class="chip">대상 <b id="targetCount">0</b>개</span>
+          <span class="chip">진행 <b id="idx">0</b>/<span id="total">0</span></span>
+        </div>
+      </div>
+      <div class="pill" title="진행률">
+        <span class="dot" id="dot"></span>
+        <span id="pct">0%</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="card" id="mainCard">
+        <div class="cardHead">
+          <div>
+            <div class="chip"><b id="statusLabel">학습 대기</b> · 문장</div>
+            <div class="metaRow">
+              <span class="chip">탭으로 뒤집기</span>
+              <span class="chip">3버튼 SRS</span>
+            </div>
+          </div>
+          <button class="audioBtn" id="audioBtn" title="TTS 재생">▶</button>
+        </div>
+
+        <div class="cardBody" id="body">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">toast</div>
+
+<script>
+  // ===== Data (mock) =====
+  // 실서비스에서는 여기 대신 JSON에서 가져오면 됨.
+  const today = {
+    sentences: [
+      { id:"s1", ja:"すごく面白かった！", ko:"정말 재미있었어!", phrase:"面白かった",
+        explain:"가장 기본 감상. 회화에서 즉시 쓰기 좋음.", alt:"すごく泣けた！ / すごく怖かった！" },
+      { id:"s2", ja:"キャラクターがとても可愛いね。", ko:"캐릭터가 정말 귀여워.", phrase:"とても〜ね",
+        explain:"‘〜ね’가 공감/동의 톤을 만들어줌.", alt:"キャラがとても好き。 / とてもカッコいいね。" },
+      { id:"s3", ja:"ストーリーに引き込まれた！", ko:"스토리에 몰입했어!", phrase:"〜に引き込まれる",
+        explain:"‘훅 빨려 들어가다’ 느낌. 덕후 감상 치트키.", alt:"世界観に引き込まれた！ / 雰囲気に引き込まれた！" },
+      { id:"s4", ja:"作画が神すぎる。", ko:"작화가 너무 신급이야.", phrase:"神すぎる",
+        explain:"강한 과장. 온라인/덕후 말투에 잘 붙음.", alt:"作画がヤバい。 / 最高すぎる。" },
+      { id:"s5", ja:"続きが気になって止まらない。", ko:"다음 내용이 궁금해서 멈출 수가 없어.", phrase:"気になって止まらない",
+        explain:"궁금해서 멈출 수 없음. 정주행 상황에 딱.", alt:"気になって仕方ない。 / 続きが気になる。" },
+    ]
+  };
+
+  // ===== Storage Keys =====
+  // skim.html에서 쓰는 키 그대로 읽음
+  const SKIM_KEY  = "jptaku_skim_mock_v1";
+  // flash 페이지 상태는 따로 저장
+  const FLASH_KEY = "jptaku_flash_mock_v1";
+
+  // ===== Load skim result =====
+  const skim = loadJson(SKIM_KEY) || { result: {} };
+  const skimResult = skim.result || {}; // {s1: 'unknown'|'weak'|'known'}
+
+  // queue: unknown/weak 만
+  function buildQueue(){
+    const q = [];
+    for(const s of today.sentences){
+      const r = skimResult[s.id];
+      if(r === "unknown" || r === "weak") q.push(s.id);
+    }
+    return q;
+  }
+
+  // ===== Flash State =====
+  const state = loadJson(FLASH_KEY) || {
+    queue: buildQueue(),      // [id...]
+    index: 0,
+    grades: {},               // {id: 'bad'|'mid'|'good'}
+    doneCount: 0
+  };
+
+  // ===== UI refs =====
+  const el = (id)=>document.getElementById(id);
+  const body = el("body");
+  const pct = el("pct"), dot = el("dot");
+  const idx = el("idx"), total = el("total"), targetCount = el("targetCount");
+  const statusLabel = el("statusLabel");
+
+  // ===== Render =====
+  function getSentence(id){ return today.sentences.find(s => s.id === id); }
+
+  function render(){
+    const q = state.queue || [];
+    const t = q.length;
+
+    targetCount.textContent = String(t);
+    total.textContent = String(t);
+    idx.textContent = t === 0 ? "0" : String(Math.min(state.index, t-1) + 1);
+
+    if(t === 0){
+      statusLabel.textContent = "학습할 문장 없음";
+      body.innerHTML = `
+        <div class="empty">
+          스키밍에서 <b>애매/모름</b>이 0개라서 플래시할 게 없다.<br/><br/>
+          1) 먼저 <b>skim.html</b>에서 문장을 분류해.<br/>
+          2) 그리고 다시 이 페이지를 열어.<br/><br/>
+          <div style="margin-top:12px; display:flex; gap:10px;">
+            <button class="secondary" onclick="rebuild()">큐 다시 만들기</button>
+            <button class="primary" onclick="resetFlash()">플래시 초기화</button>
+          </div>
+        </div>
+      `;
+      updateProgress();
+      return;
+    }
+
+    const s = getSentence(q[Math.min(state.index, t-1)]);
+    statusLabel.textContent = "학습 중";
+
+    body.innerHTML = `
+      <div class="cardWrap">
+        <div class="card3d" id="card3d">
+          <div class="face front">
+            <div>
+              <div class="small">앞면(일본어)</div>
+              <div class="ja">${escapeHtml(s.ja)}</div>
+              <div class="flipHint">탭하면 뒤집기</div>
+            </div>
+            <div class="small">기준: 뜻 + 핵심표현이 떠오르면 OK</div>
+          </div>
+          <div class="face back">
+            <div>
+              <div class="small">뒷면(해설)</div>
+              <div class="ko">${escapeHtml(s.ko)}</div>
+
+              <div class="block">
+                <div class="small">핵심 표현</div>
+                <div class="k">${escapeHtml(s.phrase)}</div>
+                <div class="d">${escapeHtml(s.explain)}</div>
+              </div>
+
+              <div class="block">
+                <div class="small">같은 구조 예문</div>
+                <div class="d">${escapeHtml(s.alt)}</div>
+              </div>
+            </div>
+            <div class="small">아래 3버튼으로 기억 강도 선택</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sched">
+        <button class="sbad" onclick="grade('bad')">몰랐어요<br><span style="font-size:11px;opacity:.9;">10분 후</span></button>
+        <button class="smid" onclick="grade('mid')">애매/틀림<br><span style="font-size:11px;opacity:.9;">1시간 후</span></button>
+        <button class="sgood" onclick="grade('good')">맞혔어요<br><span style="font-size:11px;opacity:.9;">1일 후</span></button>
+      </div>
+
+      <div class="footer">
+        <button class="secondary" onclick="rebuild()">큐 다시 만들기</button>
+        <button class="primary" onclick="next()">다음</button>
+      </div>
+    `;
+
+    // flip
+    const c = document.getElementById("card3d");
+    c.addEventListener("click", ()=> c.classList.toggle("flipped"));
+
+    updateProgress();
+  }
+
+  function updateProgress(){
+    const t = (state.queue||[]).length;
+    const done = state.doneCount || 0;
+    const p = t === 0 ? 0 : Math.round((done / t) * 100);
+    pct.textContent = `${p}%`;
+    dot.style.background = `conic-gradient(var(--good) 0 ${p}%, #e5e7eb ${p}% 100%)`;
+  }
+
+  // ===== Actions =====
+  window.grade = function(g){
+    const q = state.queue || [];
+    if(q.length === 0) return;
+
+    const curId = q[Math.min(state.index, q.length-1)];
+    state.grades[curId] = g;
+
+    // 처리 규칙(단순):
+    // - good: 큐에서 제거 (진도감)
+    // - mid/bad: 큐 뒤로 보내서 다시 보게 함
+    if(g === "good"){
+      state.queue = q.filter(x => x !== curId);
+      state.doneCount = (state.doneCount||0) + 1;
+      if(state.index >= state.queue.length) state.index = 0;
+      toast("맞혔어요 → 제거");
+    } else if(g === "mid"){
+      state.queue = moveToEndKeepingOrder(q, curId, 2);
+      toast("애매/틀림 → 나중에 다시");
+    } else {
+      state.queue = moveToEndKeepingOrder(q, curId, 1);
+      toast("몰랐어요 → 곧 다시");
+    }
+
+    saveJson(FLASH_KEY, state);
+    render();
+  }
+
+  function moveToEndKeepingOrder(q, id, offset){
+    const rest = q.filter(x => x !== id);
+    const pos = Math.min(rest.length, offset); // 조금 뒤에 끼워서 “곧” 다시 나오게
+    rest.splice(pos, 0, id);
+    state.index = 0;
+    return rest;
+  }
+
+  window.next = function(){
+    const q = state.queue || [];
+    if(q.length === 0) return;
+    state.index = Math.min(state.index + 1, q.length - 1);
+    saveJson(FLASH_KEY, state);
+    render();
+  }
+
+  window.rebuild = function(){
+    // 최신 skim 결과로 큐 재생성
+    state.queue = buildQueue();
+    state.index = 0;
+    state.grades = {};
+    state.doneCount = 0;
+    saveJson(FLASH_KEY, state);
+    toast("큐 재생성");
+    render();
+  }
+
+  window.resetFlash = function(){
+    localStorage.removeItem(FLASH_KEY);
+    toast("플래시 초기화");
+    location.reload();
+  }
+
+  // TTS mock
+  el("audioBtn").addEventListener("click", ()=>{
+    const q = state.queue || [];
+    if(q.length === 0){ toast("재생할 문장 없음"); return; }
+    const s = getSentence(q[Math.min(state.index, q.length-1)]);
+    toast(`🔊 (목업) TTS: ${s.ja}`);
+  });
+
+  // ===== Utils =====
+  function toast(msg){
+    const t = el("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._id);
+    toast._id = setTimeout(()=>t.classList.remove("show"), 900);
+  }
+
+  function loadJson(key){ try{ return JSON.parse(localStorage.getItem(key)); }catch{ return null; } }
+  function saveJson(key, obj){ localStorage.setItem(key, JSON.stringify(obj)); }
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // init
+  render();
+</script>
+</body>
+</html>

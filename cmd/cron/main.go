@@ -29,14 +29,18 @@ import (
 
 // GeneratedSentence OpenAI 응답 파싱용
 type GeneratedSentence struct {
-	JP          string        `json:"jp"`
-	KR          string        `json:"kr"`
-	Romaji      string        `json:"romaji"`
-	SubCategory int           `json:"sub_category"`
-	Words       []model.Word  `json:"words"`
-	Grammar     StringOrArray `json:"grammar"`
-	Examples    StringOrArray `json:"examples"`
-	Quiz        *model.Quiz   `json:"quiz"`
+	JP       string        `json:"jp"`
+	KR       string        `json:"kr"`
+	Romaji   string        `json:"romaji"`
+	Category int           `json:"category"`
+	Words    []model.Word  `json:"words"`
+	Grammar  StringOrArray `json:"grammar"`
+	Examples StringOrArray `json:"examples"`
+	Quiz     *model.Quiz   `json:"quiz"`
+	// Flash 카드용 필드
+	Phrase string `json:"phrase"` // 핵심 표현 1개
+	Tip    string `json:"tip"`    // 한 줄 설명
+	Alt    string `json:"alt"`    // 같은 구조 예문 1개
 }
 
 // StringOrArray GPT가 문자열 또는 배열로 반환할 수 있는 필드 처리
@@ -124,7 +128,7 @@ func main() {
 	// Create cron scheduler
 	c := cron.New(cron.WithSeconds())
 
-	// Run every 5 minutes
+	// Run every 1 minute
 	_, err = c.AddFunc("0 */1 * * * *", func() {
 		log.Println("=== Starting generation job ===")
 		ctx, cancel := context.WithTimeout(context.Background(), 4*time.Minute)
@@ -233,7 +237,7 @@ func (g *Generator) generateTTS(ctx context.Context, sentenceID uint, sentenceKe
 	}
 
 	// 4. Object Storage에 업로드
-	// 파일명: {sentenceKey}_{날짜}_{sentenceID}.wav (예: 101_0_20241214_123.wav)
+	// 파일명: {sentenceKey}_{날짜}_{sentenceID}.wav (예: 1_5_20241214_123.wav)
 	today := time.Now().Format("20060102")
 	fileName := fmt.Sprintf("%s_%s_%d.wav", sentenceKey, today, sentenceID)
 	_, err = g.s3Client.PutObject(ctx, &s3.PutObjectInput{
@@ -277,13 +281,13 @@ func (g *Generator) Run(ctx context.Context) error {
 		batchSize = needed
 	}
 
-	subCat := key.SubCategory()
+	category := key.Category()
 	level := key.Level()
 
 	log.Printf("Generating %d sentences for %s (%s, %s) - current: %d",
-		batchSize, sentenceKey, subCat.Name(), level.Name(), count)
+		batchSize, sentenceKey, category.Name(), level.Name(), count)
 
-	return g.generate(ctx, int(subCat), int(level), subCat.Name(), batchSize)
+	return g.generate(ctx, int(category), int(level), category.Name(), batchSize)
 }
 
 func (g *Generator) findDeficientKeys() []pkg.SentenceKey {
@@ -305,8 +309,8 @@ func (g *Generator) countByKey(sentenceKey string) (int64, error) {
 	return count, err
 }
 
-func (g *Generator) generate(ctx context.Context, subCategory, level int, categoryName string, count int) error {
-	prompt := g.buildPrompt(subCategory, level, categoryName, count)
+func (g *Generator) generate(ctx context.Context, category, level int, categoryName string, count int) error {
+	prompt := g.buildPrompt(category, level, categoryName, count)
 
 	resp, err := g.openai.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
 		Model: g.model,
@@ -336,7 +340,7 @@ func (g *Generator) generate(ctx context.Context, subCategory, level int, catego
 	}
 
 	// 저장
-	sentenceKey := fmt.Sprintf("%d_%d", subCategory, level)
+	sentenceKey := fmt.Sprintf("%d_%d", category, level)
 	savedCount := 0
 
 	for _, gen := range generated {
@@ -346,7 +350,7 @@ func (g *Generator) generate(ctx context.Context, subCategory, level int, catego
 			KR:          gen.KR,
 			Romaji:      gen.Romaji,
 			Level:       level,
-			SubCategory: subCategory,
+			Category:    category,
 		}
 
 		if err := g.db.Create(&sentence).Error; err != nil {
@@ -360,6 +364,10 @@ func (g *Generator) generate(ctx context.Context, subCategory, level int, catego
 			Grammar:    []string(gen.Grammar),
 			Examples:   []string(gen.Examples),
 			Quiz:       gen.Quiz,
+			// Flash 카드용 필드
+			Phrase: gen.Phrase,
+			Tip:    gen.Tip,
+			Alt:    gen.Alt,
 		}
 
 		if err := g.db.Create(&detail).Error; err != nil {
@@ -399,16 +407,16 @@ func (g *Generator) PrintStatus() {
 		total += int(count)
 		if int(count) < g.targetCount {
 			deficient++
-			subCat := key.SubCategory()
+			category := key.Category()
 			level := key.Level()
-			log.Printf("  [NEED] %s (%s, %s): %d/%d", sentenceKey, subCat.Name(), level.Name(), count, g.targetCount)
+			log.Printf("  [NEED] %s (%s, %s): %d/%d", sentenceKey, category.Name(), level.Name(), count, g.targetCount)
 		}
 	}
 
 	log.Printf("Total: %d sentences, %d combinations need more", total, deficient)
 }
 
-func (g *Generator) buildPrompt(subCategory, level int, categoryName string, count int) string {
+func (g *Generator) buildPrompt(category, level int, categoryName string, count int) string {
 	levelDesc := getLevelDescription(level)
 
 	return fmt.Sprintf(`다음 조건에 맞는 일본어 학습 문장을 JSON으로 생성해 주세요.
@@ -419,14 +427,14 @@ func (g *Generator) buildPrompt(subCategory, level int, categoryName string, cou
 - 생성 개수: %d개
 
 [요구 사항]
-- 각 문장은 jp, kr, romaji, sub_category(%d 고정), words, grammar, examples, quiz 포함
-- 오타쿠 문화에서 실제로 쓰일 법한 자연스러운 표현
-- JSON 배열만 출력`, categoryName, subCategory, levelDesc, count, subCategory)
+- 각 문장은 jp, kr, romaji, category(%d 고정), words, grammar, examples, quiz, phrase, tip, alt 포함
+- 해당 카테고리의 콘텐츠(일본 %s)에서 실제로 쓰일 법한 자연스러운 표현
+- JSON 배열만 출력`, categoryName, category, levelDesc, count, category, categoryName)
 }
 
 func (g *Generator) getSystemPrompt() string {
 	return `당신은 일본어 학습용 문장 + 문장 분석 + 퀴즈를 생성하는 전문가입니다.
-오타쿠(애니, 게임, 버튜버, 굿즈 등)에 관심 있는 한국인 학습자를 위한 실용적인 일본어 문장을 생성하고, 각 문장에 대한 단어 풀이 / 문법 / 예문 / 퀴즈까지 한 번에 만들어주세요.
+일본 콘텐츠(애니, 게임, 음악, 영화, 드라마)에 관심 있는 한국인 학습자를 위한 실용적인 일본어 문장을 생성하고, 각 문장에 대한 단어 풀이 / 문법 / 예문 / 퀴즈까지 한 번에 만들어주세요.
 
 [아주 중요]
 - 반드시 **JSON 배열** 형식으로만 응답하세요.
@@ -442,7 +450,7 @@ func (g *Generator) getSystemPrompt() string {
     "jp": string,              // 일본어 문장 (최종 학습 문장)
     "kr": string,              // 한국어 번역
     "romaji": string,          // 로마자 표기
-    "sub_category": number,    // 단일 SubCategory 코드 (예: 101)
+    "category": number,        // Category 코드 (1~5)
 
     "words": [                 // 단어 풀이
       {
@@ -471,27 +479,29 @@ func (g *Generator) getSystemPrompt() string {
         "fragments": [string], // 문장을 3~5조각으로 나눈 배열 (순서 섞어서 제공)
         "correct_order": [number] // 정답 순서를 나타내는 인덱스 배열 (0부터 시작)
       }
-    }
+    },
+
+    // Flash 카드용 필드 (대사 리허설 학습용)
+    "phrase": string,          // 핵심 표현 1개 (문장에서 가장 중요한 표현이나 숙어, 일본어)
+    "tip": string,             // 핵심 표현에 대한 한 줄 설명 (한국어, 사용법이나 뉘앙스)
+    "alt": string              // 같은 구조/패턴을 사용한 다른 예문 1개 (일본어)
   }
 ]
 
 [카테고리 규칙]
-- "sub_category"에는 아래 SubCategory 코드 중에서 **1개만** 선택해 넣으세요.
-- 문장과 가장 관련 있는 코드를 고르세요.
+- "category"에는 아래 Category 코드 중에서 지정된 값을 넣으세요.
 
-- Anime: 101(배틀/판타지·SF), 102(일상/러브코미·감성), 103(서사/추리)
-- Game: 201(RPG/가챠), 202(리듬게임), 203(액션/대전·슈터)
-- Music: 301(J-POP), 302(아이돌), 303(애니송)
-- VTuber: 351(버튜버)
-- Lifestyle: 401(성지순례/여행), 402(굿즈/수집), 403(코미케/동인)
-- Situation: 501(쇼핑/주문), 502(현장/라이브), 503(오타쿠 대화), 504(콜라보카페/게임센터)
+- 1: 애니 (애니메이션 관련 표현, 캐릭터 묘사, 스토리 감상 등)
+- 2: 게임 (게임 플레이, RPG, 모바일 게임, e스포츠 관련 표현)
+- 3: 음악 (J-POP, 아이돌, 애니송, 콘서트 관련 표현)
+- 4: 영화 (일본 영화 감상, 리뷰, 영화관 관련 표현)
+- 5: 드라마 (일본 드라마 감상, 배우, 스토리 관련 표현)
 
 [레벨/어휘/문법 가이드라인]
 - 사용자의 일본어 레벨에 맞추어 난이도를 조절하세요.
-- Lv0: 가장 짧고 쉬운 표현, 기본 단어만
-- Lv1: 짧고 쉬운 표현, 기본 인사, N5 수준
-- Lv2: 일상 회화, N4 수준, て형/ない형 등 기본 활용
-- Lv3: 자신의 생각 표현, N3 수준, 조금 길어도 됨
+- N5 (레벨 5): 짧고 쉬운 표현, 기본 인사, JLPT N5 수준
+- N4 (레벨 4): 일상 회화, JLPT N4 수준, て형/ない형 등 기본 활용
+- N3 (레벨 3): 자신의 생각 표현, JLPT N3 수준, 조금 길어도 됨
 
 [퀴즈 생성 규칙]
 
@@ -509,7 +519,7 @@ func (g *Generator) getSystemPrompt() string {
       correct_order는 [1, 2, 0] 입니다.
 
 [스타일 규칙]
-- 오타쿠 문화(애니, 게임, 버튜버, 굿즈 등)에서 실제로 쓰일 법한 자연스러운 표현을 사용하세요.
+- 해당 카테고리의 콘텐츠에서 실제로 쓰일 법한 자연스러운 표현을 사용하세요.
 - 학습자가 실제로 쓸 수 있는 실용적인 문장으로 만드세요.
 - 문장은 너무 길지 않게, 레벨에 맞는 길이와 단어를 사용하세요.
 - 로마자(romaji)는 일반적인 표기법으로 적어주세요.
@@ -521,16 +531,14 @@ func (g *Generator) getSystemPrompt() string {
 
 func getLevelDescription(level int) string {
 	switch level {
-	case 0:
-		return "Lv0 - 완전 초입문"
-	case 1:
-		return "Lv1 - N5 수준"
-	case 2:
-		return "Lv2 - N4 수준"
+	case 5:
+		return "N5 - JLPT N5 수준"
+	case 4:
+		return "N4 - JLPT N4 수준"
 	case 3:
-		return "Lv3 - N3 수준"
+		return "N3 - JLPT N3 수준"
 	default:
-		return "Lv1 - N5 수준"
+		return "N5 - JLPT N5 수준"
 	}
 }
 
