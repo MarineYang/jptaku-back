@@ -1,0 +1,920 @@
+{
+  "sentences": [
+    {
+      "sentence_key": "1_5",
+      "jp": "このアニメは本当に面白いですね。",
+      "kr": "이 애니메이션은 정말 재미있네요.",
+      "romaji": "kono anime wa hontou ni omoshiroi desu ne",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "アニメ", "reading": "あにめ", "meaning": "애니메이션", "part_of": "명사"},
+          {"japanese": "本当に", "reading": "ほんとうに", "meaning": "정말로", "part_of": "부사"},
+          {"japanese": "面白い", "reading": "おもしろい", "meaning": "재미있다", "part_of": "형용사"}
+        ],
+        "grammar": ["~ですね (동의/감탄 표현)"],
+        "examples": ["この映画は本当に面白いですね。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "このアニメは___面白いですね。",
+            "options": ["本当に", "少し", "あまり", "全然"],
+            "answer": "本当に"
+          },
+          "ordering": {
+            "fragments": ["この", "アニメは", "本当に", "面白いですね"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "本当に面白い",
+        "tip": "정말 재미있다고 감탄할 때 사용",
+        "alt": "この漫画は本当に面白いですね。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "推しのキャラクターは誰ですか？",
+      "kr": "최애 캐릭터는 누구예요?",
+      "romaji": "oshi no kyarakutaa wa dare desu ka",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "推し", "reading": "おし", "meaning": "최애, 좋아하는 것", "part_of": "명사"},
+          {"japanese": "キャラクター", "reading": "きゃらくたー", "meaning": "캐릭터", "part_of": "명사"},
+          {"japanese": "誰", "reading": "だれ", "meaning": "누구", "part_of": "대명사"}
+        ],
+        "grammar": ["~は誰ですか (누구인지 묻기)"],
+        "examples": ["好きな歌手は誰ですか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "推しの___は誰ですか？",
+            "options": ["キャラクター", "アニメ", "ゲーム", "映画"],
+            "answer": "キャラクター"
+          },
+          "ordering": {
+            "fragments": ["推しの", "キャラクターは", "誰", "ですか"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "推しのキャラクター",
+        "tip": "오타쿠 문화에서 자주 쓰는 '최애' 표현",
+        "alt": "推しの声優は誰ですか？"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "今期のアニメで何を見ていますか？",
+      "kr": "이번 시즌 애니 중에 뭘 보고 있어요?",
+      "romaji": "konki no anime de nani wo mite imasu ka",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "今期", "reading": "こんき", "meaning": "이번 시즌", "part_of": "명사"},
+          {"japanese": "何", "reading": "なに", "meaning": "무엇", "part_of": "대명사"},
+          {"japanese": "見る", "reading": "みる", "meaning": "보다", "part_of": "동사"}
+        ],
+        "grammar": ["~ています (진행형)"],
+        "examples": ["今、何を食べていますか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "今期のアニメで何を___いますか？",
+            "options": ["見て", "聞いて", "読んで", "書いて"],
+            "answer": "見て"
+          },
+          "ordering": {
+            "fragments": ["今期の", "アニメで", "何を", "見ていますか"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "今期のアニメ",
+        "tip": "현재 방영 중인 애니메이션을 말할 때",
+        "alt": "今期のドラマで何を見ていますか？"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "声優さんの演技がすごいです。",
+      "kr": "성우분의 연기가 대단해요.",
+      "romaji": "seiyuu san no engi ga sugoi desu",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "声優", "reading": "せいゆう", "meaning": "성우", "part_of": "명사"},
+          {"japanese": "演技", "reading": "えんぎ", "meaning": "연기", "part_of": "명사"},
+          {"japanese": "すごい", "reading": "すごい", "meaning": "대단하다", "part_of": "형용사"}
+        ],
+        "grammar": ["~がすごい (칭찬 표현)"],
+        "examples": ["この歌手の歌がすごいです。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "声優さんの___がすごいです。",
+            "options": ["演技", "声", "歌", "顔"],
+            "answer": "演技"
+          },
+          "ordering": {
+            "fragments": ["声優さんの", "演技が", "すごい", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "演技がすごい",
+        "tip": "연기력을 칭찬할 때 사용",
+        "alt": "この俳優さんの演技がすごいです。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "原作の漫画も読みましたか？",
+      "kr": "원작 만화도 읽었어요?",
+      "romaji": "gensaku no manga mo yomimashita ka",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "原作", "reading": "げんさく", "meaning": "원작", "part_of": "명사"},
+          {"japanese": "漫画", "reading": "まんが", "meaning": "만화", "part_of": "명사"},
+          {"japanese": "読む", "reading": "よむ", "meaning": "읽다", "part_of": "동사"}
+        ],
+        "grammar": ["~も (도, 또한)", "~ましたか (과거 의문)"],
+        "examples": ["映画も見ましたか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "原作の漫画も___ましたか？",
+            "options": ["読み", "見", "聞き", "書き"],
+            "answer": "読み"
+          },
+          "ordering": {
+            "fragments": ["原作の", "漫画も", "読み", "ましたか"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "原作の漫画",
+        "tip": "애니메이션의 원작을 물을 때",
+        "alt": "原作の小説も読みましたか？"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "このシーンで泣きました。",
+      "kr": "이 장면에서 울었어요.",
+      "romaji": "kono shiin de nakimashita",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "シーン", "reading": "しーん", "meaning": "장면", "part_of": "명사"},
+          {"japanese": "泣く", "reading": "なく", "meaning": "울다", "part_of": "동사"},
+          {"japanese": "で", "reading": "で", "meaning": "~에서", "part_of": "조사"}
+        ],
+        "grammar": ["~で (장소/상황 표시)", "~ました (과거형)"],
+        "examples": ["あの映画で泣きました。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "このシーン___泣きました。",
+            "options": ["で", "に", "を", "が"],
+            "answer": "で"
+          },
+          "ordering": {
+            "fragments": ["この", "シーンで", "泣き", "ました"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "泣きました",
+        "tip": "감동적인 장면을 표현할 때",
+        "alt": "最終回で泣きました。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "オープニング曲が好きです。",
+      "kr": "오프닝 곡을 좋아해요.",
+      "romaji": "oopuningu kyoku ga suki desu",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "オープニング", "reading": "おーぷにんぐ", "meaning": "오프닝", "part_of": "명사"},
+          {"japanese": "曲", "reading": "きょく", "meaning": "곡", "part_of": "명사"},
+          {"japanese": "好き", "reading": "すき", "meaning": "좋아하다", "part_of": "형용동사"}
+        ],
+        "grammar": ["~が好きです (좋아함 표현)"],
+        "examples": ["この歌手が好きです。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "オープニング___が好きです。",
+            "options": ["曲", "歌", "音", "声"],
+            "answer": "曲"
+          },
+          "ordering": {
+            "fragments": ["オープニング", "曲が", "好き", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "オープニング曲",
+        "tip": "애니 오프닝/엔딩 이야기할 때",
+        "alt": "エンディング曲が好きです。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "二期はいつ始まりますか？",
+      "kr": "2기는 언제 시작해요?",
+      "romaji": "niki wa itsu hajimarimasu ka",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "二期", "reading": "にき", "meaning": "2기", "part_of": "명사"},
+          {"japanese": "いつ", "reading": "いつ", "meaning": "언제", "part_of": "부사"},
+          {"japanese": "始まる", "reading": "はじまる", "meaning": "시작되다", "part_of": "동사"}
+        ],
+        "grammar": ["~はいつですか (시간 질문)"],
+        "examples": ["映画はいつ始まりますか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "二期は___始まりますか？",
+            "options": ["いつ", "どこ", "だれ", "なに"],
+            "answer": "いつ"
+          },
+          "ordering": {
+            "fragments": ["二期は", "いつ", "始まり", "ますか"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "二期はいつ",
+        "tip": "시즌2 방영일을 물을 때",
+        "alt": "新作はいつ始まりますか？"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "主人公がかっこいいですね。",
+      "kr": "주인공이 멋있네요.",
+      "romaji": "shujinkou ga kakkoii desu ne",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "主人公", "reading": "しゅじんこう", "meaning": "주인공", "part_of": "명사"},
+          {"japanese": "かっこいい", "reading": "かっこいい", "meaning": "멋있다", "part_of": "형용사"}
+        ],
+        "grammar": ["~がかっこいい (외모/성격 칭찬)"],
+        "examples": ["あの俳優がかっこいいですね。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "主人公が___ですね。",
+            "options": ["かっこいい", "かわいい", "すごい", "やさしい"],
+            "answer": "かっこいい"
+          },
+          "ordering": {
+            "fragments": ["主人公が", "かっこいい", "です", "ね"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "かっこいい",
+        "tip": "남성 캐릭터를 칭찬할 때",
+        "alt": "この声優さんがかっこいいですね。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "ネタバレしないでください。",
+      "kr": "스포일러하지 마세요.",
+      "romaji": "netabare shinaide kudasai",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "ネタバレ", "reading": "ねたばれ", "meaning": "스포일러", "part_of": "명사"},
+          {"japanese": "しないで", "reading": "しないで", "meaning": "하지 마", "part_of": "동사"}
+        ],
+        "grammar": ["~しないでください (부정 요청)"],
+        "examples": ["ここで写真を撮らないでください。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "ネタバレ___ください。",
+            "options": ["しないで", "して", "しなくて", "した"],
+            "answer": "しないで"
+          },
+          "ordering": {
+            "fragments": ["ネタバレ", "しないで", "くだ", "さい"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "ネタバレしないで",
+        "tip": "스포일러 방지를 부탁할 때",
+        "alt": "結末を言わないでください。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "聖地巡礼に行きたいです。",
+      "kr": "성지순례 가고 싶어요.",
+      "romaji": "seichi junrei ni ikitai desu",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "聖地巡礼", "reading": "せいちじゅんれい", "meaning": "성지순례", "part_of": "명사"},
+          {"japanese": "行く", "reading": "いく", "meaning": "가다", "part_of": "동사"},
+          {"japanese": "たい", "reading": "たい", "meaning": "~하고 싶다", "part_of": "조동사"}
+        ],
+        "grammar": ["~たいです (희망 표현)"],
+        "examples": ["日本に行きたいです。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "聖地巡礼に___たいです。",
+            "options": ["行き", "来", "帰り", "出"],
+            "answer": "行き"
+          },
+          "ordering": {
+            "fragments": ["聖地巡礼に", "行き", "たい", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "聖地巡礼",
+        "tip": "애니 배경지 방문을 말할 때",
+        "alt": "秋葉原に行きたいです。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "この作品は神アニメです。",
+      "kr": "이 작품은 갓애니예요.",
+      "romaji": "kono sakuhin wa kami anime desu",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "作品", "reading": "さくひん", "meaning": "작품", "part_of": "명사"},
+          {"japanese": "神", "reading": "かみ", "meaning": "신, 갓", "part_of": "명사"},
+          {"japanese": "アニメ", "reading": "あにめ", "meaning": "애니메이션", "part_of": "명사"}
+        ],
+        "grammar": ["~は~です (명사 서술)"],
+        "examples": ["この曲は神曲です。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "この作品は___アニメです。",
+            "options": ["神", "良い", "新しい", "古い"],
+            "answer": "神"
+          },
+          "ordering": {
+            "fragments": ["この作品は", "神", "アニメ", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "神アニメ",
+        "tip": "최고의 애니를 표현하는 오타쿠 용어",
+        "alt": "このゲームは神ゲーです。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "フィギュアを集めています。",
+      "kr": "피규어를 모으고 있어요.",
+      "romaji": "figyua wo atsumete imasu",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "フィギュア", "reading": "ふぃぎゅあ", "meaning": "피규어", "part_of": "명사"},
+          {"japanese": "集める", "reading": "あつめる", "meaning": "모으다", "part_of": "동사"}
+        ],
+        "grammar": ["~ています (진행/습관)"],
+        "examples": ["切手を集めています。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "フィギュアを___います。",
+            "options": ["集めて", "買って", "売って", "見て"],
+            "answer": "集めて"
+          },
+          "ordering": {
+            "fragments": ["フィギュアを", "集めて", "い", "ます"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "集めています",
+        "tip": "수집 취미를 말할 때",
+        "alt": "グッズを集めています。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "このキャラは可愛いですね。",
+      "kr": "이 캐릭터는 귀엽네요.",
+      "romaji": "kono kyara wa kawaii desu ne",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "キャラ", "reading": "きゃら", "meaning": "캐릭터 (줄임말)", "part_of": "명사"},
+          {"japanese": "可愛い", "reading": "かわいい", "meaning": "귀엽다", "part_of": "형용사"}
+        ],
+        "grammar": ["~は~ですね (감탄 표현)"],
+        "examples": ["この猫は可愛いですね。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "このキャラは___ですね。",
+            "options": ["可愛い", "かっこいい", "怖い", "強い"],
+            "answer": "可愛い"
+          },
+          "ordering": {
+            "fragments": ["この", "キャラは", "可愛い", "ですね"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "可愛い",
+        "tip": "귀여운 캐릭터를 칭찬할 때",
+        "alt": "このマスコットは可愛いですね。"
+      }
+    },
+    {
+      "sentence_key": "1_5",
+      "jp": "コミケに行ったことがありますか？",
+      "kr": "코미케에 가본 적 있어요?",
+      "romaji": "komike ni itta koto ga arimasu ka",
+      "level": 5,
+      "category": 1,
+      "detail": {
+        "words": [
+          {"japanese": "コミケ", "reading": "こみけ", "meaning": "코미케 (코믹마켓)", "part_of": "명사"},
+          {"japanese": "行った", "reading": "いった", "meaning": "갔다", "part_of": "동사"},
+          {"japanese": "こと", "reading": "こと", "meaning": "것, 경험", "part_of": "명사"}
+        ],
+        "grammar": ["~たことがある (경험 표현)"],
+        "examples": ["日本に行ったことがありますか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "コミケに行った___がありますか？",
+            "options": ["こと", "とき", "もの", "ひと"],
+            "answer": "こと"
+          },
+          "ordering": {
+            "fragments": ["コミケに", "行った", "ことが", "ありますか"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "行ったことがある",
+        "tip": "경험 여부를 물을 때",
+        "alt": "秋葉原に行ったことがありますか？"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "このゲームは難しいですね。",
+      "kr": "이 게임은 어렵네요.",
+      "romaji": "kono geemu wa muzukashii desu ne",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "ゲーム", "reading": "げーむ", "meaning": "게임", "part_of": "명사"},
+          {"japanese": "難しい", "reading": "むずかしい", "meaning": "어렵다", "part_of": "형용사"}
+        ],
+        "grammar": ["~は~ですね (감상 표현)"],
+        "examples": ["この問題は難しいですね。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "このゲームは___ですね。",
+            "options": ["難しい", "簡単", "楽しい", "つまらない"],
+            "answer": "難しい"
+          },
+          "ordering": {
+            "fragments": ["この", "ゲームは", "難しい", "ですね"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "難しいですね",
+        "tip": "게임 난이도를 표현할 때",
+        "alt": "このステージは難しいですね。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "一緒にゲームをしませんか？",
+      "kr": "같이 게임 안 할래요?",
+      "romaji": "issho ni geemu wo shimasen ka",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "一緒に", "reading": "いっしょに", "meaning": "같이, 함께", "part_of": "부사"},
+          {"japanese": "ゲーム", "reading": "げーむ", "meaning": "게임", "part_of": "명사"},
+          {"japanese": "しませんか", "reading": "しませんか", "meaning": "하지 않을래요?", "part_of": "동사"}
+        ],
+        "grammar": ["~ませんか (권유 표현)"],
+        "examples": ["一緒に映画を見ませんか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "一緒にゲームを___か？",
+            "options": ["しません", "します", "した", "しない"],
+            "answer": "しません"
+          },
+          "ordering": {
+            "fragments": ["一緒に", "ゲームを", "しません", "か"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "一緒に~しませんか",
+        "tip": "함께 뭔가를 하자고 권유할 때",
+        "alt": "一緒にご飯を食べませんか？"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "セーブを忘れました。",
+      "kr": "세이브를 깜빡했어요.",
+      "romaji": "seebu wo wasuremashita",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "セーブ", "reading": "せーぶ", "meaning": "세이브, 저장", "part_of": "명사"},
+          {"japanese": "忘れる", "reading": "わすれる", "meaning": "잊다", "part_of": "동사"}
+        ],
+        "grammar": ["~を忘れる (잊다 표현)"],
+        "examples": ["宿題を忘れました。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "セーブを___ました。",
+            "options": ["忘れ", "覚え", "思い出し", "考え"],
+            "answer": "忘れ"
+          },
+          "ordering": {
+            "fragments": ["セーブを", "忘れ", "まし", "た"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "忘れました",
+        "tip": "게임 저장을 잊었을 때",
+        "alt": "パスワードを忘れました。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "このボスは強すぎます。",
+      "kr": "이 보스는 너무 강해요.",
+      "romaji": "kono bosu wa tsuyosugimasu",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "ボス", "reading": "ぼす", "meaning": "보스", "part_of": "명사"},
+          {"japanese": "強い", "reading": "つよい", "meaning": "강하다", "part_of": "형용사"},
+          {"japanese": "すぎる", "reading": "すぎる", "meaning": "너무 ~하다", "part_of": "조동사"}
+        ],
+        "grammar": ["~すぎる (과도함 표현)"],
+        "examples": ["この料理は辛すぎます。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "このボスは強___ます。",
+            "options": ["すぎ", "く", "かった", "い"],
+            "answer": "すぎ"
+          },
+          "ordering": {
+            "fragments": ["この", "ボスは", "強すぎ", "ます"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "強すぎる",
+        "tip": "게임 보스가 너무 강할 때",
+        "alt": "このモンスターは強すぎます。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "レベルを上げましょう。",
+      "kr": "레벨을 올리죠.",
+      "romaji": "reberu wo agemashou",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "レベル", "reading": "れべる", "meaning": "레벨", "part_of": "명사"},
+          {"japanese": "上げる", "reading": "あげる", "meaning": "올리다", "part_of": "동사"}
+        ],
+        "grammar": ["~ましょう (제안/권유)"],
+        "examples": ["休憩しましょう。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "レベルを___ましょう。",
+            "options": ["上げ", "下げ", "変え", "決め"],
+            "answer": "上げ"
+          },
+          "ordering": {
+            "fragments": ["レベルを", "上げ", "ましょ", "う"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "レベルを上げる",
+        "tip": "RPG에서 레벨업을 제안할 때",
+        "alt": "スキルを上げましょう。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "アイテムを買いたいです。",
+      "kr": "아이템을 사고 싶어요.",
+      "romaji": "aitemu wo kaitai desu",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "アイテム", "reading": "あいてむ", "meaning": "아이템", "part_of": "명사"},
+          {"japanese": "買う", "reading": "かう", "meaning": "사다", "part_of": "동사"},
+          {"japanese": "たい", "reading": "たい", "meaning": "~하고 싶다", "part_of": "조동사"}
+        ],
+        "grammar": ["~たいです (희망 표현)"],
+        "examples": ["新しい服を買いたいです。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "アイテムを___たいです。",
+            "options": ["買い", "売り", "使い", "作り"],
+            "answer": "買い"
+          },
+          "ordering": {
+            "fragments": ["アイテムを", "買い", "たい", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "買いたいです",
+        "tip": "게임 아이템 구매 의사를 표현할 때",
+        "alt": "武器を買いたいです。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "オンラインでプレイしましょう。",
+      "kr": "온라인으로 플레이하죠.",
+      "romaji": "onrain de purei shimashou",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "オンライン", "reading": "おんらいん", "meaning": "온라인", "part_of": "명사"},
+          {"japanese": "プレイ", "reading": "ぷれい", "meaning": "플레이", "part_of": "명사"}
+        ],
+        "grammar": ["~でプレイする (방법 표현)", "~ましょう (제안)"],
+        "examples": ["電話で話しましょう。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "オンライン___プレイしましょう。",
+            "options": ["で", "に", "を", "が"],
+            "answer": "で"
+          },
+          "ordering": {
+            "fragments": ["オンラインで", "プレイ", "しましょ", "う"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "オンラインでプレイ",
+        "tip": "온라인 멀티플레이를 제안할 때",
+        "alt": "オフラインでプレイしましょう。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "何時間ゲームをしましたか？",
+      "kr": "몇 시간 게임을 했어요?",
+      "romaji": "nanjikan geemu wo shimashita ka",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "何時間", "reading": "なんじかん", "meaning": "몇 시간", "part_of": "명사"},
+          {"japanese": "ゲーム", "reading": "げーむ", "meaning": "게임", "part_of": "명사"}
+        ],
+        "grammar": ["何時間~ (시간 질문)", "~ましたか (과거 의문)"],
+        "examples": ["何時間勉強しましたか？"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "___ゲームをしましたか？",
+            "options": ["何時間", "いつ", "どこで", "誰と"],
+            "answer": "何時間"
+          },
+          "ordering": {
+            "fragments": ["何時間", "ゲームを", "しました", "か"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "何時間",
+        "tip": "게임 플레이 시간을 물을 때",
+        "alt": "毎日何時間寝ますか？"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "コントローラーを貸してください。",
+      "kr": "컨트롤러 좀 빌려주세요.",
+      "romaji": "kontorooraa wo kashite kudasai",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "コントローラー", "reading": "こんとろーらー", "meaning": "컨트롤러", "part_of": "명사"},
+          {"japanese": "貸す", "reading": "かす", "meaning": "빌려주다", "part_of": "동사"}
+        ],
+        "grammar": ["~てください (요청 표현)"],
+        "examples": ["ペンを貸してください。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "コントローラーを___ください。",
+            "options": ["貸して", "借りて", "買って", "使って"],
+            "answer": "貸して"
+          },
+          "ordering": {
+            "fragments": ["コントローラーを", "貸して", "くだ", "さい"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "貸してください",
+        "tip": "물건을 빌려달라고 할 때",
+        "alt": "ヘッドホンを貸してください。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "やっとクリアしました！",
+      "kr": "드디어 클리어했어요!",
+      "romaji": "yatto kuria shimashita",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "やっと", "reading": "やっと", "meaning": "드디어, 겨우", "part_of": "부사"},
+          {"japanese": "クリア", "reading": "くりあ", "meaning": "클리어", "part_of": "명사"}
+        ],
+        "grammar": ["やっと~しました (드디어 달성)"],
+        "examples": ["やっと宿題が終わりました。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "___クリアしました！",
+            "options": ["やっと", "もう", "まだ", "いつも"],
+            "answer": "やっと"
+          },
+          "ordering": {
+            "fragments": ["やっと", "クリア", "しま", "した"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "やっとクリア",
+        "tip": "어려운 스테이지를 깨었을 때",
+        "alt": "やっとボスを倒しました！"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "ゲームオーバーになりました。",
+      "kr": "게임 오버가 됐어요.",
+      "romaji": "geemu oobaa ni narimashita",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "ゲームオーバー", "reading": "げーむおーばー", "meaning": "게임 오버", "part_of": "명사"},
+          {"japanese": "なる", "reading": "なる", "meaning": "되다", "part_of": "동사"}
+        ],
+        "grammar": ["~になる (상태 변화)"],
+        "examples": ["先生になりました。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "ゲームオーバー___なりました。",
+            "options": ["に", "が", "を", "で"],
+            "answer": "に"
+          },
+          "ordering": {
+            "fragments": ["ゲームオーバー", "に", "なり", "ました"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "~になりました",
+        "tip": "게임에서 지거나 끝났을 때",
+        "alt": "チャンピオンになりました。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "新しいゲームを買いました。",
+      "kr": "새 게임을 샀어요.",
+      "romaji": "atarashii geemu wo kaimashita",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "新しい", "reading": "あたらしい", "meaning": "새로운", "part_of": "형용사"},
+          {"japanese": "ゲーム", "reading": "げーむ", "meaning": "게임", "part_of": "명사"},
+          {"japanese": "買う", "reading": "かう", "meaning": "사다", "part_of": "동사"}
+        ],
+        "grammar": ["~を買いました (구매 표현)"],
+        "examples": ["新しい本を買いました。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "___ゲームを買いました。",
+            "options": ["新しい", "古い", "高い", "安い"],
+            "answer": "新しい"
+          },
+          "ordering": {
+            "fragments": ["新しい", "ゲームを", "買い", "ました"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "新しいゲーム",
+        "tip": "신작 게임 구매를 알릴 때",
+        "alt": "新しいスマホを買いました。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "このキャラを使っています。",
+      "kr": "이 캐릭터를 쓰고 있어요.",
+      "romaji": "kono kyara wo tsukatte imasu",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "キャラ", "reading": "きゃら", "meaning": "캐릭터", "part_of": "명사"},
+          {"japanese": "使う", "reading": "つかう", "meaning": "사용하다", "part_of": "동사"}
+        ],
+        "grammar": ["~ています (진행/상태)"],
+        "examples": ["今、電話を使っています。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "このキャラを___います。",
+            "options": ["使って", "見て", "聞いて", "読んで"],
+            "answer": "使って"
+          },
+          "ordering": {
+            "fragments": ["このキャラを", "使って", "い", "ます"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "使っています",
+        "tip": "메인 캐릭터를 소개할 때",
+        "alt": "この武器を使っています。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "スキルを覚えたいです。",
+      "kr": "스킬을 배우고 싶어요.",
+      "romaji": "sukiru wo oboetai desu",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "スキル", "reading": "すきる", "meaning": "스킬", "part_of": "명사"},
+          {"japanese": "覚える", "reading": "おぼえる", "meaning": "외우다, 배우다", "part_of": "동사"}
+        ],
+        "grammar": ["~たいです (희망 표현)"],
+        "examples": ["日本語を覚えたいです。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "スキルを___たいです。",
+            "options": ["覚え", "忘れ", "使い", "見"],
+            "answer": "覚え"
+          },
+          "ordering": {
+            "fragments": ["スキルを", "覚え", "たい", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "覚えたいです",
+        "tip": "새 스킬 습득 의지를 표현할 때",
+        "alt": "新しい技を覚えたいです。"
+      }
+    },
+    {
+      "sentence_key": "2_5",
+      "jp": "ラスボスまであと少しです。",
+      "kr": "라스보스까지 조금 남았어요.",
+      "romaji": "rasubosu made ato sukoshi desu",
+      "level": 5,
+      "category": 2,
+      "detail": {
+        "words": [
+          {"japanese": "ラスボス", "reading": "らすぼす", "meaning": "라스트 보스", "part_of": "명사"},
+          {"japanese": "まで", "reading": "まで", "meaning": "~까지", "part_of": "조사"},
+          {"japanese": "あと少し", "reading": "あとすこし", "meaning": "조금 남음", "part_of": "표현"}
+        ],
+        "grammar": ["~まであと少し (거의 도달)"],
+        "examples": ["駅まであと少しです。"],
+        "quiz": {
+          "fill_blank": {
+            "question_jp": "ラスボス___あと少しです。",
+            "options": ["まで", "から", "より", "で"],
+            "answer": "まで"
+          },
+          "ordering": {
+            "fragments": ["ラスボス", "まで", "あと少し", "です"],
+            "correct_order": [0, 1, 2, 3]
+          }
+        },
+        "phrase": "あと少し",
+        "tip": "게임 엔딩이 가까울 때",
+        "alt": "ゴールまであと少しです。"
+      }
+    }
+  ]
+}

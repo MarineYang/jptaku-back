@@ -13,24 +13,29 @@ func NewChatRepository(db *gorm.DB) *ChatRepository {
 	return &ChatRepository{db: db}
 }
 
-// ChatSession methods
+// CreateSession 새 세션 생성
 func (r *ChatRepository) CreateSession(session *model.ChatSession) error {
 	return r.db.Create(session).Error
 }
 
+// FindSessionByID ID로 세션 조회 (메시지 포함)
 func (r *ChatRepository) FindSessionByID(id uint) (*model.ChatSession, error) {
 	var session model.ChatSession
-	err := r.db.Preload("Messages").First(&session, id).Error
+	err := r.db.Preload("Messages", func(db *gorm.DB) *gorm.DB {
+		return db.Order("created_at ASC")
+	}).First(&session, id).Error
 	if err != nil {
 		return nil, err
 	}
 	return &session, nil
 }
 
+// UpdateSession 세션 업데이트
 func (r *ChatRepository) UpdateSession(session *model.ChatSession) error {
 	return r.db.Save(session).Error
 }
 
+// GetUserSessions 유저의 세션 목록 조회 (페이지네이션)
 func (r *ChatRepository) GetUserSessions(userID uint, page, perPage int) ([]model.ChatSession, int64, error) {
 	var sessions []model.ChatSession
 	var total int64
@@ -50,23 +55,26 @@ func (r *ChatRepository) GetUserSessions(userID uint, page, perPage int) ([]mode
 	return sessions, total, nil
 }
 
-func (r *ChatRepository) GetRecentSessions(userID uint, limit int) ([]model.ChatSession, error) {
-	var sessions []model.ChatSession
-	err := r.db.Where("user_id = ?", userID).
-		Order("created_at DESC").
-		Limit(limit).
-		Find(&sessions).Error
+// GetActiveSession 활성 세션 조회
+func (r *ChatRepository) GetActiveSession(userID uint) (*model.ChatSession, error) {
+	var session model.ChatSession
+	err := r.db.Where("user_id = ? AND status = ?", userID, "active").
+		Preload("Messages", func(db *gorm.DB) *gorm.DB {
+			return db.Order("created_at ASC")
+		}).
+		First(&session).Error
 	if err != nil {
 		return nil, err
 	}
-	return sessions, nil
+	return &session, nil
 }
 
-// ChatMessage methods
+// CreateMessage 메시지 생성
 func (r *ChatRepository) CreateMessage(message *model.ChatMessage) error {
 	return r.db.Create(message).Error
 }
 
+// GetSessionMessages 세션의 모든 메시지 조회
 func (r *ChatRepository) GetSessionMessages(sessionID uint) ([]model.ChatMessage, error) {
 	var messages []model.ChatMessage
 	err := r.db.Where("session_id = ?", sessionID).

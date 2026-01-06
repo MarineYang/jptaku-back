@@ -1,6 +1,9 @@
 package chat
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -25,12 +28,13 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 		chat.GET("/session/:id", h.GetSession)
 		chat.POST("/session/:id/end", h.EndSession)
 		chat.GET("/sessions", h.GetSessions)
+		chat.POST("/session/:id/message", h.SendMessageSSE) // SSE 스트리밍
 	}
 }
 
 // CreateSession godoc
 // @Summary 대화 세션 생성
-// @Description 새로운 대화 세션 생성 (오늘의 5문장 세트와 연결)
+// @Description 새로운 AI 대화 세션 생성
 // @Tags Chat
 // @Security BearerAuth
 // @Accept json
@@ -52,7 +56,8 @@ func (h *Handler) CreateSession(c *gin.Context) {
 	}
 
 	input := &chatSvc.CreateSessionInput{
-		DailySetID: req.DailySetID,
+		Topic:       req.Topic,
+		TopicDetail: req.TopicDetail,
 	}
 
 	session, err := h.chatService.CreateSession(userID, input)
@@ -104,13 +109,11 @@ func (h *Handler) GetSession(c *gin.Context) {
 
 // EndSession godoc
 // @Summary 대화 세션 종료
-// @Description 대화 세션을 종료하고 통계 저장
+// @Description 대화 세션을 수동으로 종료
 // @Tags Chat
 // @Security BearerAuth
-// @Accept json
 // @Produce json
 // @Param id path int true "세션 ID"
-// @Param request body EndSessionRequest true "종료 정보"
 // @Success 200 {object} model.ChatSession
 // @Router /api/chat/session/{id}/end [post]
 func (h *Handler) EndSession(c *gin.Context) {
@@ -127,12 +130,6 @@ func (h *Handler) EndSession(c *gin.Context) {
 		return
 	}
 
-	var req EndSessionRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		pkg.BadRequestResponse(c, err.Error())
-		return
-	}
-
 	// 권한 확인
 	existingSession, err := h.chatService.GetSession(uint(id))
 	if err != nil {
@@ -144,11 +141,7 @@ func (h *Handler) EndSession(c *gin.Context) {
 		return
 	}
 
-	input := &chatSvc.EndSessionInput{
-		DurationSeconds: req.DurationSeconds,
-	}
-
-	session, err := h.chatService.EndSession(uint(id), input)
+	session, err := h.chatService.EndSession(uint(id))
 	if err != nil {
 		pkg.InternalServerErrorResponse(c, "세션 종료 실패")
 		return
@@ -159,7 +152,7 @@ func (h *Handler) EndSession(c *gin.Context) {
 
 // GetSessions godoc
 // @Summary 대화 세션 목록 조회
-// @Description 유저의 최근 대화 세션 목록 조회
+// @Description 유저의 대화 세션 목록 조회
 // @Tags Chat
 // @Security BearerAuth
 // @Produce json
@@ -189,3 +182,97 @@ func (h *Handler) GetSessions(c *gin.Context) {
 	pkg.PaginatedSuccessResponse(c, sessions, query.Page, query.PerPage, total)
 }
 
+// SendMessageSSE godoc
+// @Summary 메시지 전송 (SSE 스트리밍)
+// @Description AI에게 메시지를 보내고 SSE로 스트리밍 응답 받기
+// @Tags Chat
+// @Security BearerAuth
+// @Accept json
+// @Produce text/event-stream
+// @Param id path int true "세션 ID"
+// @Param request body SendMessageRequest true "메시지"
+// @Success 200 {string} string "SSE 스트림"
+// @Router /api/chat/session/{id}/message [post]
+func (h *Handler) SendMessageSSE(c *gin.Context) {
+	userID := middleware.GetUserID(c)
+	if userID == 0 {
+		pkg.UnauthorizedResponse(c, "")
+		return
+	}
+
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 32)
+	if err != nil {
+		pkg.BadRequestResponse(c, "유효하지 않은 세션 ID입니다")
+		return
+	}
+
+	// 권한 확인
+	existingSession, err := h.chatService.GetSession(uint(id))
+	if err != nil {
+		pkg.NotFoundResponse(c, "세션을 찾을 수 없습니다")
+		return
+	}
+	if existingSession.UserID != userID {
+		pkg.ForbiddenResponse(c, "접근 권한이 없습니다")
+		return
+	}
+
+	var req SendMessageRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		pkg.BadRequestResponse(c, err.Error())
+		return
+	}
+
+	// SSE 헤더 설정
+	c.Header("Content-Type", "text/event-stream")
+	c.Header("Cache-Control", "no-cache")
+	c.Header("Connection", "keep-alive")
+	c.Header("X-Accel-Buffering", "no") // nginx 버퍼링 비활성화
+
+	// 스트리밍 채널 생성
+	streamChan := make(chan chatSvc.StreamChunk, 100)
+
+	// 백그라운드에서 OpenAI 스트리밍 시작
+	go func() {
+		h.chatService.SendMessageStream(c.Request.Context(), uint(id), req.Message, streamChan)
+	}()
+
+	// 클라이언트로 SSE 전송
+	c.Stream(func(w io.Writer) bool {
+		select {
+		case chunk, ok := <-streamChan:
+			if !ok {
+				return false // 채널 닫힘
+			}
+
+			data, _ := json.Marshal(chunk)
+			c.SSEvent("message", string(data))
+			c.Writer.Flush()
+
+			// done 또는 error면 종료
+			if chunk.Type == "done" || chunk.Type == "error" {
+				return false
+			}
+			return true
+
+		case <-c.Request.Context().Done():
+			return false // 클라이언트 연결 끊김
+		}
+	})
+
+	// 연결 종료 시 마지막 이벤트
+	c.SSEvent("close", "connection closed")
+	c.Writer.Flush()
+}
+
+// sendSSEError SSE 에러 전송 헬퍼
+func sendSSEError(c *gin.Context, message string) {
+	c.Header("Content-Type", "text/event-stream")
+	c.Header("Cache-Control", "no-cache")
+	c.Header("Connection", "keep-alive")
+
+	errorData := fmt.Sprintf(`{"type":"error","error":"%s"}`, message)
+	c.SSEvent("message", errorData)
+	c.Writer.Flush()
+}

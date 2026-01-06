@@ -30,6 +30,9 @@ COPY --from=builder /app/server .
 # Copy .env file (optional)
 COPY .env* ./
 
+# Copy data folder for mock data
+COPY data/ ./data/
+
 # Expose port
 EXPOSE 30001
 

@@ -26,6 +26,9 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
       - GOOGLE_REDIRECT_URL=${GOOGLE_REDIRECT_URL:-}
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+      - VOICEVOX_URL=http://voicevox:50021
       - NCP_ENDPOINT=${NCP_ENDPOINT:-https://kr.object.ncloudstorage.com}
       - NCP_ACCESS_KEY=${NCP_ACCESS_KEY:-}
       - NCP_SECRET_KEY=${NCP_SECRET_KEY:-}
@@ -35,6 +38,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      voicevox:
+        condition: service_started
     restart: unless-stopped
 
   cron:

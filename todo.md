@@ -221,13 +221,14 @@ Spotify API
 	•	Steam 인기 게임 Top 50 가져오기
 	•	raw_topics.json 생성
 
-  데이터 수집 · 생성 파이프라인 기능 목록 (최종)
+  데이터 수집 · 생성  파이프라인 기능 목록 (최종)
 	1.	통합 콘텐츠 수집기 – 애니·게임·음악·영화/드라마 인기 작품 제목을 외부 API에서 자동 수집
 	2.	콘텐츠 정규화 모듈 – 수집된 제목을 id / title / domain 형식으로 통일 변환
 	3.	Macro Topic 생성기 – 작품 제목을 기반으로 LLM이 대화 시작 질문과 훅을 생성
 	4.	Macro Topic 저장기 – 생성된 Topic을 JSON 파일로 저장해 서비스에서 바로 사용
 	5.	Micro Topic 추론기 – 대화 중 유저 발화를 분석해 세부 초점과 대화 유형을 실시간 추론
 	6.	Micro Topic 로그 수집기 – 추론된 Micro Topic을 분석용으로 기록(선택)
+
 
 	- [x] Flash 카드 기능 구현 (phrase/tip/alt 필드 + SRS: bad→10분, mid→1시간, good→24시간)
 	- [x] Flash API (`GET /api/flash/today`, `POST /api/flash/progress`) 구현 완료

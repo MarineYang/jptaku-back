@@ -102,7 +102,13 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 	sentenceService := sentence.NewService(repos.Sentence, repos.User)
 	userService := userSvc.NewService(repos.User, sentenceService)
 	learningService := learningSvc.NewService(repos.Learning, repos.Sentence)
-	chatService := chatSvc.NewService(repos.Chat, repos.Sentence)
+	chatService := chatSvc.NewService(repos.Chat, cfg.OpenAI.APIKey, cfg.OpenAI.Model)
+
+	// VoiceVox TTS 설정
+	if cfg.VoiceVox.VoiceVoxURL != "" {
+		chatService.SetVoiceVox(cfg.VoiceVox.VoiceVoxURL)
+	}
+
 	feedbackService := feedbackSvc.NewService(repos.Feedback, repos.Chat)
 
 	// Flash Service (DB 조회만 수행, OpenAI 호출 없음)
