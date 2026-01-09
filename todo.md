@@ -233,3 +233,13 @@ Spotify API
 	- [x] Flash 카드 기능 구현 (phrase/tip/alt 필드 + SRS: bad→10분, mid→1시간, good→24시간)
 	- [x] Flash API (`GET /api/flash/today`, `POST /api/flash/progress`) 구현 완료
 	- [x] OpenAI 호출을 cron job으로 이동 (API 요청 시점에서 DB 조회만 수행하도록 리팩토링)
+
+현재 이러한 상태
+	1. 세션 DB 저장 (빠름)
+	2. OpenAI API - 인사말 생성 (1-2초)
+	3. 인사말 DB 저장 (빠름)
+	4. OpenAI API - 한국어 번역 (1-2초)
+	5. OpenAI API - 제안 3개 생성 (1-2초)
+	6. VoiceVox API - TTS 오디오 생성 (1-3초)
+
+	

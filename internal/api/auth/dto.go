@@ -13,3 +13,8 @@ type TokenResponse struct {
 type GoogleAuthURLResponse struct {
 	URL string `json:"url"`
 }
+
+// GoogleIDTokenRequest 네이티브 앱에서 Google SDK로 로그인 후 받은 ID Token
+type GoogleIDTokenRequest struct {
+	IDToken string `json:"id_token" binding:"required"`
+}

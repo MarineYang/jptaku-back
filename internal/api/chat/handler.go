@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -45,28 +46,34 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 func (h *Handler) CreateSession(c *gin.Context) {
 	userID := middleware.GetUserID(c)
 	if userID == 0 {
+		log.Println("CreateSession: userID is 0, unauthorized")
 		pkg.UnauthorizedResponse(c, "")
 		return
 	}
 
 	var req CreateSessionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
+		log.Printf("CreateSession: JSON binding error: %v", err)
 		pkg.BadRequestResponse(c, err.Error())
 		return
 	}
+
+	log.Printf("CreateSession: userID=%d, topic=%s, topicDetail=%s", userID, req.Topic, req.TopicDetail)
 
 	input := &chatSvc.CreateSessionInput{
 		Topic:       req.Topic,
 		TopicDetail: req.TopicDetail,
 	}
 
-	session, err := h.chatService.CreateSession(userID, input)
+	response, err := h.chatService.CreateSession(userID, input)
 	if err != nil {
+		log.Printf("CreateSession: service error: %v", err)
 		pkg.InternalServerErrorResponse(c, "세션 생성 실패")
 		return
 	}
 
-	pkg.CreatedResponse(c, session)
+	log.Printf("CreateSession: session created successfully, sessionID=%d", response.Session.ID)
+	pkg.CreatedResponse(c, response)
 }
 
 // GetSession godoc

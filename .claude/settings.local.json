@@ -5,7 +5,9 @@
       "Bash(docker exec:*)",
       "Bash(docker compose:*)",
       "Bash(docker rmi:*)",
-      "Bash(docker compose build:*)"
+      "Bash(docker compose build:*)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImRpZGd1ZHFvMTNAZ21haWwuY29tIiwiZXhwIjoxNzY4MDU5NDk1LCJpYXQiOjE3Njc5NzMwOTV9.RHjwJj0We0S1neCBioMWYUpuXCEYSaXmCrMcPuoFMOA\":*)",
+      "Bash(curl:*)"
     ]
   }
 }

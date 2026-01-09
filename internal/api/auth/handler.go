@@ -22,9 +22,12 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup) {
 		auth.POST("/refresh", h.Refresh)
 		auth.POST("/logout", h.Logout)
 
-		// Google OAuth
+		// Google OAuth (웹용)
 		auth.GET("/google", h.GoogleAuth)
 		auth.GET("/google/callback", h.GoogleCallback)
+
+		// Google OAuth (네이티브 앱용 - ID Token 검증)
+		auth.POST("/google/token", h.GoogleIDTokenLogin)
 	}
 }
 
@@ -126,5 +129,32 @@ func (h *Handler) GoogleCallback(c *gin.Context) {
 	}
 
 	// 웹인 경우 JSON 응답
+	pkg.SuccessResponse(c, result)
+}
+
+// GoogleIDTokenLogin godoc
+// @Summary Google ID Token 로그인 (네이티브 앱용)
+// @Description 네이티브 앱에서 Google SDK로 로그인 후 받은 ID Token으로 로그인합니다
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body GoogleIDTokenRequest true "Google ID Token"
+// @Success 200 {object} TokenResponse
+// @Failure 400 {object} pkg.Response "잘못된 요청"
+// @Failure 401 {object} pkg.Response "유효하지 않은 토큰"
+// @Router /api/auth/google/token [post]
+func (h *Handler) GoogleIDTokenLogin(c *gin.Context) {
+	var req GoogleIDTokenRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		pkg.BadRequestResponse(c, "ID Token이 필요합니다")
+		return
+	}
+
+	result, err := h.authService.GoogleIDTokenLogin(c.Request.Context(), req.IDToken)
+	if err != nil {
+		pkg.UnauthorizedResponse(c, "Google 로그인에 실패했습니다")
+		return
+	}
+
 	pkg.SuccessResponse(c, result)
 }

@@ -20,7 +20,7 @@ type ChatRepository interface {
 // Provider 서비스 인터페이스 (외부에서 사용)
 type Provider interface {
 	// 세션 관리
-	CreateSession(userID uint, input *CreateSessionInput) (*model.ChatSession, error)
+	CreateSession(userID uint, input *CreateSessionInput) (*CreateSessionResponse, error)
 	GetSession(sessionID uint) (*model.ChatSession, error)
 	GetSessions(userID uint, page, perPage int) ([]model.ChatSession, int64, error)
 	EndSession(sessionID uint) (*model.ChatSession, error)
@@ -31,8 +31,10 @@ type Provider interface {
 
 // StreamChunk SSE 스트리밍 청크
 type StreamChunk struct {
-	Type    string `json:"type"`              // "content", "done", "error", "audio"
-	Content string `json:"content"`           // 텍스트 내용
-	Audio   string `json:"audio,omitempty"`   // Base64 인코딩된 WAV 오디오
-	Error   string `json:"error,omitempty"`
+	Type        string       `json:"type"`                    // "content", "done", "error", "audio", "suggestions", "translation"
+	Content     string       `json:"content"`                 // 텍스트 내용 (일본어)
+	ContentKr   string       `json:"content_kr,omitempty"`    // 텍스트 내용 (한국어 번역)
+	Audio       string       `json:"audio,omitempty"`         // Base64 인코딩된 WAV 오디오
+	Error       string       `json:"error,omitempty"`
+	Suggestions []Suggestion `json:"suggestions,omitempty"`   // 유저 답변 제안 (3개)
 }

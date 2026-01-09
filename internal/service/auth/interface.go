@@ -39,4 +39,7 @@ type Provider interface {
 	GetGoogleAuthURL(state string) string
 	GoogleCallback(ctx context.Context, code string) (*TokenResponse, error)
 	SetGoogleOAuth(googleOAuth *pkg.GoogleOAuthManager)
+
+	// 네이티브 앱용 ID Token 검증
+	GoogleIDTokenLogin(ctx context.Context, idToken string) (*TokenResponse, error)
 }

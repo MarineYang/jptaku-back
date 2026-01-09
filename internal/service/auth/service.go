@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"log"
 
 	"github.com/jptaku/server/internal/model"
 	"github.com/jptaku/server/internal/pkg"
@@ -129,5 +130,33 @@ func (s *Service) createGoogleUser(userInfo *pkg.GoogleUserInfo) (*TokenResponse
 		return nil, err
 	}
 
+	return s.generateTokens(user)
+}
+
+// GoogleIDTokenLogin 네이티브 앱에서 Google SDK로 로그인 후 받은 ID Token으로 로그인
+func (s *Service) GoogleIDTokenLogin(ctx context.Context, idToken string) (*TokenResponse, error) {
+	if s.googleOAuth == nil {
+		log.Println("GoogleIDTokenLogin: googleOAuth is nil")
+		return nil, pkg.ErrInvalidCredentials
+	}
+
+	// ID Token 검증 및 사용자 정보 추출
+	userInfo, err := s.googleOAuth.VerifyIDToken(ctx, idToken)
+	if err != nil {
+		log.Printf("GoogleIDTokenLogin: VerifyIDToken failed: %v", err)
+		return nil, pkg.ErrInvalidCredentials
+	}
+
+	// 기존 사용자 조회
+	user, err := s.userRepo.FindByProviderID("google", userInfo.ID)
+	if err != nil {
+		if repository.IsNotFound(err) {
+			// 신규 사용자 생성
+			return s.createGoogleUser(userInfo)
+		}
+		return nil, err
+	}
+
+	// 기존 사용자 토큰 발급
 	return s.generateTokens(user)
 }
