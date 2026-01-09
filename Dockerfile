@@ -27,8 +27,7 @@ RUN apk --no-cache add ca-certificates tzdata
 # Copy binary from builder
 COPY --from=builder /app/server .
 
-# Copy .env file (optional)
-COPY .env* ./
+# Note: .env file is NOT copied - use docker-compose environment variables instead
 
 # Copy data folder for mock data
 COPY data/ ./data/

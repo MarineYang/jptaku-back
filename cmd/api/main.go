@@ -14,9 +14,11 @@ import (
 )
 
 func main() {
-	// Load .env file
-	_ = godotenv.Load(".env")       // Docker / production
-	_ = godotenv.Load("../../.env") // Local development
+	// Load .env file only for local development (skip if DB_HOST is set by docker-compose)
+	if os.Getenv("DB_HOST") == "" {
+		_ = godotenv.Load(".env")       // Docker / production
+		_ = godotenv.Load("../../.env") // Local development
+	}
 
 	// Load configuration
 	cfg := config.Load()

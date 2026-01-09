@@ -66,6 +66,7 @@ type JWTConfig struct {
 }
 
 func Load() *Config {
+	log.Printf("DEBUG: GOOGLE_REDIRECT_URL from env = '%s'", os.Getenv("GOOGLE_REDIRECT_URL"))
 	return &Config{
 		Server: ServerConfig{
 			Port: getEnv("SERVER_PORT", "8080"),
