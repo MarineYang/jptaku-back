@@ -69,6 +69,23 @@ func (r *ChatRepository) GetActiveSession(userID uint) (*model.ChatSession, erro
 	return &session, nil
 }
 
+// GetTodayActiveSession 오늘 생성된 활성 세션 조회
+func (r *ChatRepository) GetTodayActiveSession(userID uint) (*model.ChatSession, error) {
+	var session model.ChatSession
+	// 오늘 00:00:00 기준
+	today := "DATE(started_at) = DATE(NOW())"
+
+	err := r.db.Where("user_id = ? AND status = ? AND "+today, userID, "active").
+		Preload("Messages", func(db *gorm.DB) *gorm.DB {
+			return db.Order("created_at ASC")
+		}).
+		First(&session).Error
+	if err != nil {
+		return nil, err
+	}
+	return &session, nil
+}
+
 // CreateMessage 메시지 생성
 func (r *ChatRepository) CreateMessage(message *model.ChatMessage) error {
 	return r.db.Create(message).Error

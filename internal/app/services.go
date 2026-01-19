@@ -102,7 +102,7 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 	sentenceService := sentence.NewService(repos.Sentence, repos.User)
 	userService := userSvc.NewService(repos.User, sentenceService)
 	learningService := learningSvc.NewService(repos.Learning, repos.Sentence)
-	chatService := chatSvc.NewService(repos.Chat, cfg.OpenAI.APIKey, cfg.OpenAI.Model)
+	chatService := chatSvc.NewService(repos.Chat, repos.Sentence, cfg.OpenAI.APIKey, cfg.OpenAI.Model)
 
 	// VoiceVox TTS 설정
 	if cfg.VoiceVox.VoiceVoxURL != "" {

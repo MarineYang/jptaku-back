@@ -39,11 +39,9 @@ func (s *Service) CreateFeedback(sessionID uint, feedback *model.Feedback) (*mod
 func (s *Service) GetTodayStats(userID uint) (*StatsResponse, error) {
 	// TODO: 실제 통계 계산 구현
 	return &StatsResponse{
-		TotalSessions:        0,
-		TotalLearningMinutes: 0,
-		TotalSentencesUsed:   0,
-		AverageScore:         0,
-		CurrentStreak:        0,
+		TotalSessions:      0,
+		TotalSentencesUsed: 0,
+		CurrentStreak:      0,
 	}, nil
 }
 

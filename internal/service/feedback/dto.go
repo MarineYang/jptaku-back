@@ -2,11 +2,9 @@ package feedback
 
 // StatsResponse 통계 응답
 type StatsResponse struct {
-	TotalSessions        int64   `json:"total_sessions"`
-	TotalLearningMinutes int64   `json:"total_learning_minutes"`
-	TotalSentencesUsed   int64   `json:"total_sentences_used"`
-	AverageScore         float64 `json:"average_score"`
-	CurrentStreak        int     `json:"current_streak"`
+	TotalSessions      int64 `json:"total_sessions"`
+	TotalSentencesUsed int64 `json:"total_sentences_used"`
+	CurrentStreak      int   `json:"current_streak"`
 }
 
 // CategoryProgress 카테고리별 진행도

@@ -78,12 +78,12 @@ func (h *Handler) CreateSession(c *gin.Context) {
 
 // GetSession godoc
 // @Summary 대화 세션 조회
-// @Description 대화 세션 상세 정보 조회 (메시지 포함)
+// @Description 대화 세션 상세 정보 조회 (메시지 + 번역 + 제안 포함)
 // @Tags Chat
 // @Security BearerAuth
 // @Produce json
 // @Param id path int true "세션 ID"
-// @Success 200 {object} model.ChatSession
+// @Success 200 {object} chatSvc.SessionDetailResponse
 // @Router /api/chat/session/{id} [get]
 func (h *Handler) GetSession(c *gin.Context) {
 	userID := middleware.GetUserID(c)
@@ -99,6 +99,7 @@ func (h *Handler) GetSession(c *gin.Context) {
 		return
 	}
 
+	// 먼저 권한 확인을 위해 세션 조회
 	session, err := h.chatService.GetSession(uint(id))
 	if err != nil {
 		pkg.NotFoundResponse(c, "세션을 찾을 수 없습니다")
@@ -111,7 +112,15 @@ func (h *Handler) GetSession(c *gin.Context) {
 		return
 	}
 
-	pkg.SuccessResponse(c, session)
+	// 상세 정보 조회 (번역 + 제안 포함)
+	detail, err := h.chatService.GetSessionDetail(c.Request.Context(), uint(id))
+	if err != nil {
+		log.Printf("GetSession: failed to get session detail: %v", err)
+		pkg.InternalServerErrorResponse(c, "세션 상세 조회 실패")
+		return
+	}
+
+	pkg.SuccessResponse(c, detail)
 }
 
 // EndSession godoc
