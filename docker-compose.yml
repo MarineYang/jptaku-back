@@ -42,31 +42,31 @@ services:
         condition: service_started
     restart: unless-stopped
 
-  cron:
-    build:
-      context: .
-      dockerfile: Dockerfile.cron
-    container_name: jptaku-cron
-    environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=jptaku
-      - DB_SSLMODE=disable
-      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY:-}
-      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
-      - VOICEVOX_URL=http://voicevox:50021
-      - NCP_ENDPOINT=${NCP_ENDPOINT:-https://kr.object.ncloudstorage.com}
-      - NCP_ACCESS_KEY=${NCP_ACCESS_KEY:-}
-      - NCP_SECRET_KEY=${NCP_SECRET_KEY:-}
-      - NCP_BUCKET=${NCP_BUCKET:-jptaku}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      voicevox:
-        condition: service_started
-    restart: unless-stopped
+  # cron:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.cron
+  #   container_name: jptaku-cron
+  #   environment:
+  #     - DB_HOST=postgres
+  #     - DB_PORT=5432
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=postgres
+  #     - DB_NAME=jptaku
+  #     - DB_SSLMODE=disable
+  #     - OPEN_AI_API_KEY=${OPEN_AI_API_KEY:-}
+  #     - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+  #     - VOICEVOX_URL=http://voicevox:50021
+  #     - NCP_ENDPOINT=${NCP_ENDPOINT:-https://kr.object.ncloudstorage.com}
+  #     - NCP_ACCESS_KEY=${NCP_ACCESS_KEY:-}
+  #     - NCP_SECRET_KEY=${NCP_SECRET_KEY:-}
+  #     - NCP_BUCKET=${NCP_BUCKET:-jptaku}
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     voicevox:
+  #       condition: service_started
+  #   restart: unless-stopped
 
   voicevox:
     image: voicevox/voicevox_engine:latest
