@@ -1,11 +1,9 @@
 package feedback
 
 type StatsResponse struct {
-	TotalSessions        int64   `json:"total_sessions"`
-	TotalLearningMinutes int64   `json:"total_learning_minutes"`
-	TotalSentencesUsed   int64   `json:"total_sentences_used"`
-	AverageScore         float64 `json:"average_score"`
-	CurrentStreak        int     `json:"current_streak"`
+	TotalStudyDays     int64 `json:"total_study_days"`
+	TotalSessions      int64 `json:"total_sessions"`
+	TotalSentencesUsed int64 `json:"total_sentences_used"`
 }
 
 type CategoryProgress struct {

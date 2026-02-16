@@ -29,9 +29,9 @@ func New(cfg *config.Config) (*App, error) {
 		return nil, fmt.Errorf("failed to initialize database: %w", err)
 	}
 
-	// Mock 데이터 시딩 (데이터가 없을 때만)
-	if err := SeedMockData(db); err != nil {
-		log.Printf("Warning: Failed to seed mock data: %v", err)
+	// CSV 데이터 시딩 (데이터가 없을 때만)
+	if err := SeedFromCSV(db); err != nil {
+		log.Printf("Warning: Failed to seed data from CSV: %v", err)
 	}
 
 	// Dependencies (repos, services, infra)

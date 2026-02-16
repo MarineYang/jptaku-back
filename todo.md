@@ -1,245 +1,101 @@
 # 일타쿠 백엔드 TODO
 
-> 목표: 일본어 못하는 오타쿠를 위한 **하루 5문장 + 실시간 대화** MVP 백엔드 완성
+> 목표: 일본어 못하는 오타쿠를 위한 **하루 5문장 + AI 대화** MVP 완성
 
 ---
 
-## 1. 인프라 / 배포
+## 완료된 기능
 
-### 완료
-- [x] Go 백엔드 프로젝트 초기화 (Gin + GORM)
-- [x] PostgreSQL 연결 및 AutoMigrate
-- [x] Docker + docker-compose 구성
-- [x] Google OAuth 2.0 로그인 구현
-- [x] Oracle Cloud 서버 배포 준비 (144.24.80.68)
-- [x] DuckDNS 도메인 연결 (jptaku.duckdns.org)
-- [x] 방화벽 포트 30001 오픈
+- [x] Go 백엔드 (Gin + GORM + PostgreSQL + Redis)
+- [x] Docker Compose 배포 환경
+- [x] Google OAuth 로그인 (웹 + 모바일 ID Token)
+- [x] JWT 인증 + Refresh Token
+- [x] 유저 온보딩 (레벨, 관심 카테고리)
+- [x] 오늘의 5문장 선별 (레벨/카테고리 기반, 학습 이력 반영)
+- [x] 문장 학습 진행도 (이해/말하기/확인/암기)
+- [x] 퀴즈 검증
+- [x] 플래시카드 SRS (bad→10분, mid→1시간, good→24시간)
+- [x] AI 대화 세션 (OpenAI 스트리밍 + SSE)
+- [x] AI 대화 중 한국어 번역 + 제안 3개
+- [x] VoiceVox TTS (AI 응답 음성 생성)
+- [x] NCP Object Storage 오디오 서빙
+- [x] Swagger 문서
 
-### 진행 중
-- [ ] Oracle Cloud 서버에서 Docker 빌드 및 실행
-- [ ] .env 파일 프로덕션 설정 (GOOGLE_REDIRECT_URL 등)
+---
 
-### 향후 작업
+## 남은 작업
+
+### P0 - 핵심 기능 (MVP 완성)
+
+#### 1. AI 대화 페르소나 입히기
+- [ ] 시스템 프롬프트에 오타쿠 캐릭터 페르소나 적용
+- [ ] 토픽별 대화 스타일 분기 (애니/게임/음악 등)
+- [ ] 유저 레벨에 맞는 일본어 난이도 조절
+
+#### 2. 데이터 동기화 아키텍처 (Cron 레포 연동)
+- [ ] `POST /api/admin/sync/sentences` — NCP JSON → sentences 테이블 upsert
+- [ ] `POST /api/admin/sync/topics` — NCP JSON → topics 테이블 upsert
+- [ ] topics 테이블 모델 + 마이그레이션 (macro/micro topic)
+- [ ] 관리자 인증 미들웨어 (Cron 서버만 호출 가능하도록)
+
+> 데이터 흐름: Cron 레포(별도)에서 문장/토픽 생성 → NCP JSON 업로드 → 백엔드 sync API 호출 → DB 저장
+
+#### 3. 실제 Sentence 데이터 구축
+- [ ] mock 데이터 → Cron 레포에서 생성된 실데이터로 교체
+- [ ] 카테고리별 문장 확보 (애니/게임/음악/영화/드라마)
+- [ ] JLPT N5~N3 레벨별 문장 분류
+
+#### 4. Sentence 1일차부터 순차 제공
+- [ ] 학습 일차 기반 문장 제공 로직 구현
+- [ ] 난이도 점진적 상승 커리큘럼 설계
+
+#### 5. Sentence 오디오 데이터 제공
+- [ ] 문장별 일본어 음성 생성 (VoiceVox 또는 외부 TTS)
+- [ ] NCP Object Storage에 업로드
+- [ ] Sentence.AudioURL 실데이터 연결
+
+#### 6. 학습 N일차 실제 카운팅
+- [ ] UserStudyStats 모델 서비스 레이어 구현
+- [ ] 일일 학습 완료 판정 로직 (5문장 중 N개 완료 시)
+- [ ] 연속 학습일(스트릭) 계산
+- [ ] Stats API 실제 데이터 반영 (`GET /api/stats/today`)
+
+---
+
+### P1 - 대화 품질 강화
+
+#### 7. AI 대화 STT 지원
+- [ ] STT 서비스 선정 (Google Cloud Speech / Whisper 등)
+- [ ] 음성 입력 엔드포인트 구현
+- [ ] 클라이언트 음성 → 텍스트 변환 → 기존 메시지 흐름에 합류
+
+#### 8. AI 대화 피드백 기능
+- [ ] 대화 종료 시 OpenAI로 피드백 자동 생성
+- [ ] 문법/자연스러움 점수 산출
+- [ ] 잘한 표현 하이라이트 추출
+- [ ] 피드백 저장 + 조회 API 연결
+
+#### 9. 피드백 데이터 제공 방식 기획
+- [ ] 대화 직후 요약 피드백 vs 상세 리포트
+- [ ] 점수 시각화 데이터 구조 확정
+- [ ] 주간/월간 성장 추이 제공 여부
+
+---
+
+### P2 - 복습 & 확장
+
+#### 10. 대화 데이터 + 문장 복습 기획
+- [ ] 이전 대화에서 사용한 표현 복습
+- [ ] 틀렸던 문장 재출제 로직
+- [ ] 플래시카드와 대화 데이터 연계
+
+#### 10. 콘텐츠 데이터 수집 파이프라인
+- [x] AniList API → 애니 인기작 Top 50
+- [x] Steam API → 인기 게임 Top 50
+- [x] Spotify API → JPOP 아티스트
+- [x] 수집 데이터 → 대화 토픽 자동 생성
+
+#### 11. 인프라
 - [ ] HTTPS 설정 (Let's Encrypt)
-- [ ] Nginx 리버스 프록시 설정 (선택)
-- [ ] Redis 연결 및 활용 (세션/캐시)
-
----
-
-## 2. API 구현 현황
-
-### Auth (Google OAuth) - 완료
-- [x] `GET /api/auth/google` - Google OAuth URL 반환
-- [x] `GET /api/auth/google/callback` - OAuth 콜백 (모바일 딥링크 지원)
-- [x] `POST /api/auth/refresh` - 토큰 갱신
-- [x] `POST /api/auth/logout` - 로그아웃
-
-### User - 완료
-- [x] `GET /api/user/me` - 내 정보 조회
-- [x] `PUT /api/user/profile` - 프로필 수정
-- [x] `POST /api/user/onboarding` - 온보딩 정보 저장
-- [x] `GET /api/user/settings` - 설정 조회
-- [x] `PUT /api/user/settings` - 설정 수정
-
-### Sentences - 완료
-- [x] `GET /api/sentences/today` - 오늘의 5문장 (레벨/관심사 기반 생성)
-- [x] `GET /api/sentences/history` - 학습 히스토리 (페이지네이션)
-
-### Learning - 완료
-- [x] `POST /api/learning/progress` - 학습 진행 상황 업데이트
-- [x] `POST /api/learning/quiz` - 퀴즈 정답 제출 및 검증
-- [x] `GET /api/learning/today` - 오늘의 학습 진행 상황
-- [x] `GET /api/learning/history` - 학습 히스토리
-
-### Chat - 완료
-- [x] `POST /api/chat/session` - 세션 생성
-- [x] `GET /api/chat/session/:id` - 세션 조회 (메시지 포함)
-- [x] `POST /api/chat/session/:id/end` - 세션 종료
-- [x] `GET /api/chat/sessions` - 세션 목록
-
-### Feedback & Stats - Mock 데이터
-- [x] `GET /api/feedback/:sessionId` - 피드백 조회
-- [ ] `GET /api/stats/today` - 오늘의 통계 (실제 데이터 계산 필요)
-- [ ] `GET /api/stats/categories` - 카테고리별 진행도 (실제 데이터 계산 필요)
-- [ ] `GET /api/stats/weekly` - 주간 통계 (실제 데이터 계산 필요)
-
-### 미구현 API
-- [ ] `GET/POST /api/sentences/bookmarks` - 즐겨찾기 (옵션)
-- [ ] `GET /api/meta/interests` - 관심사 목록 (옵션)
-- [ ] `GET /api/meta/levels` - 레벨 목록 (옵션)
-
----
-
-## 3. 실시간 대화 (WebSocket)
-
-### 미구현
-- [ ] `/ws/conversation` WebSocket 엔드포인트
-- [ ] JWT 검증 & Redis 연결 매핑
-- [ ] WebSocket 이벤트 타입 정의
-  - [ ] `audio:stream`
-  - [ ] `text:transcript`
-  - [ ] `session:update`
-  - [ ] `control:interrupt`
-- [ ] `POST /api/rtc/signaling` (WebRTC SDP/ICE 교환)
-
----
-
-## 4. OpenAI 연동
-
-### 완료
-- [x] OpenAI API 클라이언트 초기화
-- [x] 오늘의 5문장 생성 로직 (sentence_service.go)
-
-### 미구현
-- [ ] OpenAI Realtime API 연동 PoC
-- [ ] WebSocket 브리지 (클라이언트 ↔ Go ↔ OpenAI)
-- [ ] AI 피드백 평가 로직 (문법/발음/자연스러움 점수)
-- [ ] 시스템 프롬프트에 오늘 5문장 반영
-
----
-
-## 5. DB 모델 - 완료
-
-- [x] User / UserSettings / UserOnboarding
-- [x] Sentence / SentenceDetail / Quiz
-- [x] DailySentenceSet / LearningProgress
-- [x] ChatSession / ChatMessage
-- [x] Feedback / FeedbackHighlight
-
----
-
-## 6. 프로젝트 구조
-
-```
-jptaku-back/
-├── cmd/
-│   ├── api/main.go           # REST API 서버 진입점
-│   ├── migrate/main.go       # DB 마이그레이션 도구
-│   └── test/main.go          # 테스트 유틸리티
-│
-├── internal/
-│   ├── api/                  # HTTP 핸들러
-│   │   ├── auth/
-│   │   ├── user/
-│   │   ├── sentences/
-│   │   ├── learning/
-│   │   ├── chat/
-│   │   └── feedback/
-│   │
-│   ├── service/              # 비즈니스 로직
-│   ├── repository/           # DB 접근 (GORM)
-│   ├── model/                # 데이터 모델
-│   ├── cache/                # Redis 클라이언트
-│   ├── config/               # 설정
-│   ├── middleware/           # Auth, Logger, CORS
-│   └── pkg/                  # 유틸리티 (JWT, OAuth, Response 등)
-│
-├── docs/                     # Swagger 문서
-├── docker-compose.yml
-├── env.example
-└── go.mod, go.sum
-```
-
----
-
-## 7. 서버 실행 방법
-
-```bash
-# 로컬 개발
-cp env.example .env
-go mod tidy
-go run ./cmd/api/main.go
-
-# Docker 실행
-docker compose up -d --build
-
-# 프로덕션 서버 (jptaku.duckdns.org:30001)
-# .env에 GOOGLE_REDIRECT_URL=http://jptaku.duckdns.org:30001/api/auth/google/callback 설정
-docker compose up -d --build
-```
-
----
-
-## 8. 우선순위 작업 목록
-
-### P0 - 즉시 (배포 완료)
-- [ ] Oracle Cloud 서버 Docker 실행 완료
-- [ ] 프로덕션 .env 설정
-- [ ] Google OAuth 테스트
-
-### P1 - 이번 주
-- [ ] Stats API 실제 데이터 계산 구현
-- [ ] Redis 세션 관리 활용
-
-### P2 - 다음 주
-- [ ] WebSocket 실시간 대화 기본 구조
-- [ ] OpenAI Realtime API PoC
-
-### P3 - 향후
-- [ ] HTTPS 설정
-- [ ] AI 피드백 평가 로직
-- [ ] 성능 최적화 및 캐싱
-
-
-
-같은 덕후끼리 실제로 나눌 법한 대화를 일본어로 얼마나 깊게 이어가느냐
-
-
-🔹 게임
-
-Steam API / 랭킹 페이지
-	•	Top Sellers
-	•	Most Played
-	•	Recent Reviews 많은 게임  
-자동 수집 → 중복 제거 → 상위 N개
-{ "id": "elden_ring", "title": "Elden Ring", "domain": "game" }
-
-🔹 애니
-
-AniList GraphQL API (정답)
-	•	Popularity 순
-	•	이번 시즌
-	•	All-time 인기
-{ "id": "chainsaw_man", "title": "チェンソーマン", "domain": "anime" }
-
-🔹 음악 (JPOP)
-
-Spotify API
-	•	Artist 단위
-	•	인기 상위만
-{ "id": "yoasobi", "title": "YOASOBI", "domain": "music" }
-
-🔹 이벤트
-
-공식 사이트 / 위키 크롤링
-	•	“행사명”만
-	•	날짜, 장소 ❌
-{ "id": "comiket_104", "title": "コミックマーケット104", "domain": "event" }
-
-## todo
-	•	AniList API로 애니 Top 50 가져오기
-	•	Steam 인기 게임 Top 50 가져오기
-	•	raw_topics.json 생성
-
-  데이터 수집 · 생성  파이프라인 기능 목록 (최종)
-	1.	통합 콘텐츠 수집기 – 애니·게임·음악·영화/드라마 인기 작품 제목을 외부 API에서 자동 수집
-	2.	콘텐츠 정규화 모듈 – 수집된 제목을 id / title / domain 형식으로 통일 변환
-	3.	Macro Topic 생성기 – 작품 제목을 기반으로 LLM이 대화 시작 질문과 훅을 생성
-	4.	Macro Topic 저장기 – 생성된 Topic을 JSON 파일로 저장해 서비스에서 바로 사용
-	5.	Micro Topic 추론기 – 대화 중 유저 발화를 분석해 세부 초점과 대화 유형을 실시간 추론
-	6.	Micro Topic 로그 수집기 – 추론된 Micro Topic을 분석용으로 기록(선택)
-
-
-	- [x] Flash 카드 기능 구현 (phrase/tip/alt 필드 + SRS: bad→10분, mid→1시간, good→24시간)
-	- [x] Flash API (`GET /api/flash/today`, `POST /api/flash/progress`) 구현 완료
-	- [x] OpenAI 호출을 cron job으로 이동 (API 요청 시점에서 DB 조회만 수행하도록 리팩토링)
-
-현재 이러한 상태
-	1. 세션 DB 저장 (빠름)
-	2. OpenAI API - 인사말 생성 (1-2초)
-	3. 인사말 DB 저장 (빠름)
-	4. OpenAI API - 한국어 번역 (1-2초)
-	5. OpenAI API - 제안 3개 생성 (1-2초)
-	6. VoiceVox API - TTS 오디오 생성 (1-3초)
-
-	
+- [ ] 프로덕션 배포 자동화
+- [ ] 주간 통계 API 구현 (`GET /api/stats/weekly`)

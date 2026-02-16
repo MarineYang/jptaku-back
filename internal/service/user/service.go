@@ -64,6 +64,9 @@ func (s *Service) SaveOnboarding(userID uint, input *OnboardingInput) (*model.Us
 		}
 	}
 
+	// 온보딩 저장/변경 시 오늘의 문장 세트 리셋 (다음 조회 시 새 조건으로 재생성)
+	_ = s.sentenceService.ResetTodaySentences(userID)
+
 	return onboarding, nil
 }
 

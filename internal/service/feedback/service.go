@@ -6,16 +6,18 @@ import "github.com/jptaku/server/internal/model"
 type Service struct {
 	feedbackRepo FeedbackRepository
 	chatRepo     ChatRepository
+	sentenceRepo SentenceRepository
 }
 
 // 컴파일 타임 인터페이스 검증
 var _ Provider = (*Service)(nil)
 
 // NewService 서비스 생성자
-func NewService(feedbackRepo FeedbackRepository, chatRepo ChatRepository) *Service {
+func NewService(feedbackRepo FeedbackRepository, chatRepo ChatRepository, sentenceRepo SentenceRepository) *Service {
 	return &Service{
 		feedbackRepo: feedbackRepo,
 		chatRepo:     chatRepo,
+		sentenceRepo: sentenceRepo,
 	}
 }
 
@@ -37,11 +39,16 @@ func (s *Service) CreateFeedback(sessionID uint, feedback *model.Feedback) (*mod
 
 // GetTodayStats 오늘의 통계 조회
 func (s *Service) GetTodayStats(userID uint) (*StatsResponse, error) {
-	// TODO: 실제 통계 계산 구현
+	totalStudyDays, _ := s.sentenceRepo.CountUserDailySets(userID)
+	totalSessions, _ := s.chatRepo.CountUserSessions(userID)
+
+	learnedIDs, _ := s.sentenceRepo.GetUserLearnedSentenceIDs(userID)
+	totalSentences := int64(len(learnedIDs))
+
 	return &StatsResponse{
-		TotalSessions:      0,
-		TotalSentencesUsed: 0,
-		CurrentStreak:      0,
+		TotalStudyDays:     totalStudyDays,
+		TotalSessions:      totalSessions,
+		TotalSentencesUsed: totalSentences,
 	}, nil
 }
 

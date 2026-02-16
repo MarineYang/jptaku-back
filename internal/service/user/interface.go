@@ -16,7 +16,7 @@ type UserRepository interface {
 
 // SentenceProvider 문장 서비스 인터페이스
 type SentenceProvider interface {
-	// 필요한 메서드가 있으면 추가
+	ResetTodaySentences(userID uint) error
 }
 
 // Provider 서비스 인터페이스 (외부에서 사용)

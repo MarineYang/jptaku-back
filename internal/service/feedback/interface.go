@@ -10,7 +10,13 @@ type FeedbackRepository interface {
 
 // ChatRepository 채팅 저장소 인터페이스
 type ChatRepository interface {
-	// 필요한 메서드가 있으면 추가
+	CountUserSessions(userID uint) (int64, error)
+}
+
+// SentenceRepository 문장 저장소 인터페이스
+type SentenceRepository interface {
+	CountUserDailySets(userID uint) (int64, error)
+	GetUserLearnedSentenceIDs(userID uint) ([]uint, error)
 }
 
 // Provider 서비스 인터페이스 (외부에서 사용)

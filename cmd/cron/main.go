@@ -20,7 +20,6 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/jptaku/server/internal/config"
 	"github.com/jptaku/server/internal/model"
-	"github.com/jptaku/server/internal/pkg"
 	"github.com/robfig/cron/v3"
 	openai "github.com/sashabaranov/go-openai"
 	"gorm.io/gorm"
@@ -254,9 +253,26 @@ func (g *Generator) generateTTS(ctx context.Context, sentenceID uint, sentenceKe
 	return fileName, nil
 }
 
+// domainLevelCombo represents a domain + level combination for generation
+type domainLevelCombo struct {
+	Domain string
+	Level  int
+}
+
+var allCombos = func() []domainLevelCombo {
+	domains := []string{"anime", "game", "music", "movie", "drama"}
+	levels := []int{1, 2, 3} // 1=N5, 2=N4, 3=N3
+	var combos []domainLevelCombo
+	for _, d := range domains {
+		for _, l := range levels {
+			combos = append(combos, domainLevelCombo{Domain: d, Level: l})
+		}
+	}
+	return combos
+}()
+
 func (g *Generator) Run(ctx context.Context) error {
-	// 부족한 조합 찾기
-	deficient := g.findDeficientKeys()
+	deficient := g.findDeficientCombos()
 
 	if len(deficient) == 0 {
 		log.Println("All combinations have enough sentences!")
@@ -265,52 +281,43 @@ func (g *Generator) Run(ctx context.Context) error {
 
 	log.Printf("Found %d deficient combinations", len(deficient))
 
-	// 한 번에 하나의 조합만 처리
-	key := deficient[0]
-	sentenceKey := string(key)
-
-	count, _ := g.countByKey(sentenceKey)
+	combo := deficient[0]
+	count, _ := g.countByCombo(combo)
 	needed := g.targetCount - int(count)
 	if needed <= 0 {
 		return nil
 	}
 
-	// 최대 5개씩 생성
 	batchSize := 5
 	if needed < batchSize {
 		batchSize = needed
 	}
 
-	category := key.Category()
-	level := key.Level()
+	log.Printf("Generating %d sentences for %s/%d - current: %d",
+		batchSize, combo.Domain, combo.Level, count)
 
-	log.Printf("Generating %d sentences for %s (%s, %s) - current: %d",
-		batchSize, sentenceKey, category.Name(), level.Name(), count)
-
-	return g.generate(ctx, int(category), int(level), category.Name(), batchSize)
+	return g.generate(ctx, combo.Domain, combo.Level, batchSize)
 }
 
-func (g *Generator) findDeficientKeys() []pkg.SentenceKey {
-	var deficient []pkg.SentenceKey
-
-	for _, key := range pkg.AllSentenceKeys {
-		count, _ := g.countByKey(string(key))
+func (g *Generator) findDeficientCombos() []domainLevelCombo {
+	var deficient []domainLevelCombo
+	for _, combo := range allCombos {
+		count, _ := g.countByCombo(combo)
 		if int(count) < g.targetCount {
-			deficient = append(deficient, key)
+			deficient = append(deficient, combo)
 		}
 	}
-
 	return deficient
 }
 
-func (g *Generator) countByKey(sentenceKey string) (int64, error) {
+func (g *Generator) countByCombo(combo domainLevelCombo) (int64, error) {
 	var count int64
-	err := g.db.Model(&model.Sentence{}).Where("sentence_key = ?", sentenceKey).Count(&count).Error
+	err := g.db.Model(&model.Sentence{}).Where("domain = ? AND level = ?", combo.Domain, combo.Level).Count(&count).Error
 	return count, err
 }
 
-func (g *Generator) generate(ctx context.Context, category, level int, categoryName string, count int) error {
-	prompt := g.buildPrompt(category, level, categoryName, count)
+func (g *Generator) generate(ctx context.Context, domain string, level int, count int) error {
+	prompt := g.buildPrompt(domain, level, count)
 
 	resp, err := g.openai.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
 		Model: g.model,
@@ -340,17 +347,14 @@ func (g *Generator) generate(ctx context.Context, category, level int, categoryN
 	}
 
 	// 저장
-	sentenceKey := fmt.Sprintf("%d_%d", category, level)
 	savedCount := 0
 
 	for _, gen := range generated {
 		sentence := model.Sentence{
-			SentenceKey: sentenceKey,
-			JP:          gen.JP,
-			KR:          gen.KR,
-			Romaji:      gen.Romaji,
-			Level:       level,
-			Category:    category,
+			Domain: domain,
+			JP:     gen.JP,
+			KR:     gen.KR,
+			Level:  level,
 		}
 
 		if err := g.db.Create(&sentence).Error; err != nil {
@@ -375,7 +379,7 @@ func (g *Generator) generate(ctx context.Context, category, level int, categoryN
 		}
 
 		// Step 2: VoiceVox TTS 생성
-		audioURL, err := g.generateTTS(ctx, sentence.ID, sentenceKey, gen.JP)
+		audioURL, err := g.generateTTS(ctx, sentence.ID, fmt.Sprintf("%s_%d", domain, level), gen.JP)
 		if err != nil {
 			log.Printf("Failed to generate TTS for sentence %d: %v", sentence.ID, err)
 			// TTS 실패해도 문장은 저장됨, 나중에 재시도 가능
@@ -391,7 +395,7 @@ func (g *Generator) generate(ctx context.Context, category, level int, categoryN
 		savedCount++
 	}
 
-	log.Printf("Saved %d sentences for %s", savedCount, sentenceKey)
+	log.Printf("Saved %d sentences for %s/%d", savedCount, domain, level)
 	return nil
 }
 
@@ -401,35 +405,44 @@ func (g *Generator) PrintStatus() {
 	total := 0
 	deficient := 0
 
-	for _, key := range pkg.AllSentenceKeys {
-		sentenceKey := string(key)
-		count, _ := g.countByKey(sentenceKey)
+	for _, combo := range allCombos {
+		count, _ := g.countByCombo(combo)
 		total += int(count)
 		if int(count) < g.targetCount {
 			deficient++
-			category := key.Category()
-			level := key.Level()
-			log.Printf("  [NEED] %s (%s, %s): %d/%d", sentenceKey, category.Name(), level.Name(), count, g.targetCount)
+			log.Printf("  [NEED] %s/%d: %d/%d", combo.Domain, combo.Level, count, g.targetCount)
 		}
 	}
 
 	log.Printf("Total: %d sentences, %d combinations need more", total, deficient)
 }
 
-func (g *Generator) buildPrompt(category, level int, categoryName string, count int) string {
-	levelDesc := getLevelDescription(level)
+func levelToName(level int) string {
+	switch level {
+	case 1:
+		return "N5"
+	case 2:
+		return "N4"
+	case 3:
+		return "N3"
+	default:
+		return "N5"
+	}
+}
 
+func (g *Generator) buildPrompt(domain string, level int, count int) string {
+	levelName := levelToName(level)
 	return fmt.Sprintf(`다음 조건에 맞는 일본어 학습 문장을 JSON으로 생성해 주세요.
 
 [조건]
-- 카테고리: %s (코드: %d)
+- 도메인: %s
 - 레벨: %s
 - 생성 개수: %d개
 
 [요구 사항]
-- 각 문장은 jp, kr, romaji, category(%d 고정), words, grammar, examples, quiz, phrase, tip, alt 포함
-- 해당 카테고리의 콘텐츠(일본 %s)에서 실제로 쓰일 법한 자연스러운 표현
-- JSON 배열만 출력`, categoryName, category, levelDesc, count, category, categoryName)
+- 각 문장은 jp, kr, romaji, words, grammar, examples, quiz, phrase, tip, alt 포함
+- 해당 도메인의 콘텐츠(일본 %s)에서 실제로 쓰일 법한 자연스러운 표현
+- JSON 배열만 출력`, domain, levelName, count, domain)
 }
 
 func (g *Generator) getSystemPrompt() string {

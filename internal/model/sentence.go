@@ -7,17 +7,21 @@ import (
 )
 
 type Sentence struct {
-	ID          uint           `gorm:"primaryKey" json:"id"`
-	SentenceKey string         `gorm:"size:20;index;not null" json:"sentence_key"` // 조합 키 (예: "1_5") - Category_Level
-	JP          string         `gorm:"type:text;not null" json:"jp"`               // 일본어 문장
-	KR          string         `gorm:"type:text;not null" json:"kr"`               // 한국어 번역
-	Romaji      string         `gorm:"type:text" json:"romaji,omitempty"`          // 로마지
-	Level       int            `gorm:"not null;index" json:"level"`                // 레벨 (3/4/5)
-	Category    int            `gorm:"not null;index" json:"category"`             // OnboardingCategory 값 (1~5)
-	AudioURL    string         `gorm:"size:500" json:"audio_url,omitempty"`
-	CreatedAt   time.Time      `json:"created_at"`
-	UpdatedAt   time.Time      `json:"updated_at"`
-	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"`
+	ID            uint           `gorm:"primaryKey" json:"id"`
+	UUID          string         `gorm:"size:50;uniqueIndex" json:"uuid"`               // 외부 생성 UUID
+	Domain        string         `gorm:"size:20;index;not null" json:"domain"`           // anime, game, music, movie, drama
+	Topic         string         `gorm:"size:255" json:"topic"`                          // 작품명 (예: "BLEACH")
+	Level         int            `gorm:"index;not null" json:"level"`                    // 1=N5(초급), 2=N4(중급), 3=N3(고급)
+	FunctionMacro string         `gorm:"size:100" json:"function_macro,omitempty"`       // 상호작용, 표현 등
+	FunctionMicro string         `gorm:"size:100" json:"function_micro,omitempty"`       // 관계형성, 의견교환 등
+	JP            string         `gorm:"type:text;not null" json:"jp"`                   // 일본어 문장
+	KR            string         `gorm:"type:text;not null" json:"kr"`                   // 한국어 번역
+	Words         string         `gorm:"type:text" json:"words,omitempty"`               // 파이프 구분 단어
+	Keywords      string         `gorm:"type:text" json:"keywords,omitempty"`            // 파이프 구분 키워드
+	AudioURL      string         `gorm:"size:500" json:"audio_url,omitempty"`
+	CreatedAt     time.Time      `json:"created_at"`
+	UpdatedAt     time.Time      `json:"updated_at"`
+	DeletedAt     gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
 type SentenceDetail struct {

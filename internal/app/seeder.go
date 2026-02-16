@@ -1,44 +1,33 @@
 package app
 
 import (
-	"encoding/json"
+	"encoding/csv"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/jptaku/server/internal/model"
 	"gorm.io/gorm"
 )
 
-// MockData JSON 파일 구조
-type MockData struct {
-	Sentences []MockSentence `json:"sentences"`
+// parseLevelToInt CSV의 레벨 문자열을 int로 변환
+// 초급/Beginner/N5 → 1, 중급/Intermediate/N4 → 2, 고급/Advanced/N3 → 3
+func parseLevelToInt(level string) int {
+	l := strings.ToLower(level)
+	switch {
+	case strings.Contains(l, "초급") || strings.Contains(l, "beginner") || l == "n5":
+		return 1
+	case strings.Contains(l, "중급") || strings.Contains(l, "intermediate") || l == "n4":
+		return 2
+	case strings.Contains(l, "고급") || strings.Contains(l, "advanced") || l == "n3":
+		return 3
+	default:
+		return 1
+	}
 }
 
-// MockSentence 문장 mock 데이터 구조
-type MockSentence struct {
-	SentenceKey string           `json:"sentence_key"`
-	JP          string           `json:"jp"`
-	KR          string           `json:"kr"`
-	Romaji      string           `json:"romaji"`
-	Level       int              `json:"level"`
-	Category    int              `json:"category"`
-	Detail      MockSentenceDetail `json:"detail"`
-}
-
-// MockSentenceDetail 문장 상세 mock 데이터 구조
-type MockSentenceDetail struct {
-	Words    []model.Word `json:"words"`
-	Grammar  []string     `json:"grammar"`
-	Examples []string     `json:"examples"`
-	Quiz     *model.Quiz  `json:"quiz"`
-	Phrase   string       `json:"phrase"`
-	Tip      string       `json:"tip"`
-	Alt      string       `json:"alt"`
-}
-
-// SeedMockData mock 데이터 시딩 (데이터가 없을 때만)
-func SeedMockData(db *gorm.DB) error {
-	// 이미 문장 데이터가 있으면 스킵
+// SeedFromCSV CSV 파일로부터 문장 데이터 시딩 (데이터가 없을 때만)
+func SeedFromCSV(db *gorm.DB) error {
 	var count int64
 	if err := db.Model(&model.Sentence{}).Count(&count).Error; err != nil {
 		return err
@@ -49,18 +38,18 @@ func SeedMockData(db *gorm.DB) error {
 		return nil
 	}
 
-	// Mock 데이터 파일 경로들 (Docker/Local 모두 지원)
+	// CSV 파일 경로들
 	paths := []string{
-		"data/mock_sentences.json",      // Docker
-		"../../data/mock_sentences.json", // Local development
+		"docs/sentences_v2.csv",      // Local
+		"/app/docs/sentences_v2.csv", // Docker
 	}
 
-	var data []byte
+	var file *os.File
 	var err error
 	var usedPath string
 
 	for _, path := range paths {
-		data, err = os.ReadFile(path)
+		file, err = os.Open(path)
 		if err == nil {
 			usedPath = path
 			break
@@ -68,53 +57,62 @@ func SeedMockData(db *gorm.DB) error {
 	}
 
 	if err != nil {
-		log.Printf("Mock data file not found, skipping seed")
+		log.Printf("CSV file not found, skipping seed")
 		return nil
 	}
+	defer file.Close()
 
-	log.Printf("Loading mock data from: %s", usedPath)
+	log.Printf("Loading sentence data from: %s", usedPath)
 
-	// JSON 파싱
-	var mockData MockData
-	if err := json.Unmarshal(data, &mockData); err != nil {
+	reader := csv.NewReader(file)
+	reader.FieldsPerRecord = -1 // Allow variable field count
+	records, err := reader.ReadAll()
+	if err != nil {
 		return err
 	}
 
-	// 트랜잭션으로 데이터 삽입
+	if len(records) < 2 {
+		log.Printf("CSV file is empty, skipping seed")
+		return nil
+	}
+
+	// 헤더: UUID, Domain, Topic, Level, FunctionMacro, FunctionMicro, GeneratedSentence, KoreanTranslation, Words, Keywords
+	inserted := 0
 	return db.Transaction(func(tx *gorm.DB) error {
-		for _, ms := range mockData.Sentences {
-			// Sentence 생성
+		for _, row := range records[1:] {
+			if len(row) < 10 {
+				continue
+			}
+
+			uuid := row[0]
+			jp := row[6]
+			kr := row[7]
+
+			if jp == "" || kr == "" {
+				continue
+			}
+
 			sentence := &model.Sentence{
-				SentenceKey: ms.SentenceKey,
-				JP:          ms.JP,
-				KR:          ms.KR,
-				Romaji:      ms.Romaji,
-				Level:       ms.Level,
-				Category:    ms.Category,
+				UUID:          uuid,
+				Domain:        row[1],
+				Topic:         row[2],
+				Level:         parseLevelToInt(row[3]),
+				FunctionMacro: row[4],
+				FunctionMicro: row[5],
+				JP:            jp,
+				KR:            kr,
+				Words:         row[8],
+				Keywords:      row[9],
 			}
 
 			if err := tx.Create(sentence).Error; err != nil {
-				return err
+				log.Printf("Failed to insert sentence (UUID=%s): %v", uuid, err)
+				continue
 			}
-
-			// SentenceDetail 생성
-			detail := &model.SentenceDetail{
-				SentenceID: sentence.ID,
-				Words:      ms.Detail.Words,
-				Grammar:    ms.Detail.Grammar,
-				Examples:   ms.Detail.Examples,
-				Quiz:       ms.Detail.Quiz,
-				Phrase:     ms.Detail.Phrase,
-				Tip:        ms.Detail.Tip,
-				Alt:        ms.Detail.Alt,
-			}
-
-			if err := tx.Create(detail).Error; err != nil {
-				return err
-			}
+			inserted++
 		}
 
-		log.Printf("Seeded %d mock sentences", len(mockData.Sentences))
+		log.Printf("Seeded %d sentences from CSV", inserted)
 		return nil
 	})
 }

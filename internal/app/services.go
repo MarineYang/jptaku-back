@@ -109,7 +109,7 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 		chatService.SetVoiceVox(cfg.VoiceVox.VoiceVoxURL)
 	}
 
-	feedbackService := feedbackSvc.NewService(repos.Feedback, repos.Chat)
+	feedbackService := feedbackSvc.NewService(repos.Feedback, repos.Chat, repos.Sentence)
 
 	// Flash Service (DB 조회만 수행, OpenAI 호출 없음)
 	flashService := flashSvc.NewService(repos.Sentence, repos.Learning)

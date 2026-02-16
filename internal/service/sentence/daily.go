@@ -5,12 +5,19 @@ import (
 	"time"
 
 	"github.com/jptaku/server/internal/model"
+	"github.com/jptaku/server/internal/pkg"
 )
 
 // GetTodaySentences 오늘의 5문장 조회 (없으면 생성)
 func (s *Service) GetTodaySentences(userID uint) (*DailySentencesResponse, error) {
 	today := time.Now().Truncate(24 * time.Hour)
 	return s.getSentencesByDate(userID, today)
+}
+
+// ResetTodaySentences 오늘의 문장 세트 삭제 (난이도 변경 시 재생성 용도)
+func (s *Service) ResetTodaySentences(userID uint) error {
+	today := time.Now().Truncate(24 * time.Hour)
+	return s.sentenceRepo.DeleteDailySet(userID, today)
 }
 
 // GetHistorySentences 지난 학습 문장 조회 (오늘 제외)
@@ -82,12 +89,16 @@ func (s *Service) createDailySet(userID uint, date time.Time) (*DailySentencesRe
 		return nil, err
 	}
 
-	level := 5 // 기본값 N5
+	onboardingLevel := 5 // 기본값 N5
 	var categories []int
 	if user.Onboarding != nil {
-		level = user.Onboarding.Level
+		onboardingLevel = user.Onboarding.Level
 		categories = user.Onboarding.Categories
 	}
+
+	// 온보딩 값을 DB 쿼리용으로 변환
+	levels := pkg.LevelsForUser(onboardingLevel)
+	domains := pkg.DomainsFromCategories(categories)
 
 	// 이미 학습한 문장 ID 조회
 	learnedIDs, err := s.sentenceRepo.GetUserLearnedSentenceIDs(userID)
@@ -96,7 +107,7 @@ func (s *Service) createDailySet(userID uint, date time.Time) (*DailySentencesRe
 	}
 
 	// 미리 생성된 문장 pool에서 조건에 맞는 5개 가져오기
-	sentences, err := s.sentenceRepo.FindRandom(level, categories, 5, learnedIDs)
+	sentences, err := s.sentenceRepo.FindRandom(levels, domains, 5, learnedIDs)
 	if err != nil {
 		return nil, fmt.Errorf("문장 조회 실패: %w", err)
 	}

@@ -102,3 +102,10 @@ func (r *ChatRepository) GetSessionMessages(sessionID uint) ([]model.ChatMessage
 	}
 	return messages, nil
 }
+
+// CountUserSessions 유저의 총 채팅 세션 수
+func (r *ChatRepository) CountUserSessions(userID uint) (int64, error) {
+	var count int64
+	err := r.db.Model(&model.ChatSession{}).Where("user_id = ?", userID).Count(&count).Error
+	return count, err
+}

@@ -11,10 +11,11 @@ type SentenceRepository interface {
 	GetDailySet(userID uint, date time.Time) (*model.DailySentenceSet, error)
 	GetPastDailySets(userID uint, page, perPage int) ([]model.DailySentenceSet, int64, error)
 	FindByIDs(ids []uint) ([]model.Sentence, error)
-	FindRandom(level int, interests []int, count int, excludeIDs []uint) ([]model.Sentence, error)
+	FindRandom(levels []int, domains []string, count int, excludeIDs []uint) ([]model.Sentence, error)
 	GetDetail(sentenceID uint) (*model.SentenceDetail, error)
 	GetUserLearnedSentenceIDs(userID uint) ([]uint, error)
 	CreateDailySet(dailySet *model.DailySentenceSet) error
+	DeleteDailySet(userID uint, date time.Time) error
 }
 
 // UserRepository 사용자 저장소 인터페이스
@@ -31,5 +32,6 @@ type LearningRepository interface {
 type Provider interface {
 	GetTodaySentences(userID uint) (*DailySentencesResponse, error)
 	GetHistorySentences(userID uint, page, perPage int) (*HistorySentencesResponse, error)
+	ResetTodaySentences(userID uint) error
 	SetLearningRepo(learningRepo LearningRepository)
 }
