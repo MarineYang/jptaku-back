@@ -12,10 +12,13 @@ type SentenceRepository interface {
 	GetPastDailySets(userID uint, page, perPage int) ([]model.DailySentenceSet, int64, error)
 	FindByIDs(ids []uint) ([]model.Sentence, error)
 	FindRandom(levels []int, domains []string, count int, excludeIDs []uint) ([]model.Sentence, error)
+	FindSequential(levels []int, domains []string, limit int, excludeIDs []uint) ([]model.Sentence, error)
 	GetDetail(sentenceID uint) (*model.SentenceDetail, error)
 	GetUserLearnedSentenceIDs(userID uint) ([]uint, error)
+	GetUserMemorizedSentenceIDs(userID uint) ([]uint, error)
 	CreateDailySet(dailySet *model.DailySentenceSet) error
 	DeleteDailySet(userID uint, date time.Time) error
+	DeleteAllDailySets(userID uint) error
 }
 
 // UserRepository 사용자 저장소 인터페이스
@@ -26,6 +29,7 @@ type UserRepository interface {
 // LearningRepository 학습 저장소 인터페이스
 type LearningRepository interface {
 	FindByUserAndSentence(userID, sentenceID uint) (*model.LearningProgress, error)
+	GetUnmemorizedSentenceIDs(userID uint, today time.Time, levels []int) ([]uint, error)
 }
 
 // Provider 서비스 인터페이스 (외부에서 사용)

@@ -8,7 +8,9 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jptaku/server/internal/cache"
 	"github.com/jptaku/server/internal/config"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -16,6 +18,7 @@ import (
 type App struct {
 	cfg    *config.Config
 	db     *gorm.DB
+	redis  *redis.Client
 	deps   *Dependencies
 	router *gin.Engine
 	server *http.Server
@@ -34,8 +37,14 @@ func New(cfg *config.Config) (*App, error) {
 		log.Printf("Warning: Failed to seed data from CSV: %v", err)
 	}
 
+	// Redis
+	redisClient, err := cache.NewRedisClient(&cfg.Redis)
+	if err != nil {
+		log.Printf("Warning: Redis not available: %v", err)
+	}
+
 	// Dependencies (repos, services, infra)
-	deps := NewDependencies(db, cfg)
+	deps := NewDependencies(db, cfg, redisClient)
 
 	// Router
 	router := NewRouter(deps, cfg)
@@ -53,6 +62,7 @@ func New(cfg *config.Config) (*App, error) {
 	return &App{
 		cfg:    cfg,
 		db:     db,
+		redis:  redisClient,
 		deps:   deps,
 		router: router,
 		server: server,
@@ -74,6 +84,11 @@ func (a *App) Shutdown(ctx context.Context) error {
 
 	// Async service 종료
 	a.deps.Services.Async.Stop()
+
+	// Redis 연결 종료
+	if a.redis != nil {
+		a.redis.Close()
+	}
 
 	// DB 연결 종료
 	if sqlDB, err := a.db.DB(); err == nil && sqlDB != nil {

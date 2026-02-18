@@ -7,10 +7,12 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/jptaku/server/internal/model"
 	"github.com/jptaku/server/internal/pkg"
+	topicSvc "github.com/jptaku/server/internal/service/topic"
 	"github.com/sashabaranov/go-openai"
 )
 
@@ -18,25 +20,40 @@ import (
 type Service struct {
 	chatRepo       ChatRepository
 	sentenceRepo   SentenceRepository
+	userRepo       UserRepository
 	openaiClient   *openai.Client
 	model          string
 	voicevoxClient *pkg.VoiceVoxClient
 	ttsEnabled     bool
+	topicService   *topicSvc.Service
 }
 
 // 컴파일 타임 인터페이스 검증
 var _ Provider = (*Service)(nil)
 
 // NewService 서비스 생성자
-func NewService(chatRepo ChatRepository, sentenceRepo SentenceRepository, openaiAPIKey, openaiModel string) *Service {
+func NewService(chatRepo ChatRepository, sentenceRepo SentenceRepository, userRepo UserRepository, openaiAPIKey, openaiModel string) *Service {
 	client := openai.NewClient(openaiAPIKey)
 	return &Service{
 		chatRepo:     chatRepo,
 		sentenceRepo: sentenceRepo,
+		userRepo:     userRepo,
 		openaiClient: client,
 		model:        openaiModel,
 		ttsEnabled:   false,
 	}
+}
+
+// getUserLevel 유저의 일본어 레벨 조회 (5=N5초급, 4=N4중급, 3=N3중상급, 기본값 5)
+func (s *Service) getUserLevel(userID uint) int {
+	if s.userRepo == nil {
+		return 5
+	}
+	onboarding, err := s.userRepo.GetOnboarding(userID)
+	if err != nil || onboarding == nil {
+		return 5
+	}
+	return onboarding.Level
 }
 
 // getTodaySentenceTexts 오늘의 문장 일본어 텍스트 목록 조회
@@ -101,6 +118,11 @@ func (s *Service) SetVoiceVox(voicevoxURL string) {
 	}
 }
 
+// SetTopicService TopicService 설정
+func (s *Service) SetTopicService(ts *topicSvc.Service) {
+	s.topicService = ts
+}
+
 // GreetingResponse 인사말 통합 응답 구조체
 type GreetingResponse struct {
 	Greeting    string       `json:"greeting"`
@@ -118,15 +140,42 @@ func (s *Service) CreateSession(userID uint, input *CreateSessionInput) (*Create
 		return s.buildResumedSessionResponse(existingSession)
 	}
 
+	// 페르소나 생성
+	persona := generatePersona()
+
+	// 토픽 콘텐츠 선택 (Redis에서 랜덤 작품)
+	var contentTitle, contentID string
+	if s.topicService != nil {
+		ctx := context.Background()
+		content, err := s.topicService.GetRandomContent(ctx, input.Domain)
+		if err != nil {
+			log.Printf("CreateSession: topic content 조회 실패: %v", err)
+		} else {
+			contentTitle = content.TitleNative
+			if contentTitle == "" {
+				contentTitle = content.Title
+			}
+			contentID = content.ID
+		}
+	}
+	if contentTitle == "" {
+		contentTitle = input.Domain
+	}
+
 	// 새 세션 생성
 	session := &model.ChatSession{
-		UserID:      userID,
-		Topic:       input.Topic,
-		TopicDetail: input.TopicDetail,
-		CurrentTurn: 0,
-		MaxTurn:     model.MaxTurnsPerSession,
-		Status:      "active",
-		StartedAt:   time.Now(),
+		UserID:        userID,
+		Topic:         input.Domain,
+		TopicDetail:   contentTitle,
+		PersonaName:   persona.Name,
+		PersonaGender: persona.Gender,
+		Domain:        input.Domain,
+		ContentID:     contentID,
+		ContentTitle:  contentTitle,
+		CurrentTurn:   0,
+		MaxTurn:       model.MaxTurnsPerSession,
+		Status:        "active",
+		StartedAt:     time.Now(),
 	}
 
 	if err := s.chatRepo.CreateSession(session); err != nil {
@@ -134,14 +183,15 @@ func (s *Service) CreateSession(userID uint, input *CreateSessionInput) (*Create
 	}
 
 	// AI 첫 인사 + 번역 + 제안을 한 번에 생성
+	todayTexts := s.getTodaySentenceTexts(userID)
 	ctx := context.Background()
-	greetingResp, err := s.generateGreetingWithSuggestions(ctx, session)
+	greetingResp, err := s.generateGreetingWithSuggestions(ctx, session, todayTexts)
 	if err != nil {
 		log.Printf("Failed to generate greeting: %v", err)
 		// 실패 시 기본 인사
 		greetingResp = &GreetingResponse{
-			Greeting:   fmt.Sprintf("こんにちは！「%s」について話しましょう。日本語で話してみてください！", session.Topic),
-			GreetingKr: fmt.Sprintf("안녕하세요! \"%s\"에 대해 이야기해요. 일본어로 말해보세요!", session.Topic),
+			Greeting:   fmt.Sprintf("こんにちは！「%s」について話しましょう。日本語で話してみてください！", session.ContentTitle),
+			GreetingKr: fmt.Sprintf("안녕하세요! \"%s\"에 대해 이야기해요. 일본어로 말해보세요!", session.ContentTitle),
 			Suggestions: []Suggestion{
 				{Text: "はい、よろしくお願いします！", TextKr: "네, 잘 부탁드려요!"},
 				{Text: "何から話しましょうか？", TextKr: "뭐부터 이야기할까요?"},
@@ -164,15 +214,18 @@ func (s *Service) CreateSession(userID uint, input *CreateSessionInput) (*Create
 	session.Messages = []model.ChatMessage{*aiMsg}
 
 	// 오늘의 문장과 제안 비교하여 표시
-	todayTexts := s.getTodaySentenceTexts(userID)
 	suggestions := s.markTodaySentences(greetingResp.Suggestions, todayTexts)
+
+	// 시나리오 한국어 텍스트 (클라이언트 화면 상단 표시용)
+	scenarioEntry := selectScenario(session.Domain, session.ContentTitle, session.ID)
 
 	// 응답 구성
 	response := &CreateSessionResponse{
-		Session:     session,
-		Greeting:    greetingResp.Greeting,
-		GreetingKr:  greetingResp.GreetingKr,
-		Suggestions: suggestions,
+		Session:        session,
+		Greeting:       greetingResp.Greeting,
+		GreetingKr:     greetingResp.GreetingKr,
+		Suggestions:    suggestions,
+		ScenarioTextKr: scenarioEntry.TextKr,
 	}
 
 	// TTS 생성 (VoiceVox가 활성화된 경우)
@@ -231,12 +284,11 @@ func (s *Service) buildResumedSessionResponse(session *model.ChatSession) (*Crea
 
 	// 세션이 활성 상태이고 마지막 턴이 아닌 경우 제안 생성
 	if session.Status == "active" && session.CurrentTurn < session.MaxTurn && lastAIMessage != "" {
-		suggestions, err := s.generateSuggestionsOnly(ctx, session, lastAIMessage)
+		todayTexts := s.getTodaySentenceTexts(session.UserID)
+		suggestions, err := s.generateSuggestionsOnly(ctx, session, lastAIMessage, todayTexts)
 		if err != nil {
 			log.Printf("buildResumedSessionResponse: suggestions generation failed: %v", err)
 		} else {
-			// 오늘의 문장과 비교
-			todayTexts := s.getTodaySentenceTexts(session.UserID)
 			response.Suggestions = s.markTodaySentences(suggestions, todayTexts)
 		}
 	}
@@ -248,23 +300,44 @@ func (s *Service) buildResumedSessionResponse(session *model.ChatSession) (*Crea
 }
 
 // generateGreetingWithSuggestions AI 첫 인사 + 번역 + 제안을 한 번에 생성
-func (s *Service) generateGreetingWithSuggestions(ctx context.Context, session *model.ChatSession) (*GreetingResponse, error) {
-	prompt := fmt.Sprintf(`あなたは日本語会話の練習パートナーです。
-ユーザーと「%s」というトピックで会話を始めます。
+func (s *Service) generateGreetingWithSuggestions(ctx context.Context, session *model.ChatSession, todaySentences []string) (*GreetingResponse, error) {
+	// 페르소나 시스템 프롬프트 생성
+	persona := Persona{
+		Name:        session.PersonaName,
+		DisplayName: session.PersonaName,
+		Gender:      session.PersonaGender,
+	}
+	if idx := strings.Index(persona.Name, "("); idx > 0 {
+		persona.DisplayName = persona.Name[:idx]
+	}
 
-以下の3つを一度に生成してください：
-1. 最初の挨拶（日本語、1-2文）
-2. その挨拶の韓国語訳
-3. ユーザーが返答できる日本語の提案3つ（各提案に韓国語訳付き）
+	userLevel := s.getUserLevel(session.UserID)
+	systemPrompt := buildPersonaSystemPrompt(persona, session.ContentTitle, session.Domain, userLevel, session.ID, todaySentences)
+
+	todaySentenceRule := ""
+	if len(todaySentences) > 0 {
+		todaySentenceRule = "\n- 아래는 오늘의 학습 문장입니다. 대화 맥락에 자연스럽게 맞는 경우에만 제안 중 하나로 원문 그대로 포함하세요 (맞지 않으면 생략):\n"
+		for _, s := range todaySentences {
+			todaySentenceRule += fmt.Sprintf("  * %s\n", s)
+		}
+	}
+
+	prompt := fmt.Sprintf(`%s
+
+今、ユーザーとの会話を始めます。以下の3つを一度に生成してください：
+1. キャラクターとしての最初の一言（日本語、1-2文）
+2. その一言の韓国語訳
+3. ユーザーが返答できる日本語の提案3つ（각提案に韓国語訳付き）
 
 ルール:
-- 友達のように親しみやすく話してください
-- トピックに関連した質問や話題を投げかけてください
-- 簡単な日本語を使ってください
-- 提案は10〜20文字程度で、異なるニュアンスにしてください
+- 上記【今回の状況】の設定に完全に入り込んで、その状況の中にいる自然な人物として話し始めてください
+- 「〜について話しましょう」「〜が好きな人いますか」のような機械的・告知的な表現は絶対使わない
+- 状況の中から自然に生まれる一言にしてください（例：同じグッズを見て「あ、それ…！」「並んでてよかった！」など）
+- 上記の【言語レベル】設定に従った日本語を使ってください
+- 提案はユーザーレベル(%s)に合わせた長さ・難易度で%s
 
 必ず以下のJSON形式で出力してください（他の文字は出力しないでください）:
-{"greeting":"日本語の挨拶","greeting_kr":"한국어 번역","suggestions":[{"text":"日本語の提案1","text_kr":"한국어 번역1"},{"text":"日本語の提案2","text_kr":"한국어 번역2"},{"text":"日本語の提案3","text_kr":"한국어 번역3"}]}`, session.Topic)
+{"greeting":"日本語の挨拶","greeting_kr":"한국어 번역","suggestions":[{"text":"日本語の提案1","text_kr":"한국어 번역1"},{"text":"日本語の提案2","text_kr":"한국어 번역2"},{"text":"日本語の提案3","text_kr":"한국어 번역3"}]}`, systemPrompt, levelSuggestionHint(userLevel), todaySentenceRule)
 
 	resp, err := s.openaiClient.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
 		Model: s.model,
@@ -348,12 +421,11 @@ func (s *Service) GetSessionDetail(ctx context.Context, sessionID uint) (*Sessio
 
 	// 세션이 활성 상태이고 마지막 턴이 아닌 경우 제안 생성
 	if session.Status == "active" && session.CurrentTurn < session.MaxTurn && lastAIMessage != "" {
-		suggestions, err := s.generateSuggestionsOnly(ctx, session, lastAIMessage)
+		todayTexts := s.getTodaySentenceTexts(session.UserID)
+		suggestions, err := s.generateSuggestionsOnly(ctx, session, lastAIMessage, todayTexts)
 		if err != nil {
 			log.Printf("GetSessionDetail: suggestions generation failed: %v", err)
 		} else {
-			// 오늘의 문장과 비교
-			todayTexts := s.getTodaySentenceTexts(session.UserID)
 			response.Suggestions = s.markTodaySentences(suggestions, todayTexts)
 		}
 	}
@@ -389,20 +461,70 @@ func (s *Service) translateToKorean(ctx context.Context, japaneseText string) (s
 	return resp.Choices[0].Message.Content, nil
 }
 
+// buildConversationHistory 최근 대화 히스토리를 텍스트로 포맷
+func buildConversationHistory(messages []model.ChatMessage, limit int) string {
+	if len(messages) == 0 {
+		return ""
+	}
+	start := max(0, len(messages)-limit)
+	var sb strings.Builder
+	for _, msg := range messages[start:] {
+		role := "AI"
+		if msg.Role == "user" {
+			role = "ユーザー"
+		}
+		fmt.Fprintf(&sb, "%s: %s\n", role, msg.Content)
+	}
+	return sb.String()
+}
+
 // generateSuggestionsOnly 제안만 생성 (번역 없이)
-func (s *Service) generateSuggestionsOnly(ctx context.Context, session *model.ChatSession, aiResponse string) ([]Suggestion, error) {
-	prompt := fmt.Sprintf(`다음 AI 발언에 대해 유저 답변 제안 3개를 생성해주세요.
+func (s *Service) generateSuggestionsOnly(ctx context.Context, session *model.ChatSession, aiResponse string, todaySentences []string) ([]Suggestion, error) {
+	todaySentenceSection := ""
+	if len(todaySentences) > 0 {
+		todaySentenceSection = "\n[오늘의 학습 문장] 대화 맥락에 자연스럽게 맞는 경우에만 제안 중 하나로 원문 그대로 포함 (안 맞으면 생략):\n"
+		for _, s := range todaySentences {
+			todaySentenceSection += fmt.Sprintf("  - %s\n", s)
+		}
+	}
 
-회화 토픽: %s
-AI 발언: %s
+	historySection := ""
+	if len(session.Messages) > 0 {
+		history := buildConversationHistory(session.Messages, 6)
+		if history != "" {
+			historySection = "\n[최근 대화 흐름]\n" + history
+		}
+	}
 
-규칙:
-1. 초급~중급 일본어 학습자가 사용할 수 있는 간단한 표현 (10~20자)
-2. 각 제안은 다른 뉘앙스로
-3. 각 제안에 한국어 번역 포함
+	userLevel := s.getUserLevel(session.UserID)
+	prompt := fmt.Sprintf(`일본어 회화 학습 앱에서 유저의 답변 제안 3개를 생성해주세요.
+
+[회화 정보]
+도메인: %s / 작품: %s / 유저 레벨: %s
+%s
+[AI의 마지막 발언]
+%s
+%s
+[제안 생성 규칙]
+- AI의 마지막 발언에 자연스럽게 이어지는 3가지 답변을 생성하세요
+- 당신은 「%s」을 포함한 해당 도메인의 콘텐츠를 잘 알고 있습니다
+- AI가 특정 질문을 했다면, 질문 유형에 맞는 구체적인 고유명사로 직접 답하세요:
+  · 작품명을 물었을 때 (どのアニメ/ゲーム/映画が好き？) → 실제 작품명으로 답변 (예: "チェンソーマンが好き！", "ワンピースも好きだよ！")
+  · 캐릭터를 물었을 때 (どのキャラが好き？) → 실제 캐릭터명으로 답변 (예: "デンジが好き！", "パワーが一番！")
+  · 곡·노래를 물었을 때 (好きな曲は？) → 실제 곡명으로 답변
+  · 장면·에피소드를 물었을 때 → 실제 내용 언급
+- 최소 1개는 실제 이름·제목을 넣어 구체적으로 직접 답하는 제안 포함
+- 3개는 서로 다른 방식으로:
+  1번: 구체적 이름/제목을 넣어 직접 답변
+  2번: 자신의 의견이나 감정 표현
+  3번: 되묻거나 화제를 살짝 발전시키는 내용
+- 유저 레벨(%s)에 맞는 길이와 난이도
+- 각 제안에 자연스러운 한국어 번역 포함
+- 오늘의 학습 문장은 맥락에 자연스러울 때만 포함, 억지로 끼워넣지 말 것
 
 반드시 아래 JSON 형식으로만 출력:
-[{"text":"日本語の提案1","text_kr":"한국어1"},{"text":"日本語の提案2","text_kr":"한국어2"},{"text":"日本語の提案3","text_kr":"한국어3"}]`, session.Topic, aiResponse)
+[{"text":"日本語1","text_kr":"한국어1"},{"text":"日本語2","text_kr":"한국어2"},{"text":"日本語3","text_kr":"한국어3"}]`,
+		session.Domain, session.ContentTitle, levelSuggestionHint(userLevel), historySection, aiResponse, todaySentenceSection, session.ContentTitle, levelSuggestionHint(userLevel))
 
 	resp, err := s.openaiClient.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
 		Model: s.model,
@@ -412,8 +534,8 @@ AI 발언: %s
 				Content: prompt,
 			},
 		},
-		MaxTokens:   300,
-		Temperature: 0.7,
+		MaxTokens:   400,
+		Temperature: 0.8,
 	})
 	if err != nil {
 		return nil, err
@@ -585,7 +707,8 @@ func (s *Service) SendMessageStream(ctx context.Context, sessionID uint, userMes
 	// AI 응답 번역 + 제안을 한 번에 생성 (마지막 턴이 아닌 경우에만 제안 포함)
 	if fullResponse != "" {
 		log.Printf("SendMessageStream: generating translation and suggestions...")
-		postResp, err := s.generatePostResponse(ctx, session, fullResponse, !isLastTurn)
+		todayTexts := s.getTodaySentenceTexts(session.UserID)
+		postResp, err := s.generatePostResponse(ctx, session, fullResponse, !isLastTurn, todayTexts)
 		if err != nil {
 			log.Printf("SendMessageStream: Post response generation failed: %v", err)
 		} else {
@@ -600,7 +723,6 @@ func (s *Service) SendMessageStream(ctx context.Context, sessionID uint, userMes
 			// 제안 전송 (마지막 턴이 아닌 경우)
 			if !isLastTurn && len(postResp.Suggestions) > 0 {
 				// 오늘의 문장과 비교하여 표시
-				todayTexts := s.getTodaySentenceTexts(session.UserID)
 				suggestions := s.markTodaySentences(postResp.Suggestions, todayTexts)
 
 				log.Printf("SendMessageStream: sending %d suggestions", len(suggestions))
@@ -661,22 +783,58 @@ type PostResponse struct {
 }
 
 // generatePostResponse AI 응답에 대한 번역 + 제안을 한 번에 생성
-func (s *Service) generatePostResponse(ctx context.Context, session *model.ChatSession, aiResponse string, includeSuggestions bool) (*PostResponse, error) {
+func (s *Service) generatePostResponse(ctx context.Context, session *model.ChatSession, aiResponse string, includeSuggestions bool, todaySentences []string) (*PostResponse, error) {
 	var prompt string
 
 	if includeSuggestions {
-		prompt = fmt.Sprintf(`다음 일본어 발언에 대해 한국어 번역과 유저 답변 제안 3개를 생성해주세요.
+		todaySentenceSection := ""
+		if len(todaySentences) > 0 {
+			todaySentenceSection = "\n[오늘의 학습 문장] 대화 맥락에 자연스럽게 맞는 경우에만 제안 중 하나로 원문 그대로 포함 (안 맞으면 생략):\n"
+			for _, s := range todaySentences {
+				todaySentenceSection += fmt.Sprintf("  - %s\n", s)
+			}
+		}
 
-회화 토픽: %s
-AI 발언: %s
+		historySection := ""
+		if len(session.Messages) > 0 {
+			history := buildConversationHistory(session.Messages, 6)
+			if history != "" {
+				historySection = "\n[최근 대화 흐름]\n" + history
+			}
+		}
 
-규칙:
-1. 번역은 자연스러운 한국어로
-2. 제안은 초급~중급 일본어 학습자가 사용할 수 있는 간단한 표현 (10~20자)
-3. 각 제안은 다른 뉘앙스로
+		userLevel := s.getUserLevel(session.UserID)
+		prompt = fmt.Sprintf(`일본어 회화 학습 앱에서 AI 발언의 한국어 번역과 유저 답변 제안 3개를 생성해주세요.
+
+[회화 정보]
+도메인: %s / 작품: %s / 유저 레벨: %s
+%s
+[AI의 발언 (번역 대상)]
+%s
+%s
+[번역 규칙]
+- 자연스러운 한국어로, 직역보다 의역 우선
+
+[제안 생성 규칙]
+- AI의 마지막 발언에 자연스럽게 이어지는 3가지 답변을 생성하세요
+- 당신은 「%s」을 포함한 해당 도메인의 콘텐츠를 잘 알고 있습니다
+- AI가 특정 질문을 했다면, 질문 유형에 맞는 구체적인 고유명사로 직접 답하세요:
+  · 작품명을 물었을 때 (どのアニメ/ゲーム/映画が好き？) → 실제 작품명으로 답변 (예: "チェンソーマンが好き！", "ワンピースも好きだよ！")
+  · 캐릭터를 물었을 때 (どのキャラが好き？) → 실제 캐릭터명으로 답변 (예: "デンジが好き！", "パワーが一番！")
+  · 곡·노래를 물었을 때 (好きな曲は？) → 실제 곡명으로 답변
+  · 장면·에피소드를 물었을 때 → 실제 내용 언급
+- 최소 1개는 실제 이름·제목을 넣어 구체적으로 직접 답하는 제안 포함
+- 3개는 서로 다른 방식으로:
+  1번: 구체적 이름/제목을 넣어 직접 답변
+  2번: 자신의 의견이나 감정 표현
+  3번: 되묻거나 화제를 살짝 발전시키는 내용
+- 유저 레벨(%s)에 맞는 길이와 난이도
+- 각 제안에 자연스러운 한국어 번역 포함
+- 오늘의 학습 문장은 맥락에 자연스러울 때만 포함, 억지로 끼워넣지 말 것
 
 반드시 아래 JSON 형식으로만 출력 (다른 텍스트 없이):
-{"translation_kr":"한국어 번역","suggestions":[{"text":"日本語の提案1","text_kr":"한국어1"},{"text":"日本語の提案2","text_kr":"한국어2"},{"text":"日本語の提案3","text_kr":"한국어3"}]}`, session.Topic, aiResponse)
+{"translation_kr":"한국어 번역","suggestions":[{"text":"日本語1","text_kr":"한국어1"},{"text":"日本語2","text_kr":"한국어2"},{"text":"日本語3","text_kr":"한국어3"}]}`,
+			session.Domain, session.ContentTitle, levelSuggestionHint(userLevel), historySection, aiResponse, todaySentenceSection, session.ContentTitle, levelSuggestionHint(userLevel))
 	} else {
 		// 마지막 턴: 번역만
 		prompt = fmt.Sprintf(`다음 일본어를 한국어로 자연스럽게 번역해주세요.
@@ -695,8 +853,8 @@ AI 발언: %s
 				Content: prompt,
 			},
 		},
-		MaxTokens:   400,
-		Temperature: 0.5,
+		MaxTokens:   500,
+		Temperature: 0.8,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate post response: %w", err)
@@ -718,18 +876,24 @@ AI 발언: %s
 
 // buildOpenAIMessages OpenAI 메시지 구성
 func (s *Service) buildOpenAIMessages(session *model.ChatSession, newUserMessage string) []openai.ChatCompletionMessage {
+	// 페르소나 시스템 프롬프트 생성
+	persona := Persona{
+		Name:        session.PersonaName,
+		DisplayName: session.PersonaName,
+		Gender:      session.PersonaGender,
+	}
+	if idx := strings.Index(persona.Name, "("); idx > 0 {
+		persona.DisplayName = persona.Name[:idx]
+	}
+
+	todayTexts := s.getTodaySentenceTexts(session.UserID)
+	userLevel := s.getUserLevel(session.UserID)
+	systemPrompt := buildPersonaSystemPrompt(persona, session.ContentTitle, session.Domain, userLevel, session.ID, todayTexts)
+
 	messages := []openai.ChatCompletionMessage{
 		{
-			Role: openai.ChatMessageRoleSystem,
-			Content: fmt.Sprintf(`あなたは日本語会話の練習パートナーです。以下のルールに従ってください：
-
-1. 日本語のみで会話してください
-2. ユーザーのレベルに合わせて、簡単な日本語を使ってください
-3. 友達のように親しみやすく話してください
-4. 会話のトピック: %s
-5. 詳細: %s
-6. 相手の発言に対して自然に反応し、会話を続けてください
-7. 1-2文程度で簡潔に返答してください`, session.Topic, session.TopicDetail),
+			Role:    openai.ChatMessageRoleSystem,
+			Content: systemPrompt,
 		},
 	}
 

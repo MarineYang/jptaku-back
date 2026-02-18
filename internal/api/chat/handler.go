@@ -58,11 +58,10 @@ func (h *Handler) CreateSession(c *gin.Context) {
 		return
 	}
 
-	log.Printf("CreateSession: userID=%d, topic=%s, topicDetail=%s", userID, req.Topic, req.TopicDetail)
+	log.Printf("CreateSession: userID=%d, domain=%s", userID, req.Domain)
 
 	input := &chatSvc.CreateSessionInput{
-		Topic:       req.Topic,
-		TopicDetail: req.TopicDetail,
+		Domain: req.Domain,
 	}
 
 	response, err := h.chatService.CreateSession(userID, input)

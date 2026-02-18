@@ -57,6 +57,43 @@ func (r *SentenceRepository) FindRandom(levels []int, domains []string, limit in
 	return sentences, nil
 }
 
+// FindSequential 레벨 오름차순으로 문장 조회 (N5→N4→N3)
+func (r *SentenceRepository) FindSequential(levels []int, domains []string, limit int, excludeIDs []uint) ([]model.Sentence, error) {
+	var sentences []model.Sentence
+	query := r.db.Model(&model.Sentence{})
+
+	if len(levels) > 0 {
+		query = query.Where("level IN ?", levels)
+	}
+
+	if len(domains) > 0 {
+		query = query.Where("domain IN ?", domains)
+	}
+
+	if len(excludeIDs) > 0 {
+		query = query.Where("id NOT IN ?", excludeIDs)
+	}
+
+	err := query.Order("level DESC, id ASC").Limit(limit).Find(&sentences).Error
+	if err != nil {
+		return nil, err
+	}
+	return sentences, nil
+}
+
+// GetUserMemorizedSentenceIDs Memorized=true인 문장 ID만 반환
+func (r *SentenceRepository) GetUserMemorizedSentenceIDs(userID uint) ([]uint, error) {
+	var ids []uint
+	err := r.db.Model(&model.LearningProgress{}).
+		Select("sentence_id").
+		Where("user_id = ? AND memorized = true", userID).
+		Find(&ids).Error
+	if err != nil {
+		return nil, err
+	}
+	return ids, nil
+}
+
 // FindByUUID UUID로 문장 조회
 func (r *SentenceRepository) FindByUUID(uuid string) (*model.Sentence, error) {
 	var sentence model.Sentence
@@ -88,7 +125,7 @@ func (r *SentenceRepository) GetHistory(userID uint, page, perPage int) ([]model
 	var sentences []model.Sentence
 	var total int64
 
-	subQuery := r.db.Model(&model.DailySentenceSet{}).Select("UNNEST(sentence_ids)").Where("user_id = ?", userID)
+	subQuery := r.db.Model(&model.DailySentenceSet{}).Select("jsonb_array_elements_text(sentence_ids)::int").Where("user_id = ?", userID)
 	query := r.db.Model(&model.Sentence{}).Where("id IN (?)", subQuery)
 	query.Count(&total)
 
@@ -120,9 +157,14 @@ func (r *SentenceRepository) DeleteDailySet(userID uint, date time.Time) error {
 	return r.db.Where("user_id = ? AND date = ?", userID, date.Format("2006-01-02")).Delete(&model.DailySentenceSet{}).Error
 }
 
+// DeleteAllDailySets 유저의 모든 DailySentenceSet 삭제 (난이도 변경 시 완전 초기화)
+func (r *SentenceRepository) DeleteAllDailySets(userID uint) error {
+	return r.db.Where("user_id = ?", userID).Delete(&model.DailySentenceSet{}).Error
+}
+
 func (r *SentenceRepository) GetUserLearnedSentenceIDs(userID uint) ([]uint, error) {
 	var ids []uint
-	err := r.db.Model(&model.DailySentenceSet{}).Select("UNNEST(sentence_ids)").Where("user_id = ?", userID).Find(&ids).Error
+	err := r.db.Model(&model.DailySentenceSet{}).Select("jsonb_array_elements_text(sentence_ids)::int").Where("user_id = ?", userID).Find(&ids).Error
 	if err != nil {
 		return nil, err
 	}

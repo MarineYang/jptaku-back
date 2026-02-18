@@ -7,6 +7,11 @@ import (
 	"github.com/jptaku/server/internal/model"
 )
 
+// UserRepository 유저 저장소 인터페이스 (레벨 조회용)
+type UserRepository interface {
+	GetOnboarding(userID uint) (*model.UserOnboarding, error)
+}
+
 // ChatRepository 채팅 저장소 인터페이스
 type ChatRepository interface {
 	CreateSession(session *model.ChatSession) error

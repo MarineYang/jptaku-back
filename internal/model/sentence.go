@@ -11,7 +11,7 @@ type Sentence struct {
 	UUID          string         `gorm:"size:50;uniqueIndex" json:"uuid"`               // 외부 생성 UUID
 	Domain        string         `gorm:"size:20;index;not null" json:"domain"`           // anime, game, music, movie, drama
 	Topic         string         `gorm:"size:255" json:"topic"`                          // 작품명 (예: "BLEACH")
-	Level         int            `gorm:"index;not null" json:"level"`                    // 1=N5(초급), 2=N4(중급), 3=N3(고급)
+	Level         int            `gorm:"index;not null" json:"level"`                    // 5=N5(초급), 4=N4(중급), 3=N3(고급)
 	FunctionMacro string         `gorm:"size:100" json:"function_macro,omitempty"`       // 상호작용, 표현 등
 	FunctionMicro string         `gorm:"size:100" json:"function_micro,omitempty"`       // 관계형성, 의견교환 등
 	JP            string         `gorm:"type:text;not null" json:"jp"`                   // 일본어 문장

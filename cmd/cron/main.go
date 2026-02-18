@@ -261,7 +261,7 @@ type domainLevelCombo struct {
 
 var allCombos = func() []domainLevelCombo {
 	domains := []string{"anime", "game", "music", "movie", "drama"}
-	levels := []int{1, 2, 3} // 1=N5, 2=N4, 3=N3
+	levels := []int{5, 4, 3} // 5=N5, 4=N4, 3=N3
 	var combos []domainLevelCombo
 	for _, d := range domains {
 		for _, l := range levels {

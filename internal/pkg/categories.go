@@ -1,5 +1,7 @@
 package pkg
 
+import "fmt"
+
 // Domain 콘텐츠 도메인
 type Domain string
 
@@ -48,31 +50,31 @@ func DomainsFromCategories(categories []int) []string {
 }
 
 // LevelsForUser 온보딩 레벨 → 쿼리용 Level int 목록 반환
-// 온보딩: 5=N5, 4=N4, 3=N3 / DB: 1=N5(초급), 2=N4(중급), 3=N3(고급)
-// 유저 레벨 이하의 모든 레벨을 반환 (예: N4 유저 → [1, 2])
+// DB와 온보딩 모두 5=N5, 4=N4, 3=N3 통일
+// 유저 레벨 이하의 모든 레벨을 반환 (예: N4 유저 → [5, 4])
 func LevelsForUser(onboardingLevel int) []int {
 	switch onboardingLevel {
 	case 3:
-		return []int{1, 2, 3} // N5 + N4 + N3
+		return []int{5, 4, 3} // N5 + N4 + N3
 	case 4:
-		return []int{1, 2} // N5 + N4
+		return []int{5, 4} // N5 + N4
 	case 5:
-		return []int{1} // N5
+		return []int{5} // N5
 	default:
-		return []int{1} // N5
+		return []int{5} // N5
 	}
 }
 
 // LevelNameFromInt Level int → 표시용 문자열
 func LevelNameFromInt(level int) string {
 	switch level {
-	case 1:
+	case 5:
 		return "N5"
-	case 2:
+	case 4:
 		return "N4"
 	case 3:
 		return "N3"
 	default:
-		return "N5"
+		return fmt.Sprintf("N%d", level)
 	}
 }

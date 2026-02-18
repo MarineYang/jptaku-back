@@ -1,0 +1,2116 @@
+{
+  "domain": "game",
+  "fetched_at": "2026-02-10T14:21:54.182383+09:00",
+  "updated_at": "2026-02-10T14:21:54.182383+09:00",
+  "total_count": 50,
+  "contents": [
+    {
+      "id": "steam_3419430",
+      "domain": "game",
+      "title": "Bongo Cat",
+      "title_native": "Bongo Cat",
+      "intro": "Bongo Cat은 Marcel Zurawka와 Julius Krüger가 개발한 캐주얼 인디 게임으로, 무료 플레이가 가능합니다. 이 게임에서는 Bongo Cat이 더 많은 모자를 얻기 위해 작업 표시줄을 두드리며, 플레이어의 입력에 따라 다양한 액션을 수행합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3419430/2e6c93c020fe13d09d8120bb9164ed7cb58f00c5/header.jpg?t=1759317272",
+      "source_url": "https://store.steampowered.com/app/3419430",
+      "fetched_at": "2026-02-10T14:21:26.094336+09:00",
+      "updated_at": "2026-02-10T14:21:54.182361+09:00",
+      "metadata": {
+        "steam_app_id": 3419430,
+        "genres": [
+          "캐주얼",
+          "인디",
+          "대규모 멀티플레이어",
+          "시뮬레이션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "컨트롤러 일부 지원",
+          "통계"
+        ],
+        "release_date": "2025년 3월 5일",
+        "developers": [
+          "Marcel Zurawka",
+          "Julius Krüger"
+        ],
+        "publishers": [
+          "Irox Games"
+        ],
+        "short_description": "Bongo Cat은 당신의 도움이 필요합니다. Bongo Cat에게는 더 많은 모자가 필요해요!!! 당신이 키를 누를 때 마다 Bongo Cat은 작업 표시줄을 때릴 겁니다. 더 많은 포인트를 모으기 위해 키보드를 누르고, 마우스를 누르고, 게임을 하고, 업무를 보세요. 어떤 모자를 얻게 될까요?"
+      }
+    },
+    {
+      "id": "steam_1091500",
+      "domain": "game",
+      "title": "Cyberpunk 2077",
+      "title_native": "Cyberpunk 2077",
+      "intro": "사이버펑크 2077은 CD PROJEKT RED가 개발한 RPG 게임으로, 권력과 돈, 신체 개조에 집착하는 어두운 미래의 도시 '나이트 시티'를 배경으로 합니다. 이 게임은 오픈 월드 액션 어드벤처 형식으로 구성되어 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/26b96fa9c8af43189cbecbbc329ade29d9c9cf3e/header_koreana.jpg?t=1769690377",
+      "source_url": "https://store.steampowered.com/app/1091500",
+      "fetched_at": "2026-02-10T14:21:25.832207+09:00",
+      "updated_at": "2026-02-10T14:21:54.18236+09:00",
+      "metadata": {
+        "steam_app_id": 1091500,
+        "genres": [
+          "RPG"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "난이도 조정",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "HDR 사용 가능",
+          "가족 공유"
+        ],
+        "release_date": "2020년 12월 9일",
+        "developers": [
+          "CD PROJEKT RED"
+        ],
+        "publishers": [
+          "CD PROJEKT RED"
+        ],
+        "short_description": "사이버펑크 2077은 권력과 돈, 끝없는 신체 개조에 집착하는 어두운 미래의 위험천만한 메갈로폴리스, '나이트 시티'를 배경으로 한 오픈 월드 액션 어드벤처 RPG입니다."
+      }
+    },
+    {
+      "id": "steam_3681010",
+      "domain": "game",
+      "title": "Nioh 3",
+      "title_native": "Nioh 3",
+      "intro": "다크 전국 액션 RPG「Nioh」시리즈의 세 번째 작품인 Nioh 3는 KOEI TECMO GAMES CO., LTD.에서 개발하였습니다. 이 게임은 탐색 자유도와 긴장감을 갖춘 오픈 월드 무대에서 사무라이와 닌자의 전투를 중심으로 진행됩니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3681010/a21264e9fd476dcb2901c2432b598107d024c5a8/header.jpg?t=1770694714",
+      "source_url": "https://store.steampowered.com/app/3681010",
+      "fetched_at": "2026-02-10T14:21:25.51342+09:00",
+      "updated_at": "2026-02-10T14:21:54.18236+09:00",
+      "metadata": {
+        "steam_app_id": 3681010,
+        "genres": [
+          "액션",
+          "RPG"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "키보드 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "컨트롤러 일부 지원",
+          "Steam Cloud",
+          "통계",
+          "Steam 순위표",
+          "가족 공유"
+        ],
+        "release_date": "2026년 2월 5일",
+        "developers": [
+          "KOEI TECMO GAMES CO., LTD."
+        ],
+        "publishers": [
+          "KOEI TECMO GAMES CO., LTD."
+        ],
+        "short_description": "다크 전국 액션 RPG「Nioh」시리즈의 세 번째 작품. 탐색 자유도와 「Nioh」시리즈의 긴장감을 모두 갖춘 오픈 월드의 무대에서 「사무라이」와「닌자」 2개의 전투 스타일을 구사하여 강력한 요괴에게 도전하라!"
+      }
+    },
+    {
+      "id": "steam_1245620",
+      "domain": "game",
+      "title": "ELDEN RING",
+      "title_native": "ELDEN RING",
+      "intro": "ELDEN RING은 FromSoftware, Inc.에서 개발한 액션 RPG로, 다크 판타지 세계를 배경으로 합니다. 플레이어는 넓은 필드와 다양한 던전을 탐험하며 미지의 요소들을 발견하고, 각종 적들과 맞서 싸우는 경험을 할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg?t=1767883716",
+      "source_url": "https://store.steampowered.com/app/1245620",
+      "fetched_at": "2026-02-10T14:21:25.202247+09:00",
+      "updated_at": "2026-02-10T14:21:54.18236+09:00",
+      "metadata": {
+        "steam_app_id": 1245620,
+        "genres": [
+          "액션",
+          "RPG"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "카메라 움직임 조정",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "가족 공유"
+        ],
+        "release_date": "2022년 2월 24일",
+        "developers": [
+          "FromSoftware, Inc."
+        ],
+        "publishers": [
+          "FromSoftware, Inc.",
+          "Bandai Namco Entertainment"
+        ],
+        "short_description": "본 게임은 본격적인 다크 판타지 세계를 무대로 한 액션 RPG입니다. 드넓은 필드와 던전 탐험을 통해 미지의 것들을 발견해 보세요. 앞길을 막아서는 난관과 그것을 극복했을 때의 달성감, 그리고 등장인물들의 의도가 교착하는 군상극도 즐기실 수 있습니다."
+      }
+    },
+    {
+      "id": "steam_646570",
+      "domain": "game",
+      "title": "Slay the Spire",
+      "title_native": "Slay the Spire",
+      "intro": "Slay the Spire는 인디 전략 카드 게임으로, 개발사 Mega Crit이 만든 로그라이크 요소를 포함한 싱글 플레이 덱 빌딩 게임입니다. 플레이어는 독창적인 덱을 구성하여 다양한 적과 도전 과제를 극복하는 경험을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/646570/header.jpg?t=1769094928",
+      "source_url": "https://store.steampowered.com/app/646570",
+      "fetched_at": "2026-02-10T14:21:24.898937+09:00",
+      "updated_at": "2026-02-10T14:21:54.18236+09:00",
+      "metadata": {
+        "steam_app_id": 646570,
+        "genres": [
+          "인디",
+          "전략"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "텍스트 크기 조정",
+          "음량 개별 조절",
+          "마우스 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "터치 전용 옵션",
+          "Steam Cloud",
+          "통계",
+          "Steam 순위표",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "가족 공유"
+        ],
+        "release_date": "2019년 1월 23일",
+        "developers": [
+          "Mega Crit"
+        ],
+        "publishers": [
+          "Mega Crit"
+        ],
+        "short_description": "카드 게임이라는 장르와 로그라이크라는 장르를 합쳐, 저희가 만들 수 있는 최고의 싱글 플레이 덱 빌딩 게임을 만들었습니다. 독창적인 덱을 만들고, 기이한 적들과 조우하며, 엄청난 힘을 가진 유물을 발견하고, 첨탑을 정복해보세요!"
+      }
+    },
+    {
+      "id": "steam_252950",
+      "domain": "game",
+      "title": "Rocket League®",
+      "title_native": "Rocket League®",
+      "intro": "Rocket League®은 Psyonix LLC에서 개발한 액션, 인디, 레이싱, 스포츠 장르의 게임이다. 이 게임은 Supersonic Acrobatic Rocket-Powered Battle-Cars의 후속작으로, 축구와 드라이빙을 결합한 독특한 게임 플레이를 제공한다. 다양한 팬층을 보유한 이 게임은 물리 기반의 경기 시스템을 특징으로 한다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252950/448a46094a7f9eb3e856fb58dacfa64dae0b25d9/header_alt_assets_14.jpg?t=1765385510",
+      "source_url": "https://store.steampowered.com/app/252950",
+      "fetched_at": "2026-02-10T14:21:24.56459+09:00",
+      "updated_at": "2026-02-10T14:21:54.182359+09:00",
+      "metadata": {
+        "steam_app_id": 252950,
+        "genres": [
+          "액션",
+          "인디",
+          "레이싱",
+          "스포츠"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "스크린 공유 및 분할 PvP",
+          "협동",
+          "온라인 협동",
+          "스크린 공유 및 분할 협동",
+          "공유 및 분할 화면",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "컨트롤러 일부 지원",
+          "Steam Cloud",
+          "통계",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "Remote Play Together",
+          "가족 공유"
+        ],
+        "release_date": "2015년 7월 6일",
+        "developers": [
+          "Psyonix LLC"
+        ],
+        "publishers": [
+          "Psyonix LLC"
+        ],
+        "short_description": "수많은 팬을 거느리는 Supersonic Acrobatic Rocket-Powered Battle-Cars의 물리 기반 게임 속편에서 다시 한번 축구와 드라이빙이 만납니다!"
+      }
+    },
+    {
+      "id": "steam_322330",
+      "domain": "game",
+      "title": "Don't Starve Together",
+      "title_native": "Don't Starve Together",
+      "intro": "Don't Starve Together는 Klei Entertainment에서 개발한 독립형 멀티플레이어 생존 게임입니다. 이 게임은 혹독한 환경 속에서 자원을 관리하고 생존을 도모하는 액션, 어드벤처, RPG 요소가 결합된 시뮬레이션 게임입니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/322330/51e5f44e4e38ce02a985687df4fdc8feb678219b/header.jpg?t=1770241200",
+      "source_url": "https://store.steampowered.com/app/322330",
+      "fetched_at": "2026-02-10T14:21:24.193929+09:00",
+      "updated_at": "2026-02-10T14:21:54.182359+09:00",
+      "metadata": {
+        "steam_app_id": 322330,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "인디",
+          "RPG",
+          "시뮬레이션",
+          "전략"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "LAN PvP",
+          "협동",
+          "온라인 협동",
+          "LAN 협동",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "앱 내 구매",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "난이도 조정",
+          "키보드 전용 옵션",
+          "마우스 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "가족 공유"
+        ],
+        "release_date": "2016년 4월 21일",
+        "developers": [
+          "Klei Entertainment"
+        ],
+        "publishers": [
+          "Klei Entertainment"
+        ],
+        "short_description": "Don't Starve Together는 혹독한 생존 게임인 Don't Starve의 독립형 멀티플레이어 익스팬션입니다."
+      }
+    },
+    {
+      "id": "steam_1222670",
+      "domain": "game",
+      "title": "The Sims™ 4",
+      "title_native": "The Sims™ 4",
+      "intro": "『The Sims™ 4』는 Maxis에서 개발한 어드벤처, 캐주얼, 시뮬레이션 장르의 무료 플레이 게임입니다. 플레이어는 가상 세계에서 심들을 창조하고 그들의 삶을 조종하며 제약 없는 자유로운 경험을 즐길 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222670/header.jpg?t=1770392984",
+      "source_url": "https://store.steampowered.com/app/1222670",
+      "fetched_at": "2026-02-10T14:21:23.872516+09:00",
+      "updated_at": "2026-02-10T14:21:54.182359+09:00",
+      "metadata": {
+        "steam_app_id": 1222670,
+        "genres": [
+          "어드벤처",
+          "캐주얼",
+          "시뮬레이션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "Steam 트레이딩 카드",
+          "앱 내 구매",
+          "마우스 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2020년 6월 18일",
+        "developers": [
+          "Maxis"
+        ],
+        "publishers": [
+          "Electronic Arts"
+        ],
+        "short_description": "아무런 제약 없는 가상 세계에서 심들을 창조하고 지배하는 전능한 힘을 즐기세요. 강력한 권력을 휘두르며 자유롭고 재미있게 인생을 플레이하세요!"
+      }
+    },
+    {
+      "id": "steam_394360",
+      "domain": "game",
+      "title": "Hearts of Iron IV",
+      "title_native": "Hearts of Iron IV",
+      "intro": "Hearts of Iron IV는 Paradox Development Studio가 개발한 시뮬레이션 및 전략 게임으로, 플레이어는 제2차 세계대전 중 자신이 선택한 국가를 이끌고 전투 전략을 수립해야 합니다. 이 게임은 국가 지도력과 전략적 사고가 중요한 요소로 작용하는 점이 특징입니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/394360/67bbd0057627fc2244793bcdd09260c2539499cf/header.jpg?t=1765368663",
+      "source_url": "https://store.steampowered.com/app/394360",
+      "fetched_at": "2026-02-10T14:21:23.324858+09:00",
+      "updated_at": "2026-02-10T14:21:54.182358+09:00",
+      "metadata": {
+        "steam_app_id": 394360,
+        "genres": [
+          "시뮬레이션",
+          "전략"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "Steam Cloud",
+          "Remote Play 태블릿",
+          "가족 공유"
+        ],
+        "release_date": "2016년 6월 6일",
+        "developers": [
+          "Paradox Development Studio"
+        ],
+        "publishers": [
+          "Paradox Interactive"
+        ],
+        "short_description": "Victory is at your fingertips! Your ability to lead your nation is your supreme weapon, the strategy game Hearts of Iron IV lets you take command of any nation in World War II; the most engaging conflict in world history."
+      }
+    },
+    {
+      "id": "steam_377160",
+      "domain": "game",
+      "title": "Fallout 4",
+      "title_native": "Fallout 4",
+      "intro": "Fallout 4는 Bethesda Game Studios가 개발한 오픈 월드 RPG로, 플레이어는 포스트 아포칼립스 세계에서 서바이벌과 탐험을 경험합니다. 이 게임은 강력한 세계관과 자유로운 탐색 요소가 특징입니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/377160/header.jpg?t=1764687456",
+      "source_url": "https://store.steampowered.com/app/377160",
+      "fetched_at": "2026-02-10T14:21:22.788165+09:00",
+      "updated_at": "2026-02-10T14:21:54.182358+09:00",
+      "metadata": {
+        "steam_app_id": 377160,
+        "genres": [
+          "RPG"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "가족 공유"
+        ],
+        "release_date": "2015년 11월 9일",
+        "developers": [
+          "Bethesda Game Studios"
+        ],
+        "publishers": [
+          "Bethesda Softworks"
+        ],
+        "short_description": "화려한 수상 경력에 빛나는 Starfield와 The Elder Scrolls V: Skyrim의 제작사인 Bethesda Game Studios가 Fallout 4로 찾아왔습니다. Fallout 4는 오픈 월드 RPG 디자인의 기준을 세운 작품이자 DICE 및 BAFTA 올해의 게임 등 200회 이상의 ‘최우수’ 상을 받은 작품입니다."
+      }
+    },
+    {
+      "id": "steam_284160",
+      "domain": "game",
+      "title": "BeamNG.drive",
+      "title_native": "BeamNG.drive",
+      "intro": "BeamNG.drive는 BeamNG에서 개발한 레이싱 및 시뮬레이션 장르의 게임으로, 동적 소프트 보디 물리 시뮬레이터 기능을 제공합니다. 플레이어는 다양한 차량과 환경에서 실제적인 물리 법칙을 체험하며 자유롭게 행동할 수 있습니다. 현재 앞서 해보기 형태로 제공되고 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/284160/17f8af1312bc48e6cd90e5fb639d4981682af260/header.jpg?t=1769542627",
+      "source_url": "https://store.steampowered.com/app/284160",
+      "fetched_at": "2026-02-10T14:21:22.465756+09:00",
+      "updated_at": "2026-02-10T14:21:54.182358+09:00",
+      "metadata": {
+        "steam_app_id": 284160,
+        "genres": [
+          "레이싱",
+          "시뮬레이션",
+          "앞서 해보기"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "카메라 움직임 조정",
+          "음량 개별 조절",
+          "키보드 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "컨트롤러 일부 지원",
+          "Steam Cloud",
+          "레벨 에디터 포함",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play Together",
+          "가족 공유"
+        ],
+        "release_date": "2015년 5월 29일",
+        "developers": [
+          "BeamNG"
+        ],
+        "publishers": [
+          "BeamNG"
+        ],
+        "short_description": "뭐든지 할 수 있는 동적 소프트 보디 물리 시뮬레이터입니다."
+      }
+    },
+    {
+      "id": "steam_250900",
+      "domain": "game",
+      "title": "The Binding of Isaac: Rebirth",
+      "title_native": "The Binding of Isaac: Rebirth",
+      "intro": "The Binding of Isaac: Rebirth는 Nicalis, Inc.와 Edmund McMillen이 개발한 액션 RPG 슈팅 게임으로, 무작위로 생성되는 세계에서 진행됩니다. 플레이어는 이삭의 여정을 따라 다양한 이상한 보물을 발견하고 이삭의 형태를 변화시키며 탐험하게 됩니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/250900/header.jpg?t=1731977365",
+      "source_url": "https://store.steampowered.com/app/250900",
+      "fetched_at": "2026-02-10T14:21:22.162509+09:00",
+      "updated_at": "2026-02-10T14:21:54.182358+09:00",
+      "metadata": {
+        "steam_app_id": 250900,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "공유 및 분할 화면",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "Steam Cloud",
+          "Remote Play TV",
+          "Remote Play Together",
+          "가족 공유"
+        ],
+        "release_date": "2014년 11월 4일",
+        "developers": [
+          "Nicalis, Inc.",
+          "Edmund McMillen"
+        ],
+        "publishers": [
+          "Nicalis, Inc."
+        ],
+        "short_description": "The Binding of Isaac: Rebirth is a randomly generated action RPG shooter with heavy Rogue-like elements. Following Isaac on his journey players will find bizarre treasures that change Isaac’s form giving him super human abilities and enabling him to fight off droves of mysterious creatures, discover secrets and fight his way to safety."
+      }
+    },
+    {
+      "id": "steam_4025700",
+      "domain": "game",
+      "title": "두근두근타운",
+      "title_native": "두근두근타운",
+      "intro": "두근두근타운은 XD에서 개발한 무료 플레이 생활 시뮬레이션 게임으로, 창의성과 자유를 강조합니다. 플레이어는 자기만의 집을 짓고 다양한 취미 활동을 즐기면서 편안한 일상을 경험할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4025700/edc3ad12e05101b0f839f16b86ab610cfcba1235/header.jpg?t=1768814884",
+      "source_url": "https://store.steampowered.com/app/4025700",
+      "fetched_at": "2026-02-10T14:21:21.868293+09:00",
+      "updated_at": "2026-02-10T14:21:54.182358+09:00",
+      "metadata": {
+        "steam_app_id": 4025700,
+        "genres": [
+          "캐주얼",
+          "시뮬레이션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "크로스 플랫폼 멀티플레이어",
+          "앱 내 구매"
+        ],
+        "release_date": "2026년 1월 16일",
+        "developers": [
+          "XD"
+        ],
+        "publishers": [
+          "XD"
+        ],
+        "short_description": "\u0026lt;두근두근타운\u0026gt;은 창의성과 자유, 그리고 평온함을 선사하는 생활 시뮬레이션 게임입니다. 당신만의 집을 짓고, 다채로운 취미를 즐기며, 소중한 인연을 쌓아보세요. 무한한 가능성이 펼쳐지는 두근두근 타운이 지금 당신을 기다립니다."
+      }
+    },
+    {
+      "id": "steam_3564740",
+      "domain": "game",
+      "title": "연운",
+      "title_native": "연운",
+      "intro": "연운은 Everstone Studio에서 개발한 무료 오픈월드 액션 어드벤처 RPG입니다. 10세기 중국의 격변한 시대를 배경으로 한 이 게임은 플레이어가 젊은 검술 고수가 되어 다양한 모험을 경험하게 합니다. 고전 무협 세계를 생생하게 구현한 게임플레이가 특징입니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3564740/57c4616f97e270b88a947ea18682c27af9ae3874/header_koreana.jpg?t=1770361858",
+      "source_url": "https://store.steampowered.com/app/3564740",
+      "fetched_at": "2026-02-10T14:21:21.577118+09:00",
+      "updated_at": "2026-02-10T14:21:54.182357+09:00",
+      "metadata": {
+        "steam_app_id": 3564740,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "RPG",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "앱 내 구매"
+        ],
+        "release_date": "2025년 11월 14일",
+        "developers": [
+          "Everstone Studio"
+        ],
+        "publishers": [
+          "NetEase Games"
+        ],
+        "short_description": "연운은 오픈월드 액션 어드벤처 RPG로, 고전 무협 세계를 생생하게 구현했습니다. 10세기 중국 격변의 시대를 배경으로, 플레이어는 젊은 검술 고수가 되어 잊혀진 진실과 자신의 정체성에 숨겨진 비밀을 추적하게 됩니다. 바람이 산과 강을 가르는 듯한 역동적인 모험 속에서 여러분만의 전설이 펼쳐질 것입니다."
+      }
+    },
+    {
+      "id": "steam_1938090",
+      "domain": "game",
+      "title": "콜 오브 듀티®",
+      "title_native": "콜 오브 듀티®",
+      "intro": "콜 오브 듀티®는 액션 장르의 게임으로, Treyarch, Raven Software, Beenox, High Moon Studios, Sledgehammer Games, Infinity Ward, Activision Shanghai, Demonware 등 여러 개발사가 참여했습니다. 이 게임은 콜 오브 듀티®: 블랙 옵스 7, 블랙 옵스 6, 그리고 콜 오브 듀티®: 워존을 지원합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1938090/3c66561c9d6f46605a9134b2bb43c0f4424332ac/header_koreana.jpg?t=1770663933",
+      "source_url": "https://store.steampowered.com/app/1938090",
+      "fetched_at": "2026-02-10T14:21:21.225476+09:00",
+      "updated_at": "2026-02-10T14:21:54.182357+09:00",
+      "metadata": {
+        "steam_app_id": 1938090,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "캡션 이용 가능",
+          "앱 내 구매",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "컨트롤러 일부 지원",
+          "HDR 사용 가능"
+        ],
+        "release_date": "2022년 10월 27일",
+        "developers": [
+          "Treyarch",
+          "Raven Software",
+          "Beenox",
+          "High Moon Studios",
+          "Sledgehammer Games",
+          "Infinity Ward",
+          "Activision Shanghai",
+          "Demonware"
+        ],
+        "publishers": [
+          "Activision"
+        ],
+        "short_description": "콜 오브 듀티® 경험은 콜 오브 듀티®: 블랙 옵스 7, 콜 오브 듀티®: 블랙 옵스 6, 콜 오브 듀티®: 워존을 지원합니다."
+      }
+    },
+    {
+      "id": "steam_550",
+      "domain": "game",
+      "title": "Left 4 Dead 2",
+      "title_native": "Left 4 Dead 2",
+      "intro": "Left 4 Dead 2는 Valve에서 개발한 액션 게임으로, 좀비 대재앙을 배경으로 합니다. 2008년에 출시된 이 게임은 협동 플레이를 중심으로 한 경험을 제공하며, 전작인 Left 4 Dead의 후속작으로 많은 인기를 끌었습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/550/header.jpg?t=1745368562",
+      "source_url": "https://store.steampowered.com/app/550",
+      "fetched_at": "2026-02-10T14:21:20.837318+09:00",
+      "updated_at": "2026-02-10T14:21:54.182357+09:00",
+      "metadata": {
+        "steam_app_id": 550,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "캡션 이용 가능",
+          "Steam 창작마당",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "난이도 조정",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "Valve Anti-Cheat 사용",
+          "통계",
+          "Source SDK 포함",
+          "코멘터리 제공",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "Remote Play Together",
+          "가족 공유",
+          "Steam 타임라인"
+        ],
+        "release_date": "2009년 11월 16일",
+        "developers": [
+          "Valve"
+        ],
+        "publishers": [
+          "Valve"
+        ],
+        "short_description": "좀비 대재앙을 배경으로 한 Left 4 Dead 2(L4D2)는 2008년도 최고의 협동 게임이자 여러 수상 경력을 자랑하는 Left 4 Dead를 잇는 대망의 후속작입니다. 이 공포 협동 액션 게임은 5개의 추가된 캠페인을 통해 사바나에서 뉴올리언스까지 이어지는 미국 최남단의 도시, 늪지대, 공동묘지 등으로 여러분과 친구들을 안내할 것입니다.여러분은 다양하고 파괴적인 기존의 무기와 한층 업그레이드 된 무기로 무장한 새로운 생존자 네 명 중 한 명으로 플레이하게 됩니다."
+      }
+    },
+    {
+      "id": "steam_438100",
+      "domain": "game",
+      "title": "VRChat",
+      "title_native": "VRChat",
+      "intro": "VRChat은 VRChat Inc.에서 개발한 무료 플레이 멀티플레이어 어드벤처 게임으로, 사용자들이 소셜 VR 환경에서 탐험하고, 플레이하며, 커스터마이즈된 아바타와 세계를 제작할 수 있는 플랫폼입니다. 이 게임은 다양한 장르를 포함하여, 커뮤니티가 함께 미래의 소셜 VR을 만들어가는 경험을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/438100/header.jpg?t=1762366454",
+      "source_url": "https://store.steampowered.com/app/438100",
+      "fetched_at": "2026-02-10T14:21:20.548749+09:00",
+      "updated_at": "2026-02-10T14:21:54.182357+09:00",
+      "metadata": {
+        "steam_app_id": 438100,
+        "genres": [
+          "어드벤처",
+          "캐주얼",
+          "대규모 멀티플레이어",
+          "시뮬레이션",
+          "스포츠",
+          "무료 플레이",
+          "앞서 해보기"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "MMO",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "컨트롤러 완벽 지원",
+          "추적되는 컨트롤러 지원",
+          "VR 지원",
+          "앱 내 구매"
+        ],
+        "release_date": "2017년 2월 1일",
+        "developers": [
+          "VRChat Inc."
+        ],
+        "publishers": [
+          "VRChat Inc."
+        ],
+        "short_description": "Join our growing community as you explore, play, and help craft the future of social VR. Create worlds and custom avatars. Welcome to VRChat."
+      }
+    },
+    {
+      "id": "steam_227300",
+      "domain": "game",
+      "title": "Euro Truck Simulator 2",
+      "title_native": "Euro Truck Simulator 2",
+      "intro": "Euro Truck Simulator 2는 SCS Software에 의해 개발된 인디 시뮬레이션 게임입니다. 플레이어는 유럽 전역을 여행하며 중요 화물을 배달하는 트럭 운전사가 되어 다양한 도시를 탐험할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/227300/9a81dc3126c56637297b654f9dcac057cfd79b77/header.jpg?t=1764266628",
+      "source_url": "https://store.steampowered.com/app/227300",
+      "fetched_at": "2026-02-10T14:21:20.234985+09:00",
+      "updated_at": "2026-02-10T14:21:54.182357+09:00",
+      "metadata": {
+        "steam_app_id": 227300,
+        "genres": [
+          "인디",
+          "시뮬레이션"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "카메라 움직임 조정",
+          "음량 개별 조절",
+          "난이도 조정",
+          "키보드 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "컨트롤러 일부 지원",
+          "Steam Cloud",
+          "레벨 에디터 포함",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play Together",
+          "가족 공유"
+        ],
+        "release_date": "2012년 10월 12일",
+        "developers": [
+          "SCS Software"
+        ],
+        "publishers": [
+          "SCS Software"
+        ],
+        "short_description": "도로의 왕이 되어 인상적인 거리를 가로질러 중요한 화물을 배달하는 트럭 운전사가 되어 유럽을 여행하세요! 탐험할 도시가 수십 개나 되므로, 당신의 인내심, 기술, 속도가 모두 한계에 도달할 것입니다."
+      }
+    },
+    {
+      "id": "steam_1174180",
+      "domain": "game",
+      "title": "Red Dead Redemption 2",
+      "title_native": "Red Dead Redemption 2",
+      "intro": "레드 데드 리뎀션 2는 로드카 게임즈가 개발한 액션 어드벤처 게임으로, 아서 모건과 반 더 린드 갱단의 이야기를 다룹니다. 플레이어는 정부 요원과 현상금 사냥꾼의 추격을 피해 살아남기 위해 강도질, 도둑질, 싸움을 펼치게 됩니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg?t=1759502961",
+      "source_url": "https://store.steampowered.com/app/1174180",
+      "fetched_at": "2026-02-10T14:21:19.861376+09:00",
+      "updated_at": "2026-02-10T14:21:54.182356+09:00",
+      "metadata": {
+        "steam_app_id": 1174180,
+        "genres": [
+          "액션",
+          "어드벤처"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "앱 내 구매",
+          "컨트롤러 일부 지원",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2019년 12월 5일",
+        "developers": [
+          "Rockstar Games"
+        ],
+        "publishers": [
+          "Rockstar Games"
+        ],
+        "short_description": "아서 모건과 반 더 린드 갱단은 도주 중인 무법자입니다. 정부 요원과 현상금 사냥꾼들에게 추격당하는 그들은 살아남기 위해 강도질과 도둑질, 싸움을 거듭하며 미국의 험난한 심장부를 달려 나갑니다."
+      }
+    },
+    {
+      "id": "steam_1973530",
+      "domain": "game",
+      "title": "Limbus Company",
+      "title_native": "Limbus Company",
+      "intro": "Limbus Company는 ProjectMoon이 개발한 게임으로, 플레이어는 관리자의 역할을 맡아 12명의 수감자를 이끌고 폐쇄된 로보토미 코퍼레이션 지부로 들어가 황금가지를 탈환하는 과정을 경험하게 된다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1973530/header.jpg?t=1767762486",
+      "source_url": "https://store.steampowered.com/app/1973530",
+      "fetched_at": "2026-02-10T14:21:19.594477+09:00",
+      "updated_at": "2026-02-10T14:21:54.182356+09:00",
+      "metadata": {
+        "steam_app_id": 1973530,
+        "genres": null,
+        "categories": [
+          "싱글 플레이어",
+          "앱 내 구매"
+        ],
+        "release_date": "2023년 2월 26일",
+        "developers": [
+          "ProjectMoon"
+        ],
+        "publishers": [
+          "ProjectMoon"
+        ],
+        "short_description": "림버스 컴퍼니의 관리자가 되어 12명의 수감자를 이끌고, 폐쇄된 로보토미 코퍼레이션 지부로 들어가 황금가지를 탈환하세요."
+      }
+    },
+    {
+      "id": "steam_1449850",
+      "domain": "game",
+      "title": "Yu-Gi-Oh! Master Duel",
+      "title_native": "Yu-Gi-Oh! Master Duel",
+      "intro": "Yu-Gi-Oh! Master Duel은 KONAMI에서 개발한 무료 플레이 시뮬레이션 및 전략 게임입니다. 이 게임은 디지털 카드 게임으로, 다양한 카드와 전략을 통해 플레이어 간의 대결을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1449850/fc10d38783260f29b3f86f19afcfe80d9868ee0a/header.jpg?t=1769733849",
+      "source_url": "https://store.steampowered.com/app/1449850",
+      "fetched_at": "2026-02-10T14:21:19.320054+09:00",
+      "updated_at": "2026-02-10T14:21:54.182356+09:00",
+      "metadata": {
+        "steam_app_id": 1449850,
+        "genres": [
+          "시뮬레이션",
+          "전략",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "앱 내 구매"
+        ],
+        "release_date": "2022년 1월 18일",
+        "developers": [
+          "KONAMI"
+        ],
+        "publishers": [
+          "KONAMI"
+        ],
+        "short_description": "사상 최고봉의 디지털 카드 게임으로!"
+      }
+    },
+    {
+      "id": "steam_440",
+      "domain": "game",
+      "title": "Team Fortress 2",
+      "title_native": "Team Fortress 2",
+      "intro": "Team Fortress 2는 Valve가 개발한 액션 장르의 무료 플레이 게임입니다. 플레이어는 9가지 병과의 특성을 살려 다양한 전술적 능력을 활용하며, 지속적으로 업데이트되는 게임 모드, 맵, 장비를 경험할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/440/header.jpg?t=1757348372",
+      "source_url": "https://store.steampowered.com/app/440",
+      "fetched_at": "2026-02-10T14:21:19.027169+09:00",
+      "updated_at": "2026-02-10T14:21:54.182353+09:00",
+      "metadata": {
+        "steam_app_id": 440,
+        "genres": [
+          "액션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "캡션 이용 가능",
+          "Steam 창작마당",
+          "앱 내 구매",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "컨트롤러 일부 지원",
+          "Valve Anti-Cheat 사용",
+          "통계",
+          "레벨 에디터 포함",
+          "코멘터리 제공",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2007년 10월 10일",
+        "developers": [
+          "Valve"
+        ],
+        "publishers": [
+          "Valve"
+        ],
+        "short_description": "다양한 전술적 능력과 뚜렷한 개성을 갖춘 9가지 병과의 캐릭터를 플레이하세요. 끊임없이 업데이트되는 새로운 게임 모드, 맵, 장비 그리고 가장 중요한 모자까지 지금 바로 즐겨보세요!"
+      }
+    },
+    {
+      "id": "steam_1086940",
+      "domain": "game",
+      "title": "Baldur's Gate 3",
+      "title_native": "Baldur's Gate 3",
+      "intro": "Baldur's Gate 3는 Larian Studios에서 개발한 어드벤처, RPG, 전략 장르의 게임으로, Dungeons \u0026 Dragons 세계관을 배경으로 합니다. 플레이어의 선택에 따라 동료애와 배신, 생존과 희생의 이야기가 전개됩니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/48a2fcbda8565bb45025e98fd8ebde8a7203f6a0/header.jpg?t=1765505948",
+      "source_url": "https://store.steampowered.com/app/1086940",
+      "fetched_at": "2026-02-10T14:21:18.722751+09:00",
+      "updated_at": "2026-02-10T14:21:54.182352+09:00",
+      "metadata": {
+        "steam_app_id": 1086940,
+        "genres": [
+          "어드벤처",
+          "RPG",
+          "전략"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "LAN 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "난이도 조정",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "수시 저장",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "Remote Play TV",
+          "Remote Play Together",
+          "가족 공유"
+        ],
+        "release_date": "2023년 8월 3일",
+        "developers": [
+          "Larian Studios"
+        ],
+        "publishers": [
+          "Larian Studios"
+        ],
+        "short_description": "Baldur’s Gate 3 is a story-rich, party-based RPG set in the universe of Dungeons \u0026amp; Dragons, where your choices shape a tale of fellowship and betrayal, survival and sacrifice, and the lure of absolute power."
+      }
+    },
+    {
+      "id": "steam_3241660",
+      "domain": "game",
+      "title": "R.E.P.O.",
+      "title_native": "R.E.P.O.",
+      "intro": "R.E.P.O.는 최대 6명이 함께 플레이할 수 있는 온라인 협동 공포 게임입니다. 플레이어는 귀중한 물리 기반 오브젝트를 찾아 조심스럽게 처리하여 창조자의 욕구를 충족시켜야 합니다. 이 게임은 액션 장르로 semiwork에서 개발하였습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3241660/1ea445e044a2d5b09cfa8291350b63ebed6e5741/header.jpg?t=1765552338",
+      "source_url": "https://store.steampowered.com/app/3241660",
+      "fetched_at": "2026-02-10T14:21:18.444277+09:00",
+      "updated_at": "2026-02-10T14:21:54.182352+09:00",
+      "metadata": {
+        "steam_app_id": 3241660,
+        "genres": [
+          "액션",
+          "앞서 해보기"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "카메라 움직임 조정",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "Steam Cloud",
+          "가족 공유"
+        ],
+        "release_date": "2025년 2월 26일",
+        "developers": [
+          "semiwork"
+        ],
+        "publishers": [
+          "semiwork"
+        ],
+        "short_description": "An online co-op horror game with up to 6 players. Locate valuable, fully physics-based objects and handle them with care as you retrieve and extract to satisfy your creator's desires."
+      }
+    },
+    {
+      "id": "steam_3405690",
+      "domain": "game",
+      "title": "EA SPORTS FC™ 26",
+      "title_native": "EA SPORTS FC™ 26",
+      "intro": "EA SPORTS FC™ 26은 EA Canada와 EA Romania가 개발한 스포츠 시뮬레이션 게임입니다. 클럽을 운영하며 커뮤니티 피드백을 바탕으로 개선된 게임플레이 경험과 새로운 시즌에 맞춰 진화하는 스토리라인을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3405690/2d96aa1b06e453cd62dae9029d412f19e61932c3/header.jpg?t=1769020260",
+      "source_url": "https://store.steampowered.com/app/3405690",
+      "fetched_at": "2026-02-10T14:21:18.171359+09:00",
+      "updated_at": "2026-02-10T14:21:54.182351+09:00",
+      "metadata": {
+        "steam_app_id": 3405690,
+        "genres": [
+          "시뮬레이션",
+          "스포츠"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "스크린 공유 및 분할 PvP",
+          "협동",
+          "온라인 협동",
+          "스크린 공유 및 분할 협동",
+          "공유 및 분할 화면",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "앱 내 구매",
+          "음성 채팅 텍스트 변환",
+          "난이도 조정",
+          "키보드 전용 옵션",
+          "스테레오 사운드",
+          "자막 옵션",
+          "HDR 사용 가능"
+        ],
+        "release_date": "2025년 9월 25일",
+        "developers": [
+          "EA Canada",
+          "EA Romania"
+        ],
+        "publishers": [
+          "Electronic Arts"
+        ],
+        "short_description": "EA SPORTS FC™ 26에서 클럽은 여러분의 것입니다. 커뮤니티 피드백을 기반으로 개선된 게임플레이 경험, 새로운 시즌에 새로운 스토리라인을 제공하는 감독 라이브 챌린지, 위대한 선수들에게 영감을 받은 유형 등으로 여러분이 원하는 방식으로 플레이하세요."
+      }
+    },
+    {
+      "id": "steam_1281930",
+      "domain": "game",
+      "title": "tModLoader",
+      "title_native": "tModLoader",
+      "intro": "tModLoader는 TML Team이 개발한 무료 플레이 액션 RPG로, Terraria에서 플레이어가 만든 모드를 통해 세상을 탐험하고, 전투하며, 건설하는 경험을 제공합니다. 이 DLC는 모딩을 가능하게 하여 더욱 다양한 게임 플레이를 즐길 수 있도록 합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1281930/header.jpg?t=1718143594",
+      "source_url": "https://store.steampowered.com/app/1281930",
+      "fetched_at": "2026-02-10T14:21:17.833795+09:00",
+      "updated_at": "2026-02-10T14:21:54.182351+09:00",
+      "metadata": {
+        "steam_app_id": 1281930,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "인디",
+          "RPG",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 창작마당",
+          "Steam Cloud"
+        ],
+        "release_date": "2020년 5월 16일",
+        "developers": [
+          "TML Team"
+        ],
+        "publishers": [
+          "Re-Logic",
+          "TML Team"
+        ],
+        "short_description": "Dig, Fight, and Build your way through the world of player-created mods on Terraria with tModLoader - this DLC makes modding Terraria a reality!"
+      }
+    },
+    {
+      "id": "steam_1203220",
+      "domain": "game",
+      "title": "NARAKA: BLADEPOINT",
+      "title_native": "NARAKA: BLADEPOINT",
+      "intro": "나라카: 블레이드포인트는 24 Entertainment가 개발한 무료 플레이 액션 어드벤처 게임으로, 최대 60명이 동시에 참여하는 대규모 멀티플레이어 경험을 제공합니다. 게임은 와이어 액션과 근거리 전투가 결합되어 화려한 전투 상황을 연출합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1203220/8137508c9579f5b1776c1d0a3dc01f3026d94ce8/header.jpg?t=1770257499",
+      "source_url": "https://store.steampowered.com/app/1203220",
+      "fetched_at": "2026-02-10T14:21:17.566687+09:00",
+      "updated_at": "2026-02-10T14:21:54.18235+09:00",
+      "metadata": {
+        "steam_app_id": 1203220,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "대규모 멀티플레이어",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "앱 내 구매",
+          "컨트롤러 일부 지원",
+          "HDR 사용 가능"
+        ],
+        "release_date": "2021년 8월 11일",
+        "developers": [
+          "24 Entertainment"
+        ],
+        "publishers": [
+          "NetEase Games "
+        ],
+        "short_description": "나라카: 블레이드포인트는 60명의 유저가 동시에 플레이하며, 와이어 액션과 근거리 전투가 합쳐져 화려한 난전을 연출합니다. 중력을 거스르는 움직임, 방대한 근거리 및 원거리 무기, 디테일한 커스터마이징 기능 등 각각의 스타일이 다른 다양한 영웅들과 개성 넘치는 스킨 등 아시아의 배경 속 전설적인 전투 액션을 지금 바로 느껴보세요."
+      }
+    },
+    {
+      "id": "steam_2507950",
+      "domain": "game",
+      "title": "Delta Force",
+      "title_native": "Delta Force",
+      "intro": "액션과 어드벤처 장르의 무료 멀티플레이어 전술 사격 게임인 Delta Force는 Team Jade에서 개발하였습니다. 플레이어는 엘리트 오퍼레이터가 되어 전용 무기를 커스터마이징하고, 치열한 익스트랙션과 웅장한 전면전을 경험할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2507950/60b997e74525fb9c23e9accaa50e2a4795443930/header_alt_assets_9.jpg?t=1770350489",
+      "source_url": "https://store.steampowered.com/app/2507950",
+      "fetched_at": "2026-02-10T14:21:17.224079+09:00",
+      "updated_at": "2026-02-10T14:21:54.18235+09:00",
+      "metadata": {
+        "steam_app_id": 2507950,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "대규모 멀티플레이어",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "MMO",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "앱 내 구매"
+        ],
+        "release_date": "2024년 12월 4일",
+        "developers": [
+          "Team Jade"
+        ],
+        "publishers": [
+          "TiMi Studio Group"
+        ],
+        "short_description": "차세대 전술 사격 게임의 새로운 기준. 엘리트 오퍼레이터가 되어 전용 무기를 커스터마이징하고, 치열한 익스트랙션과 웅장한 전면전을 넘나들며 극한의 임무를 수행하십시오."
+      }
+    },
+    {
+      "id": "steam_2807960",
+      "domain": "game",
+      "title": "Battlefield™ 6",
+      "title_native": "Battlefield™ 6",
+      "intro": "Battlefield™ 6는 Battlefield Studios가 개발한 액션 게임입니다. 전차, 전투기, 그리고 다양한 병기가 등장하는 전투에서 분대의 협력이 핵심 요소로 작용합니다. 전면전을 통해 실감 나는 전쟁 경험을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2807960/c12d12ce3c7d217398d3fcad77427bfc9d57c570/header.jpg?t=1770142929",
+      "source_url": "https://store.steampowered.com/app/2807960",
+      "fetched_at": "2026-02-10T14:21:16.852385+09:00",
+      "updated_at": "2026-02-10T14:21:54.182349+09:00",
+      "metadata": {
+        "steam_app_id": 2807960,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "앱 내 구매",
+          "카메라 움직임 조정",
+          "음성 채팅 텍스트 변환",
+          "텍스트 채팅 음성 변환",
+          "색상 대체",
+          "음량 개별 조절",
+          "난이도 조정",
+          "키보드 전용 옵션",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "HDR 사용 가능"
+        ],
+        "release_date": "2025년 10월 10일",
+        "developers": [
+          "Battlefield Studios"
+        ],
+        "publishers": [
+          "Electronic Arts"
+        ],
+        "short_description": "최고의 전면전을 경험하세요. 전차, 전투기, 거대한 병기로 가득한 전쟁에서 가장 치명적인 무기는 여러분의 분대입니다."
+      }
+    },
+    {
+      "id": "steam_359550",
+      "domain": "game",
+      "title": "톰 클랜시의 레인보우식스 시즈 X",
+      "title_native": "톰 클랜시의 레인보우식스 시즈 X",
+      "intro": "'톰 클랜시의 레인보우식스 시즈 X'는 Ubisoft Montreal에서 개발한 액션 장르의 무료 플레이 전술 슈팅 게임입니다. 이 게임은 전략과 기술이 중요한 팀 기반 전투를 중심으로 다양한 대원들과 함께 빠른 매치를 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/359550/dc3570350a99ecc4dd77f83fad47787f7eca89f7/header.jpg?t=1770141487",
+      "source_url": "https://store.steampowered.com/app/359550",
+      "fetched_at": "2026-02-10T14:21:16.533492+09:00",
+      "updated_at": "2026-02-10T14:21:54.182336+09:00",
+      "metadata": {
+        "steam_app_id": 359550,
+        "genres": [
+          "액션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "앱 내 구매",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2015년 12월 1일",
+        "developers": [
+          "Ubisoft Montreal"
+        ],
+        "publishers": [
+          "Ubisoft"
+        ],
+        "short_description": "레인보우식스 시즈 X는 뛰어난 전략과 기술이 승부를 좌우하는 전술적인 정예 팀 기반의 슈팅 게임입니다. 다양한 대원들과 함께 빠른 매치, 무계급, 이중 전선 게임 모드를 프리 엑세스로 이용하십시오."
+      }
+    },
+    {
+      "id": "steam_230410",
+      "domain": "game",
+      "title": "Warframe",
+      "title_native": "Warframe",
+      "intro": "\"Warframe은 Digital Extremes가 개발한 무료 플레이 액션 RPG로, 스토리 중심의 게임에서 강력한 전사로 깨어나 동료들과 함께 다양한 행성에서 싸워 나가는 내용을 담고 있습니다.\"",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/230410/64cb9deaae9055003fd76ba0f6df6b6fba38e808/header.jpg?t=1765508208",
+      "source_url": "https://store.steampowered.com/app/230410",
+      "fetched_at": "2026-02-10T14:21:16.245545+09:00",
+      "updated_at": "2026-02-10T14:21:54.182333+09:00",
+      "metadata": {
+        "steam_app_id": 230410,
+        "genres": [
+          "액션",
+          "RPG",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "앱 내 구매",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "HDR 사용 가능"
+        ],
+        "release_date": "2013년 3월 25일",
+        "developers": [
+          "Digital Extremes"
+        ],
+        "publishers": [
+          "Digital Extremes"
+        ],
+        "short_description": "이 스토리 중심의 부분 유료 온라인 액션 게임에서 그 누구도 멈출 수 없는 강력한 전사로 깨어나 동료들과 함께 싸움에 임하세요. 여러 행성에 걸쳐 뻗어나가는 성계 이곳저곳에서 전쟁을 벌이는 세력들과 맞서며, 신비로운 인물, 로터스의 안내에 따르며 워프레임을 레벨업하고, 파괴적인 화력을 가진 무기고를 쌓아올리고, 이 짜릿한, 전혀 새로운 장르의 3인칭 전투 경험 속의 거대한 오픈 월드에서 여러분의 진짜 잠재력을 불러일으키세요."
+      }
+    },
+    {
+      "id": "steam_3240220",
+      "domain": "game",
+      "title": "Grand Theft Auto V 인핸스드",
+      "title_native": "Grand Theft Auto V 인핸스드",
+      "intro": "Grand Theft Auto V 인핸스드는 Rockstar North가 개발한 액션, 어드벤처, 레이싱 장르의 게임입니다. 이 작품은 Grand Theft Auto V와 Grand Theft Auto 온라인의 향상된 비주얼, 빠른 로딩 시간 및 3D 오디오를 통해 향상된 게임 경험을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3240220/header_koreana.jpg?t=1765479644",
+      "source_url": "https://store.steampowered.com/app/3240220",
+      "fetched_at": "2026-02-10T14:21:15.940377+09:00",
+      "updated_at": "2026-02-10T14:21:54.182333+09:00",
+      "metadata": {
+        "steam_app_id": 3240220,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "레이싱"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "앱 내 구매",
+          "컨트롤러 일부 지원",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2025년 3월 4일",
+        "developers": [
+          "Rockstar North"
+        ],
+        "publishers": [
+          "Rockstar Games"
+        ],
+        "short_description": "엔터테인먼트 블록버스터인 Grand Theft Auto V와 Grand Theft Auto 온라인을 경험해 보십시오. 이제 환상적인 비주얼과 더욱 빠른 로딩, 3D 오디오 등과 함께 차세대 수준으로 업그레이드되었으며, GTA 온라인 플레이어를 위한 특별 콘텐츠 또한 마련되어 있습니다."
+      }
+    },
+    {
+      "id": "steam_271590",
+      "domain": "game",
+      "title": "Grand Theft Auto V 레거시",
+      "title_native": "Grand Theft Auto V 레거시",
+      "intro": "PC용 Grand Theft Auto V 레거시는 액션과 어드벤처 장르의 게임으로, Rockstar North가 개발했습니다. 이 게임은 로스 산토스와 블레인 카운티의 방대한 세계를 최대 4K 이상의 해상도로 탐험할 수 있는 기회를 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/271590/header.jpg?t=1765387725",
+      "source_url": "https://store.steampowered.com/app/271590",
+      "fetched_at": "2026-02-10T14:21:15.6658+09:00",
+      "updated_at": "2026-02-10T14:21:54.182333+09:00",
+      "metadata": {
+        "steam_app_id": 271590,
+        "genres": [
+          "액션",
+          "어드벤처"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV"
+        ],
+        "release_date": "2015년 4월 13일",
+        "developers": [
+          "Rockstar North"
+        ],
+        "publishers": [
+          "Rockstar Games"
+        ],
+        "short_description": "PC용 Grand Theft Auto V는 각종 수상에 빛나는 로스 산토스와 블레인 카운티의 거대한 세상을 최대 4K 이상의 해상도로 둘러볼 수 있는 기회를 플레이어에게 제공하며, 초당 60프레임으로 게임을 실행할 수도 있습니다."
+      }
+    },
+    {
+      "id": "steam_2357570",
+      "domain": "game",
+      "title": "오버워치™ 2",
+      "title_native": "오버워치™ 2",
+      "intro": "오버워치™ 2는 블리자드 엔터테인먼트에서 개발한 무료 플레이 팀 기반 액션 게임입니다. 희망찬 미래를 배경으로 다양한 새로운 영웅이 지속적으로 추가되며, 친구들과 협력하여 전투를 즐길 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2357570/d503d7c3b87bc386c8fdc8f0af3837a7554516e2/header_alt_assets_18_koreana.jpg?t=1766101535",
+      "source_url": "https://store.steampowered.com/app/2357570",
+      "fetched_at": "2026-02-10T14:21:15.3964+09:00",
+      "updated_at": "2026-02-10T14:21:54.182332+09:00",
+      "metadata": {
+        "steam_app_id": 2357570,
+        "genres": [
+          "액션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "앱 내 구매",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "음성 채팅 텍스트 변환",
+          "텍스트 채팅 음성 변환",
+          "색상 대체",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드"
+        ],
+        "release_date": "2023년 8월 10일",
+        "developers": [
+          "Blizzard Entertainment, Inc."
+        ],
+        "publishers": [
+          "Blizzard Entertainment, Inc."
+        ],
+        "short_description": "오버워치 2는 평단의 찬사를 받은 팀 기반 슈팅 게임입니다. 희망찬 미래를 배경으로 하며, 새로운 영웅들이 꾸준히 등장하고 있습니다. 친구들과 팀을 이루고 지금 플레이하세요."
+      }
+    },
+    {
+      "id": "steam_381210",
+      "domain": "game",
+      "title": "Dead by Daylight",
+      "title_native": "Dead by Daylight",
+      "intro": "‘Dead by Daylight’는 Behaviour Interactive Inc.가 개발한 액션 게임으로, 네 명의 생존자가 피에 굶주린 살인마에 맞서 싸우면서 신경과 재치를 시험하는 잔혹한 게임입니다. 플레이어는 죽음을 피할 수 없는 악의 영역에서 생존을 위해 전략적으로 대응해야 합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/381210/f2361181f3f6774a746406db01e98cad8b38e3fd/header_alt_assets_4.jpg?t=1769630637",
+      "source_url": "https://store.steampowered.com/app/381210",
+      "fetched_at": "2026-02-10T14:21:15.003721+09:00",
+      "updated_at": "2026-02-10T14:21:54.182332+09:00",
+      "metadata": {
+        "steam_app_id": 381210,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "색상 대체",
+          "음량 개별 조절",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "Steam Cloud",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "가족 공유"
+        ],
+        "release_date": "2016년 6월 14일",
+        "developers": [
+          "Behaviour Interactive Inc."
+        ],
+        "publishers": [
+          "Behaviour Interactive Inc."
+        ],
+        "short_description": "죽음조차도 피할 수 없는 섬뜩한 악의 영역에 영원히 갇힌 네 명의 생존자는 신경과 재치를 시험하는 잔혹한 게임에서 피에 굶주린 살인마에 맞서 싸워야 합니다. 어느 편에 설지 선택하고 공포 게임 최고의 비대칭 멀티플레이어에서 긴장감과 공포의 세계로 들어가보세요."
+      }
+    },
+    {
+      "id": "steam_413150",
+      "domain": "game",
+      "title": "Stardew Valley",
+      "title_native": "Stardew Valley",
+      "intro": "스텀드류 밸리는 ConcernedApe가 개발한 인디 RPG 시뮬레이션 게임으로, 플레이어는 할아버지가 남긴 농지를 물려받고 새로운 삶을 시작하게 됩니다. 손수건과 몇 개의 동전을 가지고 시작하는 농장 가꾸기와 자원 관리를 통해 자신의 농장을 발전시킬 수 있는 기회를 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/413150/header.jpg?t=1754692865",
+      "source_url": "https://store.steampowered.com/app/413150",
+      "fetched_at": "2026-02-10T14:21:14.618931+09:00",
+      "updated_at": "2026-02-10T14:21:54.182328+09:00",
+      "metadata": {
+        "steam_app_id": 413150,
+        "genres": [
+          "인디",
+          "RPG",
+          "시뮬레이션"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "LAN 협동",
+          "스크린 공유 및 분할 협동",
+          "공유 및 분할 화면",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "Steam Cloud",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play Together",
+          "가족 공유"
+        ],
+        "release_date": "2016년 2월 26일",
+        "developers": [
+          "ConcernedApe"
+        ],
+        "publishers": [
+          "ConcernedApe"
+        ],
+        "short_description": "You've inherited your grandfather's old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?"
+      }
+    },
+    {
+      "id": "steam_252490",
+      "domain": "game",
+      "title": "Rust",
+      "title_native": "Rust",
+      "intro": "Rust는 Facepunch Studios에서 개발한 대규모 멀티플레이어 액션 어드벤처 RPG 게임입니다. 이 게임의 주된 목표는 섬에서 다양한 위협으로부터 살아남는 것으로, 플레이어는 야생 동물, 환경, 다른 생존자들과의 상호작용을 통해 생존 전략을 모색해야 합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/252490/header.jpg?t=1761667247",
+      "source_url": "https://store.steampowered.com/app/252490",
+      "fetched_at": "2026-02-10T14:21:14.354603+09:00",
+      "updated_at": "2026-02-10T14:21:54.182327+09:00",
+      "metadata": {
+        "steam_app_id": 252490,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "인디",
+          "대규모 멀티플레이어",
+          "RPG"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "MMO",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "앱 내 구매",
+          "Valve Anti-Cheat 사용",
+          "통계",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2018년 2월 8일",
+        "developers": [
+          "Facepunch Studios"
+        ],
+        "publishers": [
+          "Facepunch Studios"
+        ],
+        "short_description": "Rust에서의 목표는 오직 하나, 바로 살아남는 것입니다. 섬의 야생 동물, 다른 주민, 환경, 다른 생존자 모두가 여러분의 목숨을 노립니다. 하루 더 살아남을 수 있다면 수단과 방법을 가리지 마세요."
+      }
+    },
+    {
+      "id": "steam_1422450",
+      "domain": "game",
+      "title": "Deadlock",
+      "title_native": "Deadlock",
+      "intro": "Deadlock은 Valve에서 개발 중인 멀티플레이어 액션 게임입니다. 현재 게임은 초기 단계에 있으며, 플레이어 간의 경쟁이 중심 요소로 작용합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1422450/aa249c5e8cc8f90941bd1dbdc311773cd1afe065/header.jpg?t=1769127177",
+      "source_url": "https://store.steampowered.com/app/1422450",
+      "fetched_at": "2026-02-10T14:21:14.076467+09:00",
+      "updated_at": "2026-02-10T14:21:54.182327+09:00",
+      "metadata": {
+        "steam_app_id": 1422450,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "멀티플레이어"
+        ],
+        "release_date": "발표 예정",
+        "developers": [
+          "Valve"
+        ],
+        "publishers": [
+          "Valve"
+        ],
+        "short_description": "Deadlock은 개발 초기 단계에 있는 멀티플레이어 게임입니다."
+      }
+    },
+    {
+      "id": "steam_236390",
+      "domain": "game",
+      "title": "War Thunder",
+      "title_native": "War Thunder",
+      "intro": "War Thunder는 Gaijin Entertainment에서 개발한 대규모 멀티플레이어 액션 시뮬레이션 게임으로, 제2차 세계대전부터 현대전까지 다양한 항공기, 전차, 함선, 헬리콥터를 조작할 수 있습니다. 이 게임은 무료로 제공되며, 방대한 콘텐츠와 역사적 배경을 바탕으로 한 전투 경험을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/236390/cab234fd4c0ae2f049e34e7bcb2393679b02bf91/header.jpg?t=1770658738",
+      "source_url": "https://store.steampowered.com/app/236390",
+      "fetched_at": "2026-02-10T14:21:13.759509+09:00",
+      "updated_at": "2026-02-10T14:21:54.182327+09:00",
+      "metadata": {
+        "steam_app_id": 236390,
+        "genres": [
+          "액션",
+          "대규모 멀티플레이어",
+          "시뮬레이션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "MMO",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "VR 지원",
+          "Steam 트레이딩 카드",
+          "앱 내 구매",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2013년 8월 15일",
+        "developers": [
+          "Gaijin Entertainment"
+        ],
+        "publishers": [
+          "Gaijin Network Ltd"
+        ],
+        "short_description": "War Thunder는 제 2차 세계대전부터 현대전까지의 항공기, 전차, 함선, 헬리콥터를 플레이 할 수 있는 온라인 게임 역사상 가장 거대한 스케일과 광범위한 크로스 플랫폼 기능을 자랑하는 밀리터리 MMO 게임입니다. 지금 게임에 참여하셔서 War Thunder가 제공하는 지상, 공중, 해상의 거대한 전장 서사시에 직접 참여해보세요."
+      }
+    },
+    {
+      "id": "steam_322170",
+      "domain": "game",
+      "title": "Geometry Dash",
+      "title_native": "Geometry Dash",
+      "intro": "Geometry Dash는 RobTop Games에서 개발한 액션 인디 게임으로, 리듬 기반의 플랫폼에서 장애물을 피하며 점프하고 날아가는 게임입니다. 플레이어는 다양한 레벨을 클리어하며 도전을 완수해야 합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/322170/header.jpg?t=1703006148",
+      "source_url": "https://store.steampowered.com/app/322170",
+      "fetched_at": "2026-02-10T14:21:13.433254+09:00",
+      "updated_at": "2026-02-10T14:21:54.182326+09:00",
+      "metadata": {
+        "steam_app_id": 322170,
+        "genres": [
+          "액션",
+          "인디"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "컨트롤러 일부 지원",
+          "레벨 에디터 포함",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "가족 공유"
+        ],
+        "release_date": "2014년 12월 22일",
+        "developers": [
+          "RobTop Games"
+        ],
+        "publishers": [
+          "RobTop Games"
+        ],
+        "short_description": "Jump and fly your way through danger in this rhythm-based action platformer!"
+      }
+    },
+    {
+      "id": "steam_2767030",
+      "domain": "game",
+      "title": "마블 라이벌즈",
+      "title_native": "마블 라이벌즈",
+      "intro": "마블 라이벌즈는 NetEase Games에서 개발한 무료 플레이 액션 PVP 팀 슈팅 게임입니다. 플레이어는 마블 유니버스의 슈퍼 히어로와 빌런 중 원하는 캐릭터를 선택하여 올스타팀을 구성하고 경쟁할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2767030/0d2320ad32448ada538d0903d44ad8df7e185800/header.jpg?t=1768793897",
+      "source_url": "https://store.steampowered.com/app/2767030",
+      "fetched_at": "2026-02-10T14:21:13.104463+09:00",
+      "updated_at": "2026-02-10T14:21:54.182326+09:00",
+      "metadata": {
+        "steam_app_id": 2767030,
+        "genres": [
+          "액션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "앱 내 구매"
+        ],
+        "release_date": "2024년 12월 5일",
+        "developers": [
+          "NetEase Games"
+        ],
+        "publishers": [
+          "NetEase Games"
+        ],
+        "short_description": "슈퍼 히어로 PVP 팀 슈팅 게임 를 소개합니다. 플레이어는 슈퍼 히어로와 빌런 진영에서 원하는 캐릭터를 골라 올스타팀을 구성할 수 있습니다. 마블 유니버스의 다양한 맵을 활용하고 캐릭터 본연의 능력과 팀업 스킬을 전략적으로 조합하여 전투를 승리로 이끄세요!"
+      }
+    },
+    {
+      "id": "steam_2676230",
+      "domain": "game",
+      "title": "FiveM",
+      "title_native": "FiveM",
+      "intro": "FiveM은 게이머들이 자신만의 서버에서 GTA V를 플레이할 수 있게 해주는 멀티플레이어 플랫폼입니다. 사용자는 커스텀 모드와 게임 모드를 통해 다양한 게임 경험을 즐길 수 있으며, 전 세계의 사용자와 소통할 수 있는 환경을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2676230/9e8a2df18bfdd24267aefa6d3e14778c2ecb1708/header.jpg?t=1769533323",
+      "source_url": "https://store.steampowered.com/app/2676230",
+      "fetched_at": "2026-02-10T14:21:12.813162+09:00",
+      "updated_at": "2026-02-10T14:21:54.182324+09:00",
+      "metadata": {
+        "steam_app_id": 2676230,
+        "genres": null
+      }
+    },
+    {
+      "id": "steam_1172470",
+      "domain": "game",
+      "title": "Apex 레전드™",
+      "title_native": "Apex 레전드™",
+      "intro": "Apex 레전드는 Respawn Entertainment에서 개발한 무료 플레이 히어로 슈팅 게임입니다. 이 게임은 다양한 레전드 캐릭터를 활용한 액션과 어드벤처 요소를 포함하고 있으며, 여러 차례 수상을 기록했습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1172470/6ae90b012e725a93622c3694d9d866b886cfd0f8/header.jpg?t=1762457261",
+      "source_url": "https://store.steampowered.com/app/1172470",
+      "fetched_at": "2026-02-10T14:21:12.521736+09:00",
+      "updated_at": "2026-02-10T14:21:54.182324+09:00",
+      "metadata": {
+        "steam_app_id": 1172470,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "앱 내 구매",
+          "음성 채팅 텍스트 변환",
+          "퀵타임 이벤트 없이 플레이 가능"
+        ],
+        "release_date": "2020년 11월 4일",
+        "developers": [
+          "Respawn"
+        ],
+        "publishers": [
+          "Electronic Arts"
+        ],
+        "short_description": "Apex 레전드는 Respawn Entertainment에서 제작한 다양한 수상 경력을 자랑하는 무료 플레이 히어로 슈팅 게임입니다. 게임에 계속해서 추가되는 레전드 캐릭터들의 강력한 능력을 마스터하고 깊이 있는 전술적 분대 플레이, 새롭게 진화하는 게임플레이를 지닌 히어로 슈팅과 배틀 로얄의 혁신을 경험하세요."
+      }
+    },
+    {
+      "id": "steam_553850",
+      "domain": "game",
+      "title": "HELLDIVERS™ 2",
+      "title_native": "HELLDIVERS™ 2",
+      "intro": "액션 장르의 HELLDIVERS™ 2는 Arrowhead Game Studios에서 개발한 3인칭 슈팅 게임이다. 플레이어는 헬다이버가 되어 적대적인 은하계 전역에서 전투를 통해 자유를 위해 싸우게 된다. 게임은 빠르고 정신없는 전투를 특징으로 한다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/553850/e44c8446a27906044109e8835c31980cfb9dc17c/header_koreana.jpg?t=1767634300",
+      "source_url": "https://store.steampowered.com/app/553850",
+      "fetched_at": "2026-02-10T14:21:12.153258+09:00",
+      "updated_at": "2026-02-10T14:21:54.182324+09:00",
+      "metadata": {
+        "steam_app_id": 553850,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "앱 내 구매",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "음성 채팅 텍스트 변환",
+          "텍스트 채팅 음성 변환",
+          "색상 대체",
+          "음량 개별 조절",
+          "난이도 조정",
+          "게임 메뉴 음성 안내",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "자막 옵션",
+          "서라운드 사운드",
+          "컨트롤러 일부 지원",
+          "가족 공유"
+        ],
+        "release_date": "2024년 2월 8일",
+        "developers": [
+          "Arrowhead Game Studios"
+        ],
+        "publishers": [
+          "PlayStation Publishing LLC"
+        ],
+        "short_description": "은하계 최고의 공격 부대. 빠르고, 정신없고, 격렬한 3인칭 슈팅 게임에서 헬다이버가 되어 적대적인 은하계 전역을 누비며 자유를 위해 싸우세요."
+      }
+    },
+    {
+      "id": "steam_105600",
+      "domain": "game",
+      "title": "Terraria",
+      "title_native": "Terraria",
+      "intro": "'Terraria'는 Re-Logic에서 개발한 액션, 어드벤처, 인디, RPG 장르의 게임입니다. 플레이어는 탐험하고, 싸우고, 자원을 채집하며, 건설하는 등 다양한 활동을 통해 모험을 즐길 수 있습니다. 이 게임은 친구와 함께 즐길 수 있는 Four Pack 옵션도 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/header.jpg?t=1769844435",
+      "source_url": "https://store.steampowered.com/app/105600",
+      "fetched_at": "2026-02-10T14:21:11.805983+09:00",
+      "updated_at": "2026-02-10T14:21:54.182323+09:00",
+      "metadata": {
+        "steam_app_id": 105600,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "인디",
+          "RPG"
+        ],
+        "categories": [
+          "싱글 플레이어",
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "Steam 트레이딩 카드",
+          "Steam Cloud",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "가족 공유"
+        ],
+        "release_date": "2011년 5월 16일",
+        "developers": [
+          "Re-Logic"
+        ],
+        "publishers": [
+          "Re-Logic"
+        ],
+        "short_description": "Dig, fight, explore, build! Nothing is impossible in this action-packed adventure game. Four Pack also available!"
+      }
+    },
+    {
+      "id": "steam_1808500",
+      "domain": "game",
+      "title": "ARC Raiders",
+      "title_native": "ARC Raiders",
+      "intro": "ARC Raiders는 Embark Studios가 개발한 멀티플레이어 구출 어드벤처 게임으로, 미지의 머신 아크라에 의해 침공당한 미래 지구를 배경으로 하고 있습니다. 이 게임은 액션 장르로, 플레이어는 위험한 환경에서 생존과 구조를 위한 다양한 임무를 수행해야 합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/cc5b6555ec4adc40d01cbddd7dc13d8669673150/header_alt_assets_1.jpg?t=1770365163",
+      "source_url": "https://store.steampowered.com/app/1808500",
+      "fetched_at": "2026-02-10T14:21:11.516209+09:00",
+      "updated_at": "2026-02-10T14:21:54.182323+09:00",
+      "metadata": {
+        "steam_app_id": 1808500,
+        "genres": [
+          "액션"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "협동",
+          "온라인 협동",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 도전 과제",
+          "컨트롤러 완벽 지원",
+          "앱 내 구매",
+          "통계",
+          "가족 공유"
+        ],
+        "release_date": "2025년 10월 30일",
+        "developers": [
+          "Embark Studios"
+        ],
+        "publishers": [
+          "Embark Studios"
+        ],
+        "short_description": "ARC Raiders는 아크라 불리는 미지의 머신들에게 침공당한 위험천만한 미래 지구를 배경으로 하는 멀티플레이어 구출 어드벤처 게임입니다."
+      }
+    },
+    {
+      "id": "steam_431960",
+      "domain": "game",
+      "title": "Wallpaper Engine",
+      "title_native": "Wallpaper Engine",
+      "intro": "Wallpaper Engine은 Wallpaper Engine Team이 개발한 캐주얼 인디 게임으로, 사용자에게 애니메이션 배경화면을 제공하는 유틸리티입니다. 사용자는 자신의 이미지를 애니메이션으로 변형하거나 비디오와 웹사이트를 통해 새로운 배경화면을 생성할 수 있습니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/431960/header.jpg?t=1739211362",
+      "source_url": "https://store.steampowered.com/app/431960",
+      "fetched_at": "2026-02-10T14:21:11.23917+09:00",
+      "updated_at": "2026-02-10T14:21:54.182323+09:00",
+      "metadata": {
+        "steam_app_id": 431960,
+        "genres": [
+          "캐주얼",
+          "인디",
+          "애니메이션과 모델링",
+          "디자인과 일러스트레이션",
+          "사진 편집",
+          "유틸리티"
+        ],
+        "categories": [
+          "Steam 도전 과제",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "Steam 창작마당",
+          "레벨 에디터 포함"
+        ],
+        "release_date": "2018년 11월 16일",
+        "developers": [
+          "Wallpaper Engine Team"
+        ],
+        "publishers": [
+          "Wallpaper Engine Team"
+        ],
+        "short_description": "바탕화면에서 멋진 라이브 배경화면을 사용하세요. 자신의 이미지를 애니메이션으로 만들어서 새 배경화면을 생성하거나 비디오/웹 사이트를 가져와서 Steam Workshop에서 공유하세요!"
+      }
+    },
+    {
+      "id": "steam_578080",
+      "domain": "game",
+      "title": "PUBG: BATTLEGROUNDS",
+      "title_native": "PUBG: BATTLEGROUNDS",
+      "intro": "PUBG: BATTLEGROUNDS는 PUBG Corporation이 개발한 무료 플레이 배틀로얄 게임으로, 다양한 맵에서 무기와 보급품을 확보하며 생존 경쟁을 펼치는 액션 및 어드벤처 장르입니다. 배틀로얄 장르의 시작을 알린 이 게임은 대규모 멀티플레이를 지원합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/578080/841ea38bc58cabb70aef65365cf50bc2d79329d9/header.jpg?t=1764817633",
+      "source_url": "https://store.steampowered.com/app/578080",
+      "fetched_at": "2026-02-10T14:21:10.950093+09:00",
+      "updated_at": "2026-02-10T14:21:54.182323+09:00",
+      "metadata": {
+        "steam_app_id": 578080,
+        "genres": [
+          "액션",
+          "어드벤처",
+          "대규모 멀티플레이어",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "PvP",
+          "온라인 PvP",
+          "통계",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿"
+        ],
+        "release_date": "2017년 12월 21일",
+        "developers": [
+          "PUBG Corporation"
+        ],
+        "publishers": [
+          "KRAFTON, Inc."
+        ],
+        "short_description": "배틀로얄 유행의 시작이자, 그 정수를 보여준 PUBG: 배틀그라운드를 지금 무료로 플레이하세요! 다양한 맵에 낙하하여 무기와 보급품을 확보하고, 점점 줄어드는 블루존 속에서 끝까지 살아남아 승리를 쟁취하세요."
+      }
+    },
+    {
+      "id": "steam_570",
+      "domain": "game",
+      "title": "Dota 2",
+      "title_native": "Dota 2",
+      "intro": "Dota 2는 Valve에서 개발한 무료 액션 전략 게임으로, 수백 만의 플레이어가 다양한 도타 영웅 중 하나로 전장에 참여합니다. 매일 새로운 경험을 제공하며, 시간에 관계없이 플레이할 수 있는 환경을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570/header.jpg?t=1769535998",
+      "source_url": "https://store.steampowered.com/app/570",
+      "fetched_at": "2026-02-10T14:21:10.6336+09:00",
+      "updated_at": "2026-02-10T14:21:54.182322+09:00",
+      "metadata": {
+        "steam_app_id": 570,
+        "genres": [
+          "액션",
+          "전략",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "협동",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "SteamVR 수집품",
+          "앱 내 구매",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "Valve Anti-Cheat 사용",
+          "Steam 타임라인"
+        ],
+        "release_date": "2013년 7월 9일",
+        "developers": [
+          "Valve"
+        ],
+        "publishers": [
+          "Valve"
+        ],
+        "short_description": "매일, 전 세계 수백 만의 플레이어가 백여 명의 도타 영웅 중 하나가 되어 전장에 뛰어듭니다. 10시간을 했든, 1,000시간을 했든 언제나 새롭게 느껴지는 무언가가 있습니다. 정기적인 업데이트로 게임플레이, 기능, 영웅이 끊임없이 진화하는 도타 2는 그 자체의 생명력으로 살아 숨 쉬는 게임입니다."
+      }
+    },
+    {
+      "id": "steam_730",
+      "domain": "game",
+      "title": "Counter-Strike 2",
+      "title_native": "Counter-Strike 2",
+      "intro": "Counter-Strike 2는 Valve가 개발한 액션 장르의 무료 플레이 게임입니다. 이 게임은 20년 이상의 역사를 가지고 있으며, 전 세계 수백만 명의 플레이어가 경쟁할 수 있는 플랫폼을 제공합니다.",
+      "cover_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/730/header.jpg?t=1749053861",
+      "source_url": "https://store.steampowered.com/app/730",
+      "fetched_at": "2026-02-10T14:21:10.324652+09:00",
+      "updated_at": "2026-02-10T14:21:54.182321+09:00",
+      "metadata": {
+        "steam_app_id": 730,
+        "genres": [
+          "액션",
+          "무료 플레이"
+        ],
+        "categories": [
+          "멀티플레이어",
+          "크로스 플랫폼 멀티플레이어",
+          "Steam 트레이딩 카드",
+          "Steam 창작마당",
+          "앱 내 구매",
+          "텍스트 크기 조정",
+          "카메라 움직임 조정",
+          "색상 대체",
+          "음량 개별 조절",
+          "퀵타임 이벤트 없이 플레이 가능",
+          "스테레오 사운드",
+          "서라운드 사운드",
+          "Valve Anti-Cheat 사용",
+          "통계",
+          "Remote Play 휴대전화",
+          "Remote Play 태블릿",
+          "Remote Play TV",
+          "Steam 타임라인"
+        ],
+        "release_date": "2012년 8월 21일",
+        "developers": [
+          "Valve"
+        ],
+        "publishers": [
+          "Valve"
+        ],
+        "short_description": "Counter-Strike는 20년이 넘는 시간 동안 전 세계 수백만 명의 플레이어가 모여 수준 높은 경쟁을 펼칠 수 있는 플랫폼을 제공해 왔습니다. 그리고 이제 곧 Counter-Strike 2와 함께 새로운 CS 시대의 막이 열립니다."
+      }
+    }
+  ]
+}

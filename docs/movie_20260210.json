@@ -1,0 +1,404 @@
+{
+  "domain": "movie",
+  "fetched_at": "2026-02-10T14:22:37.347909+09:00",
+  "updated_at": "2026-02-10T14:22:37.347908+09:00",
+  "total_count": 25,
+  "contents": [
+    {
+      "id": "imdb_tt7888964",
+      "domain": "movie",
+      "title": "Nobody",
+      "title_native": "Nobody",
+      "intro": "영화 'Nobody'는 2021년에 개봉된 액션 스릴러 영화로, 평점은 7.4/10입니다. 한 온순한 가장이 집이 도난당한 후 자신의 숨겨진 본성을 드러내며 러시아 범죄 보스와의 치열한 전쟁에 휘말리는 이야기를 그립니다.",
+      "source_url": "https://www.imdb.com/title/tt7888964/?ref_=sr_i_25",
+      "fetched_at": "2026-02-10T14:22:22.325172+09:00",
+      "updated_at": "2026-02-10T14:22:37.347898+09:00",
+      "metadata": {
+        "imdb_id": "tt7888964",
+        "year": "2021",
+        "rating": 7.4,
+        "synopsis": "A docile family man slowly reveals his true character after his house gets burgled by two petty thieves, which, coincidentally, leads him into a bloody war with a Russian crime boss."
+      }
+    },
+    {
+      "id": "imdb_tt0095327",
+      "domain": "movie",
+      "title": "Grave of the Fireflies",
+      "title_native": "Grave of the Fireflies",
+      "intro": "\"1988년 개봉한 일본 애니메이션 'Grave of the Fireflies'는 제2차 세계대전 중 일본에서 두 남매가 생존을 위해 고군분투하는 이야기를 담고 있습니다. 이 작품은 8.5/10의 평점을 기록하며 깊은 감동을 주는 작품으로 평가받고 있습니다.\"",
+      "source_url": "https://www.imdb.com/title/tt0095327/?ref_=sr_i_24",
+      "fetched_at": "2026-02-10T14:22:22.325152+09:00",
+      "updated_at": "2026-02-10T14:22:37.347897+09:00",
+      "metadata": {
+        "imdb_id": "tt0095327",
+        "year": "1988",
+        "rating": 8.5,
+        "synopsis": "A young boy and his little sister struggle to survive in Japan during World War II."
+      }
+    },
+    {
+      "id": "imdb_tt29355505",
+      "domain": "movie",
+      "title": "Toy Story 5",
+      "title_native": "Toy Story 5",
+      "intro": "2026년 개봉 예정인 'Toy Story 5'에서는 우디, 버즈, 제시와 그 친구들이 전자 기기의 등장으로 놀이의 위협에 직면하게 되는 이야기를 다룹니다. 이 영화는 기존 캐릭터들의 새로운 도전과 갈등을 중심으로 펼쳐집니다.",
+      "source_url": "https://www.imdb.com/title/tt29355505/?ref_=sr_i_23",
+      "fetched_at": "2026-02-10T14:22:22.325136+09:00",
+      "updated_at": "2026-02-10T14:22:37.347897+09:00",
+      "metadata": {
+        "imdb_id": "tt29355505",
+        "year": "2026",
+        "synopsis": "Woody, Buzz, Jessie and the rest of the gang's jobs are challenged when they're introduced to electronics, a new threat to playtime."
+      }
+    },
+    {
+      "id": "imdb_tt0335266",
+      "domain": "movie",
+      "title": "Lost in Translation",
+      "title_native": "Lost in Translation",
+      "intro": "2003년 개봉된 영화 \"Lost in Translation\"은 평점 7.7을 기록하며 주목받았습니다. 줄거리는 도쿄에서 외로운 젊은 여성과 세월이 가는 영화 스타 간의 감정적인 교감을 그립니다.",
+      "source_url": "https://www.imdb.com/title/tt0335266/?ref_=sr_i_22",
+      "fetched_at": "2026-02-10T14:22:22.325118+09:00",
+      "updated_at": "2026-02-10T14:22:37.347896+09:00",
+      "metadata": {
+        "imdb_id": "tt0335266",
+        "year": "2003",
+        "rating": 7.7,
+        "synopsis": "A fading movie star falls for a lonely young woman in Tokyo."
+      }
+    },
+    {
+      "id": "imdb_tt5311514",
+      "domain": "movie",
+      "title": "Your Name.",
+      "title_native": "Your Name.",
+      "intro": "2016년에 개봉한 애니메이션 영화 \"Your Name.\"은 두 고등학생이 서로의 몸이 바뀌는 신비로운 경험을 통해 깊은 연결을 맺는 이야기를 담고 있다. 이들은 직접 만나기로 결심하지만, 상황은 더욱 복잡해진다. 영화는 8.4/10의 평점을 기록하고 있다.",
+      "source_url": "https://www.imdb.com/title/tt5311514/?ref_=sr_i_21",
+      "fetched_at": "2026-02-10T14:22:22.325101+09:00",
+      "updated_at": "2026-02-10T14:22:37.347895+09:00",
+      "metadata": {
+        "imdb_id": "tt5311514",
+        "year": "2016",
+        "rating": 8.4,
+        "synopsis": "Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person."
+      }
+    },
+    {
+      "id": "imdb_tt6718170",
+      "domain": "movie",
+      "title": "The Super Mario Bros. Movie",
+      "title_native": "The Super Mario Bros. Movie",
+      "intro": "2023년에 개봉한 \"The Super Mario Bros. Movie\"는 브루클린의 배관공 마리오와 루이지가 마법의 버섯 왕국으로 전이되는 이야기를 담고 있다. 마리오는 피치 공주, 돼지 토드, 동키콩과 협력하여 악당 바우저로부터 루이지를 구해야 한다. 이 영화는 7.0/10의 평점을 받고 있다.",
+      "source_url": "https://www.imdb.com/title/tt6718170/?ref_=sr_i_20",
+      "fetched_at": "2026-02-10T14:22:22.325079+09:00",
+      "updated_at": "2026-02-10T14:22:37.347895+09:00",
+      "metadata": {
+        "imdb_id": "tt6718170",
+        "year": "2023",
+        "rating": 7,
+        "synopsis": "Brooklyn plumbers Mario and Luigi are warped to the magical Mushroom Kingdom, and Mario must team up with Princess Peach, Toad, and Donkey Kong to save Luigi from the evil Bowser."
+      }
+    },
+    {
+      "id": "imdb_tt0369610",
+      "domain": "movie",
+      "title": "Jurassic World",
+      "title_native": "Jurassic World",
+      "intro": "2015년에 개봉한 영화 'Jurassic World'는 새로운 테마파크에서 유전적으로 조작된 하이브리드 공룡 인도미누스 렉스가 탈출하여 대규모 살육을 벌이는 이야기를 다룬다. 이 작품은 6.9/10의 평점을 기록하고 있다.",
+      "source_url": "https://www.imdb.com/title/tt0369610/?ref_=sr_i_19",
+      "fetched_at": "2026-02-10T14:22:22.325057+09:00",
+      "updated_at": "2026-02-10T14:22:37.347894+09:00",
+      "metadata": {
+        "imdb_id": "tt0369610",
+        "year": "2015",
+        "rating": 6.9,
+        "synopsis": "A new theme park, built on the original site of Jurassic Park, creates a genetically modified hybrid dinosaur, the Indominus Rex, which escapes containment and goes on a killing spree."
+      }
+    },
+    {
+      "id": "imdb_tt30472557",
+      "domain": "movie",
+      "title": "Chainsaw Man - The Movie: Reze Arc",
+      "title_native": "Chainsaw Man - The Movie: Reze Arc",
+      "intro": "2025년에 개봉하는 \"Chainsaw Man - The Movie: Reze Arc\"는 8.4/10의 평점을 기록한 체인소 맨 시리즈의 직접적인 후속작입니다. 주인공 덴지는 새로운 로맨틱 관심사를 만나게 되지만, 그의 삶은 다시 한 번 복잡해질 것입니다.",
+      "source_url": "https://www.imdb.com/title/tt30472557/?ref_=sr_i_18",
+      "fetched_at": "2026-02-10T14:22:22.325021+09:00",
+      "updated_at": "2026-02-10T14:22:37.347894+09:00",
+      "metadata": {
+        "imdb_id": "tt30472557",
+        "year": "2025",
+        "rating": 8.4,
+        "synopsis": "A direct sequel to the first season of the series \"Chainsaw Man\", featuring Denji, a young man who co-exists with a chainsaw demon. Denji encounters a new romantic interest, but will his involvement place them both in danger?"
+      }
+    },
+    {
+      "id": "imdb_tt32820897",
+      "domain": "movie",
+      "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+      "title_native": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+      "intro": "2025년에 개봉하는 애니메이션 영화 \"Demon Slayer: Kimetsu no Yaiba Infinity Castle\"은 8.4/10의 평점을 기록하고 있다. 이 영화에서는 탄지로와 하시라가 무잔 기부츠지와의 최종 전투를 준비하며, 인피니티 캐슬에서 무서운 상급 악마들과 처절한 싸움을 벌이는 이야기를 다룬다.",
+      "source_url": "https://www.imdb.com/title/tt32820897/?ref_=sr_i_17",
+      "fetched_at": "2026-02-10T14:22:22.324999+09:00",
+      "updated_at": "2026-02-10T14:22:37.347894+09:00",
+      "metadata": {
+        "imdb_id": "tt32820897",
+        "year": "2025",
+        "rating": 8.4,
+        "synopsis": "The Demon Slayer Corps are drawn into the Infinity Castle, where Tanjiro and the Hashira face terrifying Upper Rank demons in a desperate fight as the final battle against Muzan Kibutsuji begins."
+      }
+    },
+    {
+      "id": "imdb_tt27419420",
+      "domain": "movie",
+      "title": "Street Fighter",
+      "title_native": "Street Fighter",
+      "intro": "2026년에 개봉하는 영화 '스트리트 파이터'는 Ryu와 Ken이 Chun-Li의 초청으로 세계 전사 대회에 참가하게 되는 이야기를 다룬다. 이들은 숨겨진 음모에 맞서 서로의 과거와 직면하며 갈등을 해결해야 한다.",
+      "source_url": "https://www.imdb.com/title/tt27419420/?ref_=sr_i_16",
+      "fetched_at": "2026-02-10T14:22:22.324978+09:00",
+      "updated_at": "2026-02-10T14:22:37.347893+09:00",
+      "metadata": {
+        "imdb_id": "tt27419420",
+        "year": "2026",
+        "synopsis": "Street Fighters Ryu and Ken reunite when Chun-Li recruits them for the World Warrior Tournament. As they face a hidden conspiracy, they must confront each other and their past-or face destruction."
+      }
+    },
+    {
+      "id": "imdb_tt12584954",
+      "domain": "movie",
+      "title": "Twisters",
+      "title_native": "Twisters",
+      "intro": "2024년 개봉 예정의 영화 'Twisters'는 퇴직한 토네이도 추적자이자 기상학자인 케이트 카터가 새로운 팀과 기술을 이용해 오클라호마로 돌아오는 이야기를 다룹니다. 본 작품은 6.5/10의 평점을 기록하고 있습니다.",
+      "source_url": "https://www.imdb.com/title/tt12584954/?ref_=sr_i_15",
+      "fetched_at": "2026-02-10T14:22:22.324958+09:00",
+      "updated_at": "2026-02-10T14:22:37.34789+09:00",
+      "metadata": {
+        "imdb_id": "tt12584954",
+        "year": "2024",
+        "rating": 6.5,
+        "synopsis": "Kate Carter, a retired tornado-chaser and meteorologist, is persuaded to return to Oklahoma to work with a new team and new technologies."
+      }
+    },
+    {
+      "id": "imdb_tt31194612",
+      "domain": "movie",
+      "title": "Highest 2 Lowest",
+      "title_native": "Highest 2 Lowest",
+      "intro": "2025년에 개봉한 영화 \"Highest 2 Lowest\"는 평점 5.5/10을 기록하고 있으며, 음악계의 거물인 주인공이 인질 협상에 휘말리면서 생사의 갈림길에 서게 되는 이야기를 다룹니다. 이 작품은 도덕적 딜레마를 중심으로 전개됩니다.",
+      "source_url": "https://www.imdb.com/title/tt31194612/?ref_=sr_i_14",
+      "fetched_at": "2026-02-10T14:22:22.324941+09:00",
+      "updated_at": "2026-02-10T14:22:37.347889+09:00",
+      "metadata": {
+        "imdb_id": "tt31194612",
+        "year": "2025",
+        "rating": 5.5,
+        "synopsis": "When a titan music mogul is targeted with a ransom plot, he is jammed up in a life-or-death moral dilemma."
+      }
+    },
+    {
+      "id": "imdb_tt29623480",
+      "domain": "movie",
+      "title": "The Wild Robot",
+      "title_native": "The Wild Robot",
+      "intro": "2024년 개봉 예정인 영화 \"The Wild Robot\"은 8.2/10의 평점을 기록하고 있습니다. 이 작품은 조난당한 로봇 로즈가 무인도에서 생존을 위해 동물들과 유대감을 형성하고 고아인 아기 거위를 돌보는 이야기를 담고 있습니다.",
+      "source_url": "https://www.imdb.com/title/tt29623480/?ref_=sr_i_13",
+      "fetched_at": "2026-02-10T14:22:22.324921+09:00",
+      "updated_at": "2026-02-10T14:22:37.347889+09:00",
+      "metadata": {
+        "imdb_id": "tt29623480",
+        "year": "2024",
+        "rating": 8.2,
+        "synopsis": "After a shipwreck, an intelligent robot called Roz is stranded on an uninhabited island. To survive the harsh environment, Roz bonds with the island's animals and cares for an orphaned baby goose."
+      }
+    },
+    {
+      "id": "imdb_tt6966692",
+      "domain": "movie",
+      "title": "Green Book",
+      "title_native": "Green Book",
+      "intro": "2018년에 개봉한 영화 \"Green Book\"은 평점 8.2/10을 기록하고 있습니다. 이 영화는 1960년대 미국 남부에서 투어를 하는 아프리카계 미국인 클래식 피아니스트의 드라이버가 된 이탈리아계 미국인 보안원의 이야기를 담고 있습니다.",
+      "source_url": "https://www.imdb.com/title/tt6966692/?ref_=sr_i_12",
+      "fetched_at": "2026-02-10T14:22:22.3249+09:00",
+      "updated_at": "2026-02-10T14:22:37.347889+09:00",
+      "metadata": {
+        "imdb_id": "tt6966692",
+        "year": "2018",
+        "rating": 8.2,
+        "synopsis": "A working-class Italian-American bouncer becomes the driver for an African-American classical pianist on a tour of venues through the 1960s American South."
+      }
+    },
+    {
+      "id": "imdb_tt0245429",
+      "domain": "movie",
+      "title": "Spirited Away",
+      "title_native": "Spirited Away",
+      "intro": "2001년에 개봉한 애니메이션 영화 '센과 치히로의 행방불명'은 10세 소녀가 가족의 이사 중 신과 마녀, 영혼들이 지배하는 세계로 들어가 겪는 이야기를 다룹니다. 이 영화는 8.6/10의 평점을 기록하며 깊이 있는 줄거리로 주목받고 있습니다.",
+      "source_url": "https://www.imdb.com/title/tt0245429/?ref_=sr_i_11",
+      "fetched_at": "2026-02-10T14:22:22.32488+09:00",
+      "updated_at": "2026-02-10T14:22:37.347889+09:00",
+      "metadata": {
+        "imdb_id": "tt0245429",
+        "year": "2001",
+        "rating": 8.6,
+        "synopsis": "During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches and spirits, and where humans are changed into beasts."
+      }
+    },
+    {
+      "id": "imdb_tt12593682",
+      "domain": "movie",
+      "title": "Bullet Train",
+      "title_native": "Bullet Train",
+      "intro": "2022년 개봉한 영화 \"Bullet Train\"은 평점 7.3/10을 기록하고 있는 액션 스릴러입니다. 다섯 명의 암살자들이 빠르게 이동하는 고속 열차 안에서 자신들의 임무가 공통점을 가지고 있음을 알게 되는 이야기를 담고 있습니다.",
+      "source_url": "https://www.imdb.com/title/tt12593682/?ref_=sr_i_10",
+      "fetched_at": "2026-02-10T14:22:22.324859+09:00",
+      "updated_at": "2026-02-10T14:22:37.347888+09:00",
+      "metadata": {
+        "imdb_id": "tt12593682",
+        "year": "2022",
+        "rating": 7.3,
+        "synopsis": "Five assassins aboard a swiftly-moving bullet train find out that their missions have something in common."
+      }
+    },
+    {
+      "id": "imdb_tt0384537",
+      "domain": "movie",
+      "title": "Silent Hill",
+      "title_native": "Silent Hill",
+      "intro": "2006년 개봉한 영화 \"Silent Hill\"은 공포 장르로, 주인공 로즈 다 실바가 양녀 샤론의 질병을 치료하기 위해 서늘한 마을인 사이렌 힐을 방문하는 이야기를 담고 있다. 그러나 차량 사고 후 샤론이 사라지면서 로즈는 끔찍한 여정을 시작하게 된다. 이 영화는 6.5점의 평점을 기록했다.",
+      "source_url": "https://www.imdb.com/title/tt0384537/?ref_=sr_i_9",
+      "fetched_at": "2026-02-10T14:22:22.324837+09:00",
+      "updated_at": "2026-02-10T14:22:37.347886+09:00",
+      "metadata": {
+        "imdb_id": "tt0384537",
+        "year": "2006",
+        "rating": 6.5,
+        "synopsis": "Rose Da Silva takes her adopted daughter, Sharon, to the town of Silent Hill in an attempt to cure her of her ailment. After a violent car crash, Sharon disappears and Rose begins a horrific journey to get her back."
+      }
+    },
+    {
+      "id": "imdb_tt5052448",
+      "domain": "movie",
+      "title": "Get Out",
+      "title_native": "Get Out",
+      "intro": "영화 \"Get Out\"은 2017년에 개봉된 공포 드라마 장르의 작품으로, 평점은 7.8/10입니다. 이 영화는 아프리카계 미국인 남성이 백인 여자친구의 부모를 만나기 위해 주말 동안 방문하면서 느끼는 불안감을 중심으로 이야기가 전개됩니다. 결국 그의 불안은 극한으로 치닫게 됩니다.",
+      "source_url": "https://www.imdb.com/title/tt5052448/?ref_=sr_i_8",
+      "fetched_at": "2026-02-10T14:22:22.324814+09:00",
+      "updated_at": "2026-02-10T14:22:37.347885+09:00",
+      "metadata": {
+        "imdb_id": "tt5052448",
+        "year": "2017",
+        "rating": 7.8,
+        "synopsis": "A young African-American visits his white girlfriend's parents for the weekend, where his simmering uneasiness about their reception of him eventually reaches a boiling point."
+      }
+    },
+    {
+      "id": "imdb_tt28650488",
+      "domain": "movie",
+      "title": "The Super Mario Galaxy Movie",
+      "title_native": "The Super Mario Galaxy Movie",
+      "intro": "2026년에 개봉하는 'The Super Mario Galaxy Movie'는 Mario가 우주로 모험을 떠나 익숙한 버섯 왕국을 넘어 다양한 우주 세계를 탐험하고 격렬한 도전에 맞서는 이야기를 담고 있습니다. 이 영화는 게임을 원작으로 한 애니메이션 장르입니다.",
+      "source_url": "https://www.imdb.com/title/tt28650488/?ref_=sr_i_7",
+      "fetched_at": "2026-02-10T14:22:22.324792+09:00",
+      "updated_at": "2026-02-10T14:22:37.347885+09:00",
+      "metadata": {
+        "imdb_id": "tt28650488",
+        "year": "2026",
+        "synopsis": "Mario ventures into space, exploring cosmic worlds and tackling galactic challenges far from the familiar Mushroom Kingdom."
+      }
+    },
+    {
+      "id": "imdb_tt35222590",
+      "domain": "movie",
+      "title": "Exit 8",
+      "title_native": "Exit 8",
+      "intro": "영화 \"Exit 8\"은 2025년에 개봉된 작품으로, 평점은 6.4/10입니다. 주인공이 지하철역에 갇히게 되면서 탈출하기 위해 임무를 완수해야 하는 절박한 상황을 다룬 스릴러입니다.",
+      "source_url": "https://www.imdb.com/title/tt35222590/?ref_=sr_i_6",
+      "fetched_at": "2026-02-10T14:22:22.324774+09:00",
+      "updated_at": "2026-02-10T14:22:37.347884+09:00",
+      "metadata": {
+        "imdb_id": "tt35222590",
+        "year": "2025",
+        "rating": 6.4,
+        "synopsis": "A man becomes increasingly desperate when he realizes he is trapped in a subway station, needing to complete a mission to get out."
+      }
+    },
+    {
+      "id": "imdb_tt11214558",
+      "domain": "movie",
+      "title": "The Smashing Machine",
+      "title_native": "The Smashing Machine",
+      "intro": "2025년에 개봉한 영화 \"The Smashing Machine\"은 혼합 무술과 UFC 챔피언인 마크 커의 이야기를 다룹니다. 현재 평점은 6.4/10입니다.",
+      "source_url": "https://www.imdb.com/title/tt11214558/?ref_=sr_i_5",
+      "fetched_at": "2026-02-10T14:22:22.324753+09:00",
+      "updated_at": "2026-02-10T14:22:37.347884+09:00",
+      "metadata": {
+        "imdb_id": "tt11214558",
+        "year": "2025",
+        "rating": 6.4,
+        "synopsis": "The story of mixed-martial arts and UFC champion, Mark Kerr."
+      }
+    },
+    {
+      "id": "imdb_tt31036941",
+      "domain": "movie",
+      "title": "Jurassic World: Rebirth",
+      "title_native": "Jurassic World: Rebirth",
+      "intro": "2025년에 개봉하는 영화 'Jurassic World: Rebirth'는 평점 5.8/10을 기록하고 있다. 이 영화는 'Jurassic World: Dominion'(2022) 이후 5년 후를 배경으로 하며, 고립된 적도 지역에서 세 가지 거대한 선사 시대 생물의 DNA를 추출하기 위한 탐사가 진행되는 이야기를 담고 있다.",
+      "source_url": "https://www.imdb.com/title/tt31036941/?ref_=sr_i_4",
+      "fetched_at": "2026-02-10T14:22:22.324736+09:00",
+      "updated_at": "2026-02-10T14:22:37.347884+09:00",
+      "metadata": {
+        "imdb_id": "tt31036941",
+        "year": "2025",
+        "rating": 5.8,
+        "synopsis": "Five years post-Jurassic World: Dominion (2022), an expedition braves isolated equatorial regions to extract DNA from three massive prehistoric creatures for a groundbreaking medical breakthrough."
+      }
+    },
+    {
+      "id": "imdb_tt14142060",
+      "domain": "movie",
+      "title": "Rental Family",
+      "title_native": "Rental Family",
+      "intro": "2025년 개봉 예정인 영화 \"Rental Family\"는 일본 도쿄에서 자신의 목적을 찾기 위해 고군분투하는 미국 배우의 이야기를 담고 있다. 그는 일본의 '렌탈 패밀리' 에이전시에서 낯선 이들의 대역 역할을 수행하며 소속감과 새로운 삶의 의미를 되찾게 된다. 이 영화는 7.6/10의 평점을 기록하고 있다.",
+      "source_url": "https://www.imdb.com/title/tt14142060/?ref_=sr_i_3",
+      "fetched_at": "2026-02-10T14:22:22.324712+09:00",
+      "updated_at": "2026-02-10T14:22:37.347883+09:00",
+      "metadata": {
+        "imdb_id": "tt14142060",
+        "year": "2025",
+        "rating": 7.6,
+        "synopsis": "An American actor in Tokyo struggling to find purpose lands an unusual gig: working for a Japanese \"rental family\" agency, playing stand-in roles for strangers. He rediscovers purpose, belonging, and the beauty of human connection."
+      }
+    },
+    {
+      "id": "imdb_tt22868010",
+      "domain": "movie",
+      "title": "Return to Silent Hill",
+      "title_native": "Return to Silent Hill",
+      "intro": "2026년에 개봉하는 영화 'Return to Silent Hill'은 한 남자가 잃어버린 사랑으로부터 받은 신비로운 편지에 이끌려 어둠에 휩싸인 고향 도시인 사일런트 힐로 돌아가는 이야기를 담고 있다. 영화는 4.2의 평점을 기록하고 있다.",
+      "source_url": "https://www.imdb.com/title/tt22868010/?ref_=sr_i_2",
+      "fetched_at": "2026-02-10T14:22:22.324681+09:00",
+      "updated_at": "2026-02-10T14:22:37.347883+09:00",
+      "metadata": {
+        "imdb_id": "tt22868010",
+        "year": "2026",
+        "rating": 4.2,
+        "synopsis": "When a man receives a mysterious letter from his lost love, he is drawn to Silent Hill, a once familiar town now consumed by darkness."
+      }
+    },
+    {
+      "id": "imdb_tt27613895",
+      "domain": "movie",
+      "title": "GOAT",
+      "title_native": "GOAT",
+      "intro": "2026년에 개봉하는 영화 'GOAT'는 빠르고 강력한 동물들이 지배하는 하이텐시티, 혼성 전투 스포츠인 로어볼에 도전하는 작은 염소의 이야기를 담고 있다. 이 작품은 꿈을 이루기 위한 염소의 여정을 통해 도전과 극복의 메시지를 전달한다.",
+      "source_url": "https://www.imdb.com/title/tt27613895/?ref_=sr_i_1",
+      "fetched_at": "2026-02-10T14:22:22.324283+09:00",
+      "updated_at": "2026-02-10T14:22:37.347881+09:00",
+      "metadata": {
+        "imdb_id": "tt27613895",
+        "year": "2026",
+        "synopsis": "A small goat with big dreams gets a once-in-a-lifetime shot to join the pros and play roarball, a high-intensity, co-ed, full-contact sport dominated by the fastest, fiercest animals in the world."
+      }
+    }
+  ]
+}

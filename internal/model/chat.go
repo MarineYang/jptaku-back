@@ -15,6 +15,11 @@ type ChatSession struct {
 	TopicDetail     string     `gorm:"size:500" json:"topic_detail"`       // 세부 주제 (예: "원피스에 대해서")
 	CurrentTurn     int        `gorm:"default:0" json:"current_turn"`      // 현재 턴 수
 	MaxTurn         int        `gorm:"default:8" json:"max_turn"`          // 최대 턴 수
+	PersonaName     string     `gorm:"size:50" json:"persona_name"`              // 캐릭터 이름
+	PersonaGender   string     `gorm:"size:10" json:"persona_gender"`            // "male" or "female"
+	Domain          string     `gorm:"size:50" json:"domain"`                    // "anime", "drama" 등
+	ContentID       string     `gorm:"size:100" json:"content_id"`               // TopicContent.ID
+	ContentTitle    string     `gorm:"size:255" json:"content_title"`            // 작품 제목 (일본어)
 	Status          string     `gorm:"size:20;default:'active'" json:"status"` // active, completed, ended
 	StartedAt       time.Time  `gorm:"not null" json:"started_at"`
 	EndedAt         *time.Time `json:"ended_at,omitempty"`

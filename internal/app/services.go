@@ -16,7 +16,9 @@ import (
 	flashSvc "github.com/jptaku/server/internal/service/flash"
 	learningSvc "github.com/jptaku/server/internal/service/learning"
 	"github.com/jptaku/server/internal/service/sentence"
+	topicSvc "github.com/jptaku/server/internal/service/topic"
 	userSvc "github.com/jptaku/server/internal/service/user"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
@@ -39,6 +41,7 @@ type Services struct {
 	Flash    flashSvc.Provider
 	Chat     chatSvc.Provider
 	Feedback feedbackSvc.Provider
+	Topic    *topicSvc.Service
 	Async    *service.AsyncService
 }
 
@@ -57,7 +60,7 @@ type Dependencies struct {
 }
 
 // NewDependencies 모든 의존성 초기화
-func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
+func NewDependencies(db *gorm.DB, cfg *config.Config, redisClient *redis.Client) *Dependencies {
 	// Repositories
 	repos := &Repositories{
 		DBManager: repository.NewDBManager(db),
@@ -102,7 +105,7 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 	sentenceService := sentence.NewService(repos.Sentence, repos.User)
 	userService := userSvc.NewService(repos.User, sentenceService)
 	learningService := learningSvc.NewService(repos.Learning, repos.Sentence)
-	chatService := chatSvc.NewService(repos.Chat, repos.Sentence, cfg.OpenAI.APIKey, cfg.OpenAI.Model)
+	chatService := chatSvc.NewService(repos.Chat, repos.Sentence, repos.User, cfg.OpenAI.APIKey, cfg.OpenAI.Model)
 
 	// VoiceVox TTS 설정
 	if cfg.VoiceVox.VoiceVoxURL != "" {
@@ -114,6 +117,14 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 	// Flash Service (DB 조회만 수행, OpenAI 호출 없음)
 	flashService := flashSvc.NewService(repos.Sentence, repos.Learning)
 
+	// Topic Service (Redis 기반 토픽 데이터 로더)
+	var topicService *topicSvc.Service
+	if redisClient != nil {
+		topicService = topicSvc.NewService(redisClient)
+		chatService.SetTopicService(topicService)
+		log.Println("Topic service initialized with Redis")
+	}
+
 	services := &Services{
 		Auth:     authService,
 		User:     userService,
@@ -122,6 +133,7 @@ func NewDependencies(db *gorm.DB, cfg *config.Config) *Dependencies {
 		Flash:    flashService,
 		Chat:     chatService,
 		Feedback: feedbackService,
+		Topic:    topicService,
 		Async:    asyncService,
 	}
 

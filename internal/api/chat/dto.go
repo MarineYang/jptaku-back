@@ -2,8 +2,7 @@ package chat
 
 // CreateSessionRequest 세션 생성 요청
 type CreateSessionRequest struct {
-	Topic       string `json:"topic" binding:"required"` // 대화 주제
-	TopicDetail string `json:"topic_detail"`             // 세부 주제 (선택)
+	Domain string `json:"domain" binding:"required"` // 도메인 ("anime", "drama", "game", "movie", "music")
 }
 
 // SendMessageRequest 메시지 전송 요청

@@ -14,10 +14,9 @@ func (s *Service) GetTodaySentences(userID uint) (*DailySentencesResponse, error
 	return s.getSentencesByDate(userID, today)
 }
 
-// ResetTodaySentences 오늘의 문장 세트 삭제 (난이도 변경 시 재생성 용도)
+// ResetTodaySentences 모든 문장 세트 삭제 (난이도/카테고리 변경 시 완전 초기화)
 func (s *Service) ResetTodaySentences(userID uint) error {
-	today := time.Now().Truncate(24 * time.Hour)
-	return s.sentenceRepo.DeleteDailySet(userID, today)
+	return s.sentenceRepo.DeleteAllDailySets(userID)
 }
 
 // GetHistorySentences 지난 학습 문장 조회 (오늘 제외)
@@ -82,7 +81,7 @@ func (s *Service) getSentencesByDate(userID uint, date time.Time) (*DailySentenc
 	return s.createDailySet(userID, date)
 }
 
-// createDailySet 오늘의 문장 세트 생성
+// createDailySet 오늘의 문장 세트 생성 (미완료 이월 + 순차 제공)
 func (s *Service) createDailySet(userID uint, date time.Time) (*DailySentencesResponse, error) {
 	user, err := s.userRepo.FindByID(userID)
 	if err != nil {
@@ -100,27 +99,71 @@ func (s *Service) createDailySet(userID uint, date time.Time) (*DailySentencesRe
 	levels := pkg.LevelsForUser(onboardingLevel)
 	domains := pkg.DomainsFromCategories(categories)
 
-	// 이미 학습한 문장 ID 조회
-	learnedIDs, err := s.sentenceRepo.GetUserLearnedSentenceIDs(userID)
-	if err != nil {
-		learnedIDs = []uint{}
+	const dailyCount = 5
+
+	// 1. 과거 미완료(Memorized=false) 이월 문장 조회
+	var carryOverIDs []uint
+	if s.learningRepo != nil {
+		carryOverIDs, err = s.learningRepo.GetUnmemorizedSentenceIDs(userID, date, levels)
+		if err != nil {
+			carryOverIDs = []uint{}
+		}
 	}
 
-	// 미리 생성된 문장 pool에서 조건에 맞는 5개 가져오기
-	sentences, err := s.sentenceRepo.FindRandom(levels, domains, 5, learnedIDs)
-	if err != nil {
-		return nil, fmt.Errorf("문장 조회 실패: %w", err)
+	// 2. 새로 뽑을 문장 수 결정
+	newCount := dailyCount - len(carryOverIDs)
+	if newCount < 0 {
+		newCount = 0
 	}
 
-	if len(sentences) == 0 {
+	// 3. Memorized=true인 문장 제외 대상 조회
+	memorizedIDs, err := s.sentenceRepo.GetUserMemorizedSentenceIDs(userID)
+	if err != nil {
+		memorizedIDs = []uint{}
+	}
+
+	// excludeIDs = memorizedIDs + carryOverIDs (중복 방지)
+	excludeSet := make(map[uint]bool)
+	for _, id := range memorizedIDs {
+		excludeSet[id] = true
+	}
+	for _, id := range carryOverIDs {
+		excludeSet[id] = true
+	}
+	excludeIDs := make([]uint, 0, len(excludeSet))
+	for id := range excludeSet {
+		excludeIDs = append(excludeIDs, id)
+	}
+
+	// 4. 새 문장 순차 선택 (N5→N4→N3)
+	var newSentences []model.Sentence
+	if newCount > 0 {
+		newSentences, err = s.sentenceRepo.FindSequential(levels, domains, newCount, excludeIDs)
+		if err != nil {
+			return nil, fmt.Errorf("문장 조회 실패: %w", err)
+		}
+	}
+
+	// 5. 이월 문장 조회
+	var carryOverSentences []model.Sentence
+	if len(carryOverIDs) > 0 {
+		carryOverSentences, err = s.sentenceRepo.FindByIDs(carryOverIDs)
+		if err != nil {
+			carryOverSentences = []model.Sentence{}
+		}
+	}
+
+	// 6. 최종 문장 = 새 문장 + 이월 문장
+	allSentences := append(newSentences, carryOverSentences...)
+	if len(allSentences) == 0 {
 		return nil, fmt.Errorf("조건에 맞는 문장이 없습니다. 문장 pool이 비어있거나 모든 문장을 학습했습니다")
 	}
 
 	// 상세 정보 조회 및 ID 수집
-	sentencesWithDetail := make([]SentenceWithDetail, 0, len(sentences))
-	sentenceIDs := make([]uint, 0, len(sentences))
+	sentencesWithDetail := make([]SentenceWithDetail, 0, len(allSentences))
+	sentenceIDs := make([]uint, 0, len(allSentences))
 
-	for _, sentence := range sentences {
+	for _, sentence := range allSentences {
 		swd := s.buildSentenceWithDetail(userID, sentence)
 		sentencesWithDetail = append(sentencesWithDetail, swd)
 		sentenceIDs = append(sentenceIDs, sentence.ID)
