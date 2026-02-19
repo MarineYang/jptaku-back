@@ -22,6 +22,9 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 		flash.GET("/today", h.GetTodayFlash)
 		flash.POST("/progress", h.UpdateFlashProgress)
 	}
+
+	// 비회원용 (인증 불필요)
+	r.GET("/flash/guest", h.GetGuestFlash)
 }
 
 // GetTodayFlash godoc
@@ -79,6 +82,23 @@ func (h *Handler) UpdateFlashProgress(c *gin.Context) {
 	result, err := h.flashService.UpdateFlashProgress(c.Request.Context(), userID, input)
 	if err != nil {
 		pkg.InternalServerErrorResponse(c, "Flash 진행 상황 업데이트 실패: "+err.Error())
+		return
+	}
+
+	pkg.SuccessResponse(c, result)
+}
+
+// GetGuestFlash godoc
+// @Summary 비회원용 Flash 문장 조회
+// @Description 비회원용 N5 랜덤 5문장 플래시카드 반환 (진행도 저장 없음)
+// @Tags Flash
+// @Produce json
+// @Success 200 {object} flashSvc.TodayFlashResponse
+// @Router /api/flash/guest [get]
+func (h *Handler) GetGuestFlash(c *gin.Context) {
+	result, err := h.flashService.GetGuestFlash(c.Request.Context())
+	if err != nil {
+		pkg.InternalServerErrorResponse(c, "Flash 문장을 불러오는데 실패했습니다: "+err.Error())
 		return
 	}
 

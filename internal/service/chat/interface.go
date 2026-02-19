@@ -41,6 +41,10 @@ type Provider interface {
 
 	// 메시지 전송 (SSE 스트리밍)
 	SendMessageStream(ctx context.Context, sessionID uint, userMessage string, streamChan chan<- StreamChunk) error
+
+	// 비회원 대화 (DB 저장 없음, 무상태)
+	StartGuestSession(input *GuestStartInput) (*GuestSessionResponse, error)
+	SendGuestMessageStream(ctx context.Context, req *GuestMessageInput, streamChan chan<- StreamChunk) error
 }
 
 // SessionDetailResponse 세션 상세 응답 (번역 포함)

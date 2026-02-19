@@ -38,4 +38,5 @@ type Provider interface {
 	GetHistorySentences(userID uint, page, perPage int) (*HistorySentencesResponse, error)
 	ResetTodaySentences(userID uint) error
 	SetLearningRepo(learningRepo LearningRepository)
+	GetGuestSentences() (*DailySentencesResponse, error) // 비회원용: N5 랜덤 5문장
 }

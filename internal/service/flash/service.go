@@ -109,6 +109,30 @@ func (s *Service) buildFlashSentenceWithFilter(userID uint, sentence model.Sente
 	return flashSentence, shouldShow
 }
 
+// GetGuestFlash 비회원용 N5 랜덤 5문장 플래시카드 (진행도 저장 없음)
+func (s *Service) GetGuestFlash(ctx context.Context) (*TodayFlashResponse, error) {
+	sentences, err := s.sentenceRepo.FindRandom([]int{5}, nil, 5, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	flashSentences := make([]FlashSentence, 0, len(sentences))
+	for _, sentence := range sentences {
+		flashSentence := FlashSentence{Sentence: sentence}
+		if detail, err := s.sentenceRepo.GetDetail(sentence.ID); err == nil && detail != nil {
+			flashSentence.Phrase = detail.Phrase
+			flashSentence.Tip = detail.Tip
+			flashSentence.Alt = detail.Alt
+		}
+		flashSentences = append(flashSentences, flashSentence)
+	}
+
+	return &TodayFlashResponse{
+		Date:      time.Now().Format("2006-01-02"),
+		Sentences: flashSentences,
+	}, nil
+}
+
 // UpdateFlashProgress Flash 진행 상황 업데이트 (SRS 포함)
 func (s *Service) UpdateFlashProgress(ctx context.Context, userID uint, input *UpdateFlashInput) (*FlashProgressResult, error) {
 	now := time.Now()

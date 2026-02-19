@@ -11,6 +11,7 @@ import (
 type SentenceRepository interface {
 	GetDailySet(userID uint, date time.Time) (*model.DailySentenceSet, error)
 	FindByIDs(ids []uint) ([]model.Sentence, error)
+	FindRandom(levels []int, domains []string, count int, excludeIDs []uint) ([]model.Sentence, error)
 	GetDetail(sentenceID uint) (*model.SentenceDetail, error)
 }
 
@@ -25,4 +26,5 @@ type LearningRepository interface {
 type Provider interface {
 	GetTodayFlash(ctx context.Context, userID uint) (*TodayFlashResponse, error)
 	UpdateFlashProgress(ctx context.Context, userID uint, input *UpdateFlashInput) (*FlashProgressResult, error)
+	GetGuestFlash(ctx context.Context) (*TodayFlashResponse, error) // 비회원용: N5 랜덤 5문장
 }

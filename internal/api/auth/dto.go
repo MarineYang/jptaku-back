@@ -6,12 +6,9 @@ type RefreshRequest struct {
 
 type TokenResponse struct {
 	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-	User         any    `json:"user"`
-}
-
-type GoogleAuthURLResponse struct {
-	URL string `json:"url"`
+	RefreshToken string `json:"refresh_token,omitempty"`
+	User         any    `json:"user,omitempty"`
+	IsGuest      bool   `json:"is_guest,omitempty"`
 }
 
 // GoogleIDTokenRequest 네이티브 앱에서 Google SDK로 로그인 후 받은 ID Token

@@ -24,6 +24,9 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 		sentences.GET("/today", h.GetTodaySentences)
 		sentences.GET("/history", h.GetHistorySentences)
 	}
+
+	// 비회원용 (인증 불필요)
+	r.GET("/sentences/guest", h.GetGuestSentences)
 }
 
 // GetTodaySentences godoc
@@ -85,6 +88,24 @@ func (h *Handler) GetHistorySentences(c *gin.Context) {
 	}
 
 	response := convertHistoryToResponse(result)
+	pkg.SuccessResponse(c, response)
+}
+
+// GetGuestSentences godoc
+// @Summary 비회원용 오늘의 문장 조회
+// @Description 비회원용 N5 랜덤 5문장 반환 (학습 진행도 저장 없음)
+// @Tags Sentences
+// @Produce json
+// @Success 200 {object} DailySentencesResponse
+// @Router /api/sentences/guest [get]
+func (h *Handler) GetGuestSentences(c *gin.Context) {
+	result, err := h.sentenceService.GetGuestSentences()
+	if err != nil {
+		pkg.InternalServerErrorResponse(c, "문장을 불러오는데 실패했습니다")
+		return
+	}
+
+	response := convertToResponse(result)
 	pkg.SuccessResponse(c, response)
 }
 

@@ -874,6 +874,192 @@ func (s *Service) generatePostResponse(ctx context.Context, session *model.ChatS
 	return &postResp, nil
 }
 
+// StartGuestSession 비회원 대화 시작 (DB 저장 없음)
+func (s *Service) StartGuestSession(input *GuestStartInput) (*GuestSessionResponse, error) {
+	persona := generatePersona()
+
+	// 토픽 선택 (Redis)
+	var contentTitle string
+	if s.topicService != nil {
+		ctx := context.Background()
+		content, err := s.topicService.GetRandomContent(ctx, input.Domain)
+		if err == nil {
+			contentTitle = content.TitleNative
+			if contentTitle == "" {
+				contentTitle = content.Title
+			}
+		}
+	}
+	if contentTitle == "" {
+		contentTitle = input.Domain
+	}
+
+	// 임시 세션 (ID=0, DB 저장 없음)
+	tempSession := &model.ChatSession{
+		ID:            0,
+		UserID:        0,
+		Domain:        input.Domain,
+		ContentTitle:  contentTitle,
+		PersonaName:   persona.Name,
+		PersonaGender: persona.Gender,
+		CurrentTurn:   0,
+		MaxTurn:       model.MaxTurnsPerSession,
+		Status:        "active",
+		StartedAt:     time.Now(),
+	}
+
+	// AI 첫 인사 생성 (비회원은 오늘의 문장 없음)
+	ctx := context.Background()
+	greetingResp, err := s.generateGreetingWithSuggestions(ctx, tempSession, nil)
+	if err != nil {
+		log.Printf("StartGuestSession: greeting 생성 실패: %v", err)
+		greetingResp = &GreetingResponse{
+			Greeting:   fmt.Sprintf("こんにちは！「%s」について話しましょう！", contentTitle),
+			GreetingKr: fmt.Sprintf("안녕하세요! \"%s\"에 대해 이야기해요!", contentTitle),
+			Suggestions: []Suggestion{
+				{Text: "はい、よろしくお願いします！", TextKr: "네, 잘 부탁드려요!"},
+				{Text: "何から話しましょうか？", TextKr: "뭐부터 이야기할까요?"},
+				{Text: "楽しみです！", TextKr: "기대돼요!"},
+			},
+		}
+	}
+
+	// 시나리오 한국어 설명
+	scenarioEntry := selectScenario(input.Domain, contentTitle, 0)
+
+	return &GuestSessionResponse{
+		Domain:         input.Domain,
+		ContentTitle:   contentTitle,
+		PersonaName:    persona.Name,
+		PersonaGender:  persona.Gender,
+		Greeting:       greetingResp.Greeting,
+		GreetingKr:     greetingResp.GreetingKr,
+		Suggestions:    greetingResp.Suggestions,
+		ScenarioTextKr: scenarioEntry.TextKr,
+		MaxTurn:        model.MaxTurnsPerSession,
+	}, nil
+}
+
+// SendGuestMessageStream 비회원 SSE 메시지 전송 (무상태 - DB 저장 없음)
+func (s *Service) SendGuestMessageStream(ctx context.Context, req *GuestMessageInput, streamChan chan<- StreamChunk) error {
+	defer close(streamChan)
+
+	// 턴 수 확인
+	if req.CurrentTurn >= req.MaxTurn {
+		streamChan <- StreamChunk{Type: "error", Error: "최대 대화 횟수에 도달했습니다"}
+		return errors.New("max turns reached")
+	}
+
+	// 클라이언트 히스토리로 임시 세션 구성
+	messages := make([]model.ChatMessage, 0, len(req.Messages))
+	for _, m := range req.Messages {
+		messages = append(messages, model.ChatMessage{
+			Role:    m.Role,
+			Content: m.Content,
+		})
+	}
+
+	session := &model.ChatSession{
+		ID:            0,
+		UserID:        0,
+		Domain:        req.Domain,
+		ContentTitle:  req.ContentTitle,
+		PersonaName:   req.PersonaName,
+		PersonaGender: req.PersonaGender,
+		CurrentTurn:   req.CurrentTurn + 1,
+		MaxTurn:       req.MaxTurn,
+		Status:        "active",
+		Messages:      messages,
+	}
+
+	// OpenAI 메시지 구성
+	openaiMessages := s.buildOpenAIMessages(session, req.Message)
+
+	isLastTurn := session.CurrentTurn >= session.MaxTurn
+	remainingTurns := session.MaxTurn - session.CurrentTurn
+
+	if isLastTurn {
+		openaiMessages = append(openaiMessages, openai.ChatCompletionMessage{
+			Role: openai.ChatMessageRoleSystem,
+			Content: `これが最後の会話です。以下の形式で自然に締めくくってください：
+
+1. まず相手の発言に対して自然に返答してください
+2. その後、「今日はたくさん話せて楽しかったね！」のように会話を締めくくってください
+3. 最後に、会話の中で良かった表現や、次回試してみてほしい表現を1-2個、励ましの言葉と一緒に伝えてください
+
+自然な日本語で、友達との会話を終えるように話してください。`,
+		})
+	} else if remainingTurns <= 2 {
+		openaiMessages = append(openaiMessages, openai.ChatCompletionMessage{
+			Role:    openai.ChatMessageRoleSystem,
+			Content: fmt.Sprintf("残り%dターンです。会話を自然に続けながら、そろそろ締めくくりに向かう準備をしてください。", remainingTurns),
+		})
+	}
+
+	// OpenAI 스트리밍 (DB 저장 없음)
+	stream, err := s.openaiClient.CreateChatCompletionStream(ctx, openai.ChatCompletionRequest{
+		Model:       s.model,
+		Messages:    openaiMessages,
+		MaxTokens:   500,
+		Temperature: 0.8,
+		Stream:      true,
+	})
+	if err != nil {
+		streamChan <- StreamChunk{Type: "error", Error: "AI 응답 생성 실패"}
+		return err
+	}
+	defer stream.Close()
+
+	var fullResponse string
+	for {
+		response, err := stream.Recv()
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		if err != nil {
+			streamChan <- StreamChunk{Type: "error", Error: "스트리밍 오류"}
+			return err
+		}
+		content := response.Choices[0].Delta.Content
+		if content != "" {
+			fullResponse += content
+			streamChan <- StreamChunk{Type: "content", Content: content}
+		}
+	}
+
+	// 번역 + 제안 생성 (마지막 턴이 아닌 경우)
+	if fullResponse != "" {
+		// 제안용 세션에 새 메시지 추가
+		session.Messages = append(session.Messages, model.ChatMessage{Role: "user", Content: req.Message})
+		postResp, err := s.generatePostResponse(ctx, session, fullResponse, !isLastTurn, nil)
+		if err != nil {
+			log.Printf("SendGuestMessageStream: post response 생성 실패: %v", err)
+		} else {
+			if postResp.TranslationKr != "" {
+				streamChan <- StreamChunk{Type: "translation", ContentKr: postResp.TranslationKr}
+			}
+			if !isLastTurn && len(postResp.Suggestions) > 0 {
+				streamChan <- StreamChunk{Type: "suggestions", Suggestions: postResp.Suggestions}
+			}
+		}
+	}
+
+	// TTS (VoiceVox)
+	if s.ttsEnabled && s.voicevoxClient != nil && fullResponse != "" {
+		audioBase64, err := s.voicevoxClient.TextToSpeech(fullResponse)
+		if err == nil && audioBase64 != "" {
+			streamChan <- StreamChunk{Type: "audio", Audio: audioBase64}
+		}
+	}
+
+	streamChan <- StreamChunk{
+		Type:    "done",
+		Content: fmt.Sprintf(`{"current_turn":%d,"max_turn":%d,"remaining_turns":%d,"is_completed":%v}`, session.CurrentTurn, session.MaxTurn, session.MaxTurn-session.CurrentTurn, isLastTurn),
+	}
+
+	return nil
+}
+
 // buildOpenAIMessages OpenAI 메시지 구성
 func (s *Service) buildOpenAIMessages(session *model.ChatSession, newUserMessage string) []openai.ChatCompletionMessage {
 	// 페르소나 시스템 프롬프트 생성

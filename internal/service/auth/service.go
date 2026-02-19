@@ -35,10 +35,15 @@ func (s *Service) SetGoogleOAuth(googleOAuth *pkg.GoogleOAuthManager) {
 	s.googleOAuth = googleOAuth
 }
 
-// RefreshToken 토큰 갱신
+// RefreshToken 토큰 갱신 (비회원 토큰은 갱신 불가)
 func (s *Service) RefreshToken(refreshToken string) (*TokenResponse, error) {
 	claims, err := s.jwtManager.ValidateToken(refreshToken)
 	if err != nil {
+		return nil, pkg.ErrInvalidToken
+	}
+
+	// 비회원 토큰은 갱신 불가
+	if claims.UserID == 0 {
 		return nil, pkg.ErrInvalidToken
 	}
 
@@ -69,39 +74,17 @@ func (s *Service) generateTokens(user *model.User) (*TokenResponse, error) {
 	}, nil
 }
 
-// GetGoogleAuthURL Google 로그인 URL 조회
-func (s *Service) GetGoogleAuthURL(state string) string {
-	if s.googleOAuth == nil {
-		return ""
-	}
-	return s.googleOAuth.GetAuthURL(state)
-}
-
-// GoogleCallback Google 로그인 콜백 처리
-func (s *Service) GoogleCallback(ctx context.Context, code string) (*TokenResponse, error) {
-	if s.googleOAuth == nil {
-		return nil, pkg.ErrInvalidCredentials
-	}
-
-	token, err := s.googleOAuth.Exchange(ctx, code)
+// GuestLogin 비회원 토큰 발급 (DB 저장 없음, 24시간 유효)
+func (s *Service) GuestLogin() (*TokenResponse, error) {
+	accessToken, err := s.jwtManager.GenerateToken(0, "guest")
 	if err != nil {
-		return nil, pkg.ErrInvalidCredentials
-	}
-
-	userInfo, err := s.googleOAuth.GetUserInfo(ctx, token)
-	if err != nil {
-		return nil, pkg.ErrInvalidCredentials
-	}
-
-	user, err := s.userRepo.FindByProviderID("google", userInfo.ID)
-	if err != nil {
-		if repository.IsNotFound(err) {
-			return s.createGoogleUser(userInfo)
-		}
 		return nil, err
 	}
 
-	return s.generateTokens(user)
+	return &TokenResponse{
+		AccessToken: accessToken,
+		IsGuest:     true,
+	}, nil
 }
 
 // createGoogleUser Google 사용자 생성
@@ -151,12 +134,10 @@ func (s *Service) GoogleIDTokenLogin(ctx context.Context, idToken string) (*Toke
 	user, err := s.userRepo.FindByProviderID("google", userInfo.ID)
 	if err != nil {
 		if repository.IsNotFound(err) {
-			// 신규 사용자 생성
 			return s.createGoogleUser(userInfo)
 		}
 		return nil, err
 	}
 
-	// 기존 사용자 토큰 발급
 	return s.generateTokens(user)
 }

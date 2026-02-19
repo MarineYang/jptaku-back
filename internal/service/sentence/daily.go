@@ -19,6 +19,20 @@ func (s *Service) ResetTodaySentences(userID uint) error {
 	return s.sentenceRepo.DeleteAllDailySets(userID)
 }
 
+// GetGuestSentences 비회원용 N5 랜덤 5문장 (DB 저장 없음)
+func (s *Service) GetGuestSentences() (*DailySentencesResponse, error) {
+	sentences, err := s.sentenceRepo.FindRandom([]int{5}, nil, 5, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	sentencesWithDetail := s.buildSentencesWithDetail(0, sentences)
+	return &DailySentencesResponse{
+		Date:      time.Now().Format("2006-01-02"),
+		Sentences: sentencesWithDetail,
+	}, nil
+}
+
 // GetHistorySentences 지난 학습 문장 조회 (오늘 제외)
 func (s *Service) GetHistorySentences(userID uint, page, perPage int) (*HistorySentencesResponse, error) {
 	dailySets, total, err := s.sentenceRepo.GetPastDailySets(userID, page, perPage)

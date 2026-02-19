@@ -31,6 +31,13 @@ func (h *Handler) RegisterRoutes(r *gin.RouterGroup, authMiddleware gin.HandlerF
 		chat.GET("/sessions", h.GetSessions)
 		chat.POST("/session/:id/message", h.SendMessageSSE) // SSE 스트리밍
 	}
+
+	// 비회원 대화 (인증 불필요, DB 저장 없음)
+	guest := r.Group("/chat/guest")
+	{
+		guest.POST("/start", h.StartGuestSession)
+		guest.POST("/message", h.SendGuestMessageSSE)
+	}
 }
 
 // CreateSession godoc
@@ -289,5 +296,110 @@ func sendSSEError(c *gin.Context, message string) {
 
 	errorData := fmt.Sprintf(`{"type":"error","error":"%s"}`, message)
 	c.SSEvent("message", errorData)
+	c.Writer.Flush()
+}
+
+// StartGuestSession godoc
+// @Summary 비회원 대화 시작
+// @Description 비회원용 AI 대화 세션 시작 (DB 저장 없음)
+// @Tags Chat
+// @Accept json
+// @Produce json
+// @Param request body StartGuestSessionRequest true "도메인 정보"
+// @Success 200 {object} chatSvc.GuestSessionResponse
+// @Router /api/chat/guest/start [post]
+func (h *Handler) StartGuestSession(c *gin.Context) {
+	var req StartGuestSessionRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		pkg.BadRequestResponse(c, err.Error())
+		return
+	}
+
+	input := &chatSvc.GuestStartInput{
+		Domain: req.Domain,
+	}
+
+	response, err := h.chatService.StartGuestSession(input)
+	if err != nil {
+		log.Printf("StartGuestSession: error: %v", err)
+		pkg.InternalServerErrorResponse(c, "비회원 대화 시작 실패")
+		return
+	}
+
+	pkg.SuccessResponse(c, response)
+}
+
+// SendGuestMessageSSE godoc
+// @Summary 비회원 메시지 전송 (SSE 스트리밍)
+// @Description 비회원 대화 메시지 전송 - 클라이언트가 히스토리를 직접 전달 (DB 저장 없음)
+// @Tags Chat
+// @Accept json
+// @Produce text/event-stream
+// @Param request body SendGuestMessageRequest true "메시지 + 대화 히스토리"
+// @Success 200 {string} string "SSE 스트림"
+// @Router /api/chat/guest/message [post]
+func (h *Handler) SendGuestMessageSSE(c *gin.Context) {
+	var req SendGuestMessageRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		pkg.BadRequestResponse(c, err.Error())
+		return
+	}
+
+	// 히스토리 변환
+	messages := make([]chatSvc.GuestMessageItem, 0, len(req.Messages))
+	for _, m := range req.Messages {
+		messages = append(messages, chatSvc.GuestMessageItem{
+			Role:    m.Role,
+			Content: m.Content,
+		})
+	}
+
+	maxTurn := req.MaxTurn
+	if maxTurn <= 0 {
+		maxTurn = 10
+	}
+
+	input := &chatSvc.GuestMessageInput{
+		Domain:        req.Domain,
+		ContentTitle:  req.ContentTitle,
+		PersonaName:   req.PersonaName,
+		PersonaGender: req.PersonaGender,
+		Messages:      messages,
+		Message:       req.Message,
+		CurrentTurn:   req.CurrentTurn,
+		MaxTurn:       maxTurn,
+	}
+
+	// SSE 헤더 설정
+	c.Header("Content-Type", "text/event-stream")
+	c.Header("Cache-Control", "no-cache")
+	c.Header("Connection", "keep-alive")
+	c.Header("X-Accel-Buffering", "no")
+
+	streamChan := make(chan chatSvc.StreamChunk, 100)
+
+	go func() {
+		h.chatService.SendGuestMessageStream(c.Request.Context(), input, streamChan)
+	}()
+
+	c.Stream(func(w io.Writer) bool {
+		select {
+		case chunk, ok := <-streamChan:
+			if !ok {
+				return false
+			}
+			data, _ := json.Marshal(chunk)
+			c.SSEvent("message", string(data))
+			c.Writer.Flush()
+			if chunk.Type == "done" || chunk.Type == "error" {
+				return false
+			}
+			return true
+		case <-c.Request.Context().Done():
+			return false
+		}
+	})
+
+	c.SSEvent("close", "connection closed")
 	c.Writer.Flush()
 }

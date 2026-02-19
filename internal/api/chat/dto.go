@@ -16,6 +16,29 @@ type SessionsQuery struct {
 	PerPage int `form:"per_page" binding:"min=1,max=50"`
 }
 
+// StartGuestSessionRequest 비회원 대화 시작 요청
+type StartGuestSessionRequest struct {
+	Domain string `json:"domain" binding:"required"` // 도메인 ("anime", "drama", "game", "movie", "music")
+}
+
+// SendGuestMessageRequest 비회원 메시지 전송 요청
+type SendGuestMessageRequest struct {
+	Domain        string                    `json:"domain" binding:"required"`
+	ContentTitle  string                    `json:"content_title" binding:"required"`
+	PersonaName   string                    `json:"persona_name" binding:"required"`
+	PersonaGender string                    `json:"persona_gender" binding:"required"`
+	Messages      []GuestMessageItemRequest `json:"messages"`
+	Message       string                    `json:"message" binding:"required"`
+	CurrentTurn   int                       `json:"current_turn"`
+	MaxTurn       int                       `json:"max_turn"`
+}
+
+// GuestMessageItemRequest 비회원 메시지 아이템
+type GuestMessageItemRequest struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
 // SessionDetailResponse 세션 상세 조회 응답
 type SessionDetailResponse struct {
 	ID              uint                    `json:"id"`
